@@ -1,7 +1,7 @@
 # Личный проект «Киноман» [![Build status][travis-image]][travis-url]
 
 * Студент: [Юлия Бухвалова](https://up.htmlacademy.ru/ecmascript/11/user/114660).
-* Наставник: `Неизвестно`.
+* Наставник: [Георгий Гусаков](https://htmlacademy.ru/profile/georgegus27).
 
 ---
 
