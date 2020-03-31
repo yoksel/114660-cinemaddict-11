@@ -1,0 +1,17 @@
+{
+  "name": "Cinemaddict",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Личный проект «Киноман» от HTML Academy",
+  "scripts": {
+    "eslint": "eslint src/**/*.js",
+    "test": "npm run eslint"
+  },
+  "devDependencies": {
+    "eslint": "6.1.0",
+    "eslint-config-htmlacademy": "0.5.2"
+  },
+  "engines": {
+    "node": "10"
+  }
+}
