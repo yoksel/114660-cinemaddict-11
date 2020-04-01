@@ -1,5 +1,12 @@
 "use strict";
 
+const QUANTITY_CARDS_UPCOMING = 5;
+const QUANTITY_CARDS_TOP = 2;
+
+const siteHeaderElem = document.querySelector(`.header`);
+const siteMainElem = document.querySelector(`.main`);
+const siteFooterElem = document.querySelector(`.footer`);
+
 const getProfileTmpl = () => {
   return (
     `<section class="header__profile profile">
@@ -55,7 +62,7 @@ const getCardTmpl = () => {
   );
 };
 
-const getCards = (quantity = 5) => {
+const getCards = (quantity = QUANTITY_CARDS_UPCOMING) => {
   let cardsMarkup = ``;
 
   for (let i = 0; i < quantity; i++) {
@@ -65,9 +72,15 @@ const getCards = (quantity = 5) => {
   return cardsMarkup;
 };
 
+const getShowMoreTmpl = () => {
+  return (
+    `<button class="films-list__show-more">Show more</button>`
+  );
+};
+
 const getFilmsTmpl = () => {
   const cardsUpcomingMarkup = getCards();
-  const cardsTopMarkup = getCards(2);
+  const cardsTopMarkup = getCards(QUANTITY_CARDS_TOP);
   const showMoreControl = getShowMoreTmpl();
 
   return (
@@ -81,7 +94,6 @@ const getFilmsTmpl = () => {
 
         ${showMoreControl}
       </section>
-
 
       <section class="films-list films-list--extra">
         <h2 class="films-list__title">Top rated</h2>
@@ -100,12 +112,6 @@ const getFilmsTmpl = () => {
       </section>
     </section>
     `
-  );
-};
-
-const getShowMoreTmpl = () => {
-  return (
-    `<button class="films-list__show-more">Show more</button>`
   );
 };
 
@@ -291,20 +297,16 @@ const getStatisticsTmpl = () => {
   );
 };
 
-const render = (container, template, place = `beforeend`) => {
-  container.insertAdjacentHTML(place, template);
+const render = (container, template) => {
+  container.insertAdjacentHTML(`beforeend`, template);
 };
 
-const siteHeaderElem = document.querySelector(`.header`);
 render(siteHeaderElem, getProfileTmpl());
-
-const siteMainElem = document.querySelector(`.main`);
 
 render(siteMainElem, getMenuTmpl());
 render(siteMainElem, getSortTmpl());
 render(siteMainElem, getFilmsTmpl());
 
-const siteFooterElem = document.querySelector(`.footer`);
 render(siteFooterElem, getStatisticsTmpl());
 
 render(document.body, getDetailsTmpl());
