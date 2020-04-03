@@ -31,8 +31,7 @@ export default class FilmsList {
       return ``;
     }
 
-    const showMore = new ShowMore();
-    return showMore.getTmpl();
+    return new ShowMore().getTmpl();
   }
 
   getClassName() {
@@ -60,20 +59,15 @@ export default class FilmsList {
   }
 
   getTmpl() {
-    const className = this.getClassName();
-    const title = this.getTitle();
-    const cards = this.getCards();
-    const showMore = this.getShowMore();
-
     return (`
-      <section class="${className}">
-        ${title}
+      <section class="${this.getClassName()}">
+        ${this.getTitle()}
 
         <div class="films-list__container">
-          ${cards}
+          ${this.getCards()}
         </div>
 
-        ${showMore}
+        ${this.getShowMore()}
       </section>
     `);
   }
