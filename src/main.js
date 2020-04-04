@@ -40,8 +40,7 @@ const getFilmsTmpl = () => {
   const filmsSections = filmsSectionsData
     .reduce((prev, data) => {
       const filmsSection = new FilmsList(data);
-      prev += filmsSection.getTmpl();
-      return prev;
+      return prev + filmsSection.getTmpl();
     } ,'');
 
   return (
