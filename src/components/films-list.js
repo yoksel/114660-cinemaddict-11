@@ -24,7 +24,7 @@ export default class FilmsList {
     return cardsMarkup;
   }
 
-  getShowMore() {
+  getShowMoreBtn() {
     // По-хорошему, тут должно проверяться
     // количество выводимых карточек, а не тип
     if (this.type !== `upcoming`) {
@@ -69,7 +69,7 @@ export default class FilmsList {
           ${this.getCards()}
         </div>
 
-        ${this.getShowMore()}
+        ${this.getShowMoreBtn()}
       </section>
     `);
   }
