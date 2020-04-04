@@ -27,7 +27,7 @@ export default class FilmsList {
   getShowMoreBtn() {
     // По-хорошему, тут должно проверяться
     // количество выводимых карточек, а не тип
-    if (this.type !== `upcoming`) {
+    if (!this.isUpcoming) {
       return ``;
     }
 
