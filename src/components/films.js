@@ -32,8 +32,7 @@ export default class Films {
     return (
       `<section class="films">
         ${filmsSections}
-      </section>
-      `
+      </section>`
     );
   }
 }

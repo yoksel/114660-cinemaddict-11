@@ -61,8 +61,8 @@ export default class FilmsList {
   }
 
   getTmpl() {
-    return (`
-      <section class="${this.getClassName()}">
+    return (
+      `<section class="${this.getClassName()}">
         ${this.getTitle()}
 
         <div class="films-list__container">
@@ -70,7 +70,7 @@ export default class FilmsList {
         </div>
 
         ${this.getShowMoreBtn()}
-      </section>
-    `);
+      </section>`
+    );
   }
 }
