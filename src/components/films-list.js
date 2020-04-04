@@ -6,6 +6,7 @@ export default class FilmsList {
     this.type = type;
     this.quantity = quantity;
     this.className = `films-list`;
+    this.isUpcoming = this.type === `upcoming`;
   }
 
   getCards() {
@@ -38,7 +39,7 @@ export default class FilmsList {
   getClassName() {
     const classList = [this.className];
 
-    if (this.type !== `upcoming`) {
+    if (!this.isUpcoming) {
       classList.push(`${this.className}--${this.type}`);
     }
 
@@ -48,7 +49,7 @@ export default class FilmsList {
   getTitle() {
     let className = `films-list__title`;
 
-    if (this.type === `upcoming`) {
+    if (this.isUpcoming) {
       className += ` visually-hidden`;
     }
 
