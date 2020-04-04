@@ -1,5 +1,4 @@
 import Card from './card';
-import ShowMore from './show-more';
 
 export default class FilmsList {
   constructor({type, title, quantity}) {
@@ -31,7 +30,9 @@ export default class FilmsList {
       return ``;
     }
 
-    return new ShowMore().getTmpl();
+    return (
+      `<button class="films-list__show-more">Show more</button>`
+    );
   }
 
   getClassName() {
