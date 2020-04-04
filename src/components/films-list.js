@@ -46,14 +46,14 @@ export default class FilmsList {
   }
 
   getTitle() {
-    const classList = [`films-list__title`];
+    let className = `films-list__title`;
 
     if (this.type === `upcoming`) {
-      classList.push(` visually-hidden`);
+      className += ` visually-hidden`;
     }
 
     return (
-      `<h2 class="${classList.join(` `)}">
+      `<h2 class="${className}">
         ${this.title}
       </h2>`
     );
