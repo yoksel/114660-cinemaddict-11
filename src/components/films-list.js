@@ -37,13 +37,13 @@ export default class FilmsList {
   }
 
   getClassName() {
-    const classList = [this.className];
+    let className = this.className;
 
     if (!this.isUpcoming) {
-      classList.push(`${this.className}--${this.type}`);
+      className += ` ${this.className}--${this.type}`;
     }
 
-    return classList.join(` `);
+    return className;
   }
 
   getTitle() {
