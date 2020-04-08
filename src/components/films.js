@@ -22,9 +22,14 @@ const filmsSectionsData = [
 ];
 
 export default class Films {
+  constructor(data) {
+    this.data = data;
+  }
+
   getTmpl() {
     const filmsSections = filmsSectionsData
       .reduce((prev, data) => {
+        data.films = this.data.splice(0, data.quantity);
         const filmsSection = new FilmsList(data);
         return prev + filmsSection.getTmpl();
       }, ``);

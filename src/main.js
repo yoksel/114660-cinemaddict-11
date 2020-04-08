@@ -1,9 +1,15 @@
+import { MAX_CARDS, MAX_CARDS_LOAD } from './const.js';
+
 import Profile from './components/profile';
 import Menu from './components/menu';
 import Sort from './components/sort';
 import Films from './components/films';
 import Details from './components/details';
 import Statistics from './components/statistics';
+
+import {getCardsData} from './mocks/cards';
+
+const cardsData = getCardsData(MAX_CARDS);
 
 const siteHeaderElem = document.querySelector(`.header`);
 const siteMainElem = document.querySelector(`.main`);
@@ -12,7 +18,7 @@ const siteFooterElem = document.querySelector(`.footer`);
 const profile = new Profile();
 const menu = new Menu();
 const sort = new Sort();
-const films = new Films();
+const films = new Films(cardsData);
 const details = new Details();
 const statistics = new Statistics();
 
