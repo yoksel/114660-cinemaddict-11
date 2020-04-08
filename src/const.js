@@ -9,10 +9,10 @@ const POSTERS = [
 ];
 
 const EMOJI = [
-  'angry.png',
-  'puke.png',
-  'sleeping.png',
-  'smile.png',
+  'angry',
+  'puke',
+  'sleeping',
+  'smile',
 ];
 
 const TITLES = [
