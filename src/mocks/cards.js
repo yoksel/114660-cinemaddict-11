@@ -85,7 +85,7 @@ const getRandomNames = (min, max) => {
     list.add(getRandomItem(NAMES));
   }
 
-  return list;
+  return Array.from(list);
 };
 
 const getRandomGenres = () => {
@@ -96,7 +96,7 @@ const getRandomGenres = () => {
     list.add(getRandomItem(GENRES));
   }
 
-  return list;
+  return Array.from(list);
 };
 
 const getCardsData = (quantity) => {
