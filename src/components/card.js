@@ -1,4 +1,5 @@
 import {getClass} from '../helpers/getClass';
+import {getRuntime} from '../helpers/getRuntime';
 
 export default class Card {
   constructor({
@@ -20,7 +21,7 @@ export default class Card {
     this.shortDesc = shortDesc;
     this.genre = genre;
     this.year = releaseDate.getFullYear();
-    this.runtime = this.getTime(runtime);
+    this.runtime = getRuntime(runtime);
     this.rating = rating;
     this.commentsCount = comments.length;
     this.isInWatchList = isInWatchList;
@@ -28,15 +29,6 @@ export default class Card {
     this.isFavorite = isFavorite;
   }
 
-  getTime({hours, mins}) {
-    hours = hours > 0 ? `${hours}h` : ``;
-    mins = mins > 0 ? `${mins}m` : ``;
-
-    if (hours && mins) {
-      hours += ` `;
-    }
-    return hours + mins;
-  }
 
   getControlsList() {
     return [
