@@ -6,7 +6,7 @@ export default class Card {
     poster,
     title,
     shortDesc,
-    genre,
+    genres,
     releaseDate,
     runtime,
     rating,
@@ -19,7 +19,7 @@ export default class Card {
     this.poster = poster;
     this.title = title;
     this.shortDesc = shortDesc;
-    this.genre = genre;
+    this.genre = genres[0];
     this.year = releaseDate.getFullYear();
     this.runtime = getRuntime(runtime);
     this.rating = rating;
