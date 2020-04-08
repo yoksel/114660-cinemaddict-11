@@ -19,7 +19,7 @@ const profile = new Profile();
 const menu = new Menu();
 const sort = new Sort();
 const films = new Films(cardsData);
-const details = new Details();
+const details = new Details(cardsData[0]);
 const statistics = new Statistics();
 
 const render = (container, template) => {
