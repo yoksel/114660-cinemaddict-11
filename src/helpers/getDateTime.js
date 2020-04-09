@@ -1,41 +1,31 @@
-import {MONTH_NAMES} from '../const.js';
+import moment from 'moment';
 
 const getDate = (date) => {
   if (!date) {
     return ``;
   }
 
-  const day = date.getDate();
-  const monthNum = date.getMonth();
-
-  return `${day} ${MONTH_NAMES[monthNum]}`;
+  return moment(date).format(`D MMMM`);
 };
 
 const getFullDate = (date) => {
-  const day = date.getDate();
-  const month = date.getMonth();
-  const year = date.getFullYear();
-
-  return `${day} ${MONTH_NAMES[month]} ${year}`;
-};
-
-const getTime = (date) => {
   if (!date) {
     return ``;
   }
 
-  let timeParts = [
-    date.getHours(),
-    date.getMinutes()
-  ];
+  return moment(date).format(`D MMMM YYYY`);
+};
 
-  return timeParts
-    .map((item) => item < 10 ? `0${item}` : item)
-    .join(`:`);
+const getRelativeDate = (date) => {
+  if (!date) {
+    return ``;
+  }
+
+  return moment(date).fromNow();
 };
 
 export {
   getDate,
   getFullDate,
-  getTime
+  getRelativeDate
 };

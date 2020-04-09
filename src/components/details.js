@@ -1,6 +1,5 @@
-import moment from 'moment';
 import {getRuntime} from '../helpers/getRuntime';
-import {getFullDate} from '../helpers/getDateTime';
+import {getFullDate, getRelativeDate} from '../helpers/getDateTime';
 import {getFilmControlsData} from '../helpers/getFilmControlsData';
 import {EMOJI} from '../const';
 
@@ -151,7 +150,9 @@ export default class Details {
             ${author}
           </span>
 
-          <span class="film-details__comment-day">${moment(date).fromNow()}</span>
+          <span class="film-details__comment-day">
+            ${getRelativeDate(date)}
+          </span>
 
           <button class="film-details__comment-delete">Delete</button>
         </p>
