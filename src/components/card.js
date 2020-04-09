@@ -70,7 +70,7 @@ export default class Card {
 
         <p class="film-card__info">
           <span class="film-card__year">${this.year}</span>
-          <span class="film-card__duration">${this.duration}</span>
+          <span class="film-card__duration">${this.runtime}</span>
           <span class="film-card__genre">${this.genre}</span>
         </p>
 
