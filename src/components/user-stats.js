@@ -1,4 +1,4 @@
-import {createElement} from '../helpers/createElement';
+import {createElement} from '../helpers';
 
 export default class UserStats {
   constructor({status, avatar, watchedQuantity, watchedDuration, topGenre}) {

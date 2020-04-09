@@ -1,4 +1,4 @@
-import {createElement} from '../helpers/createElement';
+import {createElement} from '../helpers';
 
 export default class Filter {
   constructor(data) {

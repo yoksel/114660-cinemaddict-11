@@ -1,4 +1,4 @@
-import {getRelativeDate} from '../helpers/getDateTime';
+import {getRelativeDate} from '../helpers';
 import {EMOJI} from '../const';
 
 export default class Comments {

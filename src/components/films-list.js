@@ -1,6 +1,6 @@
 import Card from './card';
+import {createElement} from '../helpers';
 import {MAX_CARDS_SHOW, MAX_CARDS_LOAD} from '../const';
-import {createElement} from '../helpers/createElement';
 
 export default class FilmsList {
   constructor({type, title, quantity, films}) {

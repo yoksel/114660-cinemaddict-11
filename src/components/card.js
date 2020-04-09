@@ -1,7 +1,4 @@
-import {getClass} from '../helpers/getClass';
-import {getRuntime} from '../helpers/getRuntime';
-import {getFilmControlsData} from '../helpers/getFilmControlsData';
-import {createElement} from '../helpers/createElement';
+import {getClass, getRuntime, getFilmControlsData, createElement} from '../helpers';
 
 export default class Card {
   constructor({
