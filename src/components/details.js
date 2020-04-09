@@ -1,6 +1,7 @@
 import {getRuntime} from '../helpers/getRuntime';
 import {getFullDate} from '../helpers/getDateTime';
 import {getFilmControlsData} from '../helpers/getFilmControlsData';
+import {getPlurals} from '../helpers/getPlurals';
 import {AGE_RATINGS} from '../const';
 import Comments from './comments';
 
