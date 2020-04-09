@@ -29,16 +29,16 @@ export default class Details {
     this.title = title;
     this.origTitle = origTitle;
     this.desc = desc;
-    this.genres = this.getGenresMarkup(genres);
-    this.releaseDate = getFullDate(releaseDate);
-    this.runtime = getRuntime(runtime);
+    this.genres = genres;
+    this.releaseDate = releaseDate;
+    this.runtime = runtime;
     this.rating = rating;
     this.ageRating = ageRating;
     this.comments = comments;
     this.country = country;
     this.director = director;
-    this.writers = this.getListStr(writers);
-    this.actors = this.getListStr(actors);
+    this.writers = writers;
+    this.actors = actors;
 
     this.isInWatchList = isInWatchList;
     this.isWatched = isWatched;
@@ -55,8 +55,8 @@ export default class Details {
     return list.join(`, `);
   }
 
-  getGenresMarkup(genres) {
-    return genres.reduce((prev, item) => {
+  getGenresMarkup() {
+    return this.genres.reduce((prev, item) => {
       return `${prev} <span class="film-details__genre">${item}</span>`;
     },
     ``);
@@ -88,18 +88,39 @@ export default class Details {
   }
 
   getDetailsList() {
-    const dataList = {
-      'Director': this.director,
-      'Writers': this.writers,
-      'Actors': this.actors,
-      'Release': this.releaseDate,
-      'Runtime': this.runtime,
-      'Country': this.country,
-      'Genres': this.genres,
-    };
+    const dataList = [
+      {
+        name: `Director`,
+        value: this.director
+      },
+      {
+        name: getPlurals(this.writers.length, [`Writer`, `Writers`]),
+        value: this.getListStr(this.writers)
+      },
+      {
+        name: getPlurals(this.actors.length, [`Actor`, `Actors`]),
+        value: this.getListStr(this.actors)
+      },
+      {
+        name: `Release`,
+        value: getFullDate(this.releaseDate)
+      },
+      {
+        name: `Runtime`,
+        value: getRuntime(this.runtime)
+      },
+      {
+        name: `Country`,
+        value: this.country
+      },
+      {
+        name: getPlurals(this.genres.length, [`Genre`, `Genres`]),
+        value: this.getGenresMarkup()
+      },
+    ];
 
-    const rowsMarkup = Object.entries(dataList)
-      .reduce((prev, [name, value]) => {
+    const rowsMarkup = dataList
+      .reduce((prev, {name, value}) => {
         return prev + `<tr class="film-details__row">
             <td class="film-details__term">${name}</td>
             <td class="film-details__cell">${value}</td>
