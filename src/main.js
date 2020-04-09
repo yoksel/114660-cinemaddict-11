@@ -5,7 +5,7 @@ import Filter from './components/filter';
 import Sort from './components/sort';
 import Films from './components/films';
 import Details from './components/details';
-import Statistics from './components/statistics';
+import FilmsTotal from './components/FilmsTotal';
 
 import {getCardsData} from './mocks/cards';
 import {getUserData} from './mocks/user';
@@ -15,14 +15,14 @@ const userData = getUserData(cardsData);
 
 const siteHeaderElem = document.querySelector(`.header`);
 const siteMainElem = document.querySelector(`.main`);
-const siteFooterElem = document.querySelector(`.footer`);
+const filmsTotalElem = document.querySelector(`.footer__statistics`);
 
 const profile = new Profile(userData);
 const filter = new Filter(cardsData);
 const sort = new Sort();
 const films = new Films(cardsData);
 const details = new Details(cardsData[0]);
-const statistics = new Statistics(cardsData.length);
+const filmsTotal = new FilmsTotal(cardsData.length);
 
 const render = (container, template) => {
   container.insertAdjacentHTML(`beforeend`, template);
@@ -34,6 +34,6 @@ render(siteMainElem, filter.getTmpl());
 render(siteMainElem, sort.getTmpl());
 render(siteMainElem, films.getTmpl());
 
-render(siteFooterElem, statistics.getTmpl());
+render(filmsTotalElem, filmsTotal.getTmpl());
 
 render(document.body, details.getTmpl());
