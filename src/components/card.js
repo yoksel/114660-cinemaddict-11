@@ -1,6 +1,7 @@
 import {getClass} from '../helpers/getClass';
 import {getRuntime} from '../helpers/getRuntime';
 import {getFilmControlsData} from '../helpers/getFilmControlsData';
+import {createElement} from '../helpers/createElement';
 
 export default class Card {
   constructor({
@@ -62,9 +63,9 @@ export default class Card {
     );
   }
 
-  getTmpl() {
-    return (
-      `<article class="film-card">
+  getElement() {
+    return createElement(
+        `<article class="film-card">
         <h3 class="film-card__title">${this.title}</h3>
         <p class="film-card__rating">${this.rating}</p>
 

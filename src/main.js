@@ -26,17 +26,17 @@ const details = new Details(cardsData[0]);
 const userStats = new UserStats(userData);
 const filmsTotal = new FilmsTotal(cardsData.length);
 
-const render = (container, template) => {
-  container.insertAdjacentHTML(`beforeend`, template);
+const render = (target, elem) => {
+  target.append(elem);
 };
 
-render(siteHeaderElem, profile.getTmpl());
+render(siteHeaderElem, profile.getElement());
 
-render(siteMainElem, filter.getTmpl());
-render(siteMainElem, sort.getTmpl());
-render(siteMainElem, films.getTmpl());
-render(siteMainElem, userStats.getTmpl());
+render(siteMainElem, filter.getElement());
+render(siteMainElem, sort.getElement());
+render(siteMainElem, films.getElement());
+render(siteMainElem, userStats.getElement());
 
-render(filmsTotalElem, filmsTotal.getTmpl());
+render(filmsTotalElem, filmsTotal.getElement());
 
-render(document.body, details.getTmpl());
+render(document.body, details.getElement());

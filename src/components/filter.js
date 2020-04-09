@@ -1,3 +1,5 @@
+import {createElement} from '../helpers/createElement';
+
 export default class Filter {
   constructor(data) {
     this.data = data;
@@ -49,9 +51,9 @@ export default class Filter {
     }, ``);
   }
 
-  getTmpl() {
-    return (
-      `<nav class="main-navigation">
+  getElement() {
+    return createElement(
+        `<nav class="main-navigation">
         <div class="main-navigation__items">
           ${this.getItems()}
         </div>

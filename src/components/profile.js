@@ -1,11 +1,14 @@
+import {createElement} from '../helpers/createElement';
+
 export default class Profile {
   constructor({status, avatar}) {
     this.status = status;
     this.avatar = avatar;
   }
-  getTmpl() {
-    return (
-      `<section class="header__profile profile">
+
+  getElement() {
+    return createElement(
+        `<section class="header__profile profile">
         <p class="profile__rating">${this.status}</p>
 
         <img

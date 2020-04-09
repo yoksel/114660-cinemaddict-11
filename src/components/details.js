@@ -1,3 +1,4 @@
+import {createElement} from '../helpers/createElement';
 import {getRuntime} from '../helpers/getRuntime';
 import {getFullDate} from '../helpers/getDateTime';
 import {getFilmControlsData} from '../helpers/getFilmControlsData';
@@ -162,9 +163,9 @@ export default class Details {
     return comments.getTmpl();
   }
 
-  getTmpl() {
-    return (
-      `<section class="film-details" hidden>
+  getElement() {
+    return createElement(
+        `<section class="film-details" hidden>
         <form class="film-details__inner" action="" method="get">
           <div class="form-details__top-container">
             <div class="film-details__close">
