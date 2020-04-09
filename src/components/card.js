@@ -1,5 +1,6 @@
 import {getClass} from '../helpers/getClass';
 import {getRuntime} from '../helpers/getRuntime';
+import {getFilmControlsData} from '../helpers/getFilmControlsData';
 
 export default class Card {
   constructor({
@@ -27,27 +28,12 @@ export default class Card {
     this.isInWatchList = isInWatchList;
     this.isWatched = isWatched;
     this.isFavorite = isFavorite;
-  }
 
-
-  getControlsList() {
-    return [
-      {
-        id: `add-to-watchlist`,
-        text: `Add to watchlist`,
-        isActive: this.isInWatchList
-      },
-      {
-        id: `mark-as-watched`,
-        text: `Mark as watched`,
-        isActive: this.isWatched
-      },
-      {
-        id: `favorite`,
-        text: `Mark as favorite`,
-        isActive: this.isFavorite
-      }
-    ];
+    this.controlsData = getFilmControlsData({
+      isInWatchList,
+      isWatched,
+      isFavorite,
+    });
   }
 
   getCardControl({id, text, isActive}) {
@@ -66,9 +52,8 @@ export default class Card {
   }
 
   getCardForm() {
-    const controlsList = this.getControlsList();
-
-    let controlsMarkup = controlsList.reduce((prev, control) => prev + this.getCardControl(control), ``);
+    let controlsMarkup = this.controlsData
+      .reduce((prev, control) => prev + this.getCardControl(control), ``);
 
     return (
       `<form class="film-card__controls">
