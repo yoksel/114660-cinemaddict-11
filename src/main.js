@@ -16,7 +16,7 @@ const siteMainElem = document.querySelector(`.main`);
 const siteFooterElem = document.querySelector(`.footer`);
 
 const profile = new Profile();
-const filter = new Filter();
+const filter = new Filter(cardsData);
 const sort = new Sort();
 const films = new Films(cardsData);
 const details = new Details(cardsData[0]);
