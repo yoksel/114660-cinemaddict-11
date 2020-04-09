@@ -93,18 +93,16 @@ const COUNTRIES = [
 
 const USER_STATUSES = [
   {
-    min: 1,
-    max: 10,
-    name: 'Novice',
+    min: 21,
+    name: 'Movie buff'
   },
   {
     min: 11,
-    max: 20,
     name: 'Fan',
   },
   {
-    min: 21,
-    name: 'Movie buff'
+    min: 1,
+    name: 'Novice',
   },
 ];
 

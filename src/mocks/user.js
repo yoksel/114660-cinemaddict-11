@@ -44,9 +44,9 @@ export const getUserData = (data) => {
   let status = ``;
 
   for (let statusData of USER_STATUSES) {
-    const {min, max, name} = statusData;
+    const {min, name} = statusData;
 
-    if (watchedQuantity >= min && watchedQuantity <= max) {
+    if (watchedQuantity >= min) {
       status = name;
       break;
     }
