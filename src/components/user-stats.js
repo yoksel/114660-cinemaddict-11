@@ -1,9 +1,10 @@
 export default class UserStats {
-  constructor({userData, cardsData}) {
-    this.userData = userData;
-    this.cardsData = cardsData;
-
-    this.watched = this.cardsData.filter((item) => item.isWatched);
+  constructor({status, avatar, watchedQuantity, watchedDuration, topGenre}) {
+    this.status = status;
+    this.avatar = avatar;
+    this.watchedQuantity = watchedQuantity;
+    this.watchedDuration = watchedDuration;
+    this.topGenre = topGenre;
   }
 
   getRank() {
@@ -13,10 +14,10 @@ export default class UserStats {
 
         <img
           class="statistic__img"
-          src="images/${this.userData.avatar}"
+          src="images/${this.avatar}"
           alt="Avatar"
           width="35" height="35">
-        <span class="statistic__rank-label">${this.userData.status}</span>
+        <span class="statistic__rank-label">${this.status}</span>
       </p>`
     );
   }
@@ -81,51 +82,13 @@ export default class UserStats {
     }, ``);
   }
 
-  getTotalDuration() {
-    const totalTimeMins = this.watched.reduce((prev, {runtime}) => {
-      return prev + runtime.hours * 60 + runtime.mins;
-    }, 0);
-
-    const mins = totalTimeMins % 60;
-    const hours = (totalTimeMins - mins) / 60;
-
-    return {hours, mins};
-  }
-
-  getTopGenre() {
-    if (this.watched.length === 0) {
-      return `None`;
-    }
-
-    const countGenres = this.watched.reduce((prev, {genres}) => {
-      for (const genre of genres) {
-        if (!prev[genre]) {
-          prev[genre] = 0;
-        }
-
-        prev[genre]++;
-      }
-      return prev;
-    }, {});
-
-    const genresList = Object.entries(countGenres);
-
-    genresList.sort((a, b) => {
-      return b[1] - a[1];
-    });
-
-    return genresList[0][0];
-  }
-
   getStatisticsItems() {
-    const totalDuration = this.getTotalDuration();
-
     const itemsData = [
       {
         name: `You watched`,
         values: [
           {
-            value: this.watched.length,
+            value: this.watchedQuantity,
             desc: `movies`
           }
         ]
@@ -134,11 +97,11 @@ export default class UserStats {
         name: `Total duration`,
         values: [
           {
-            value: totalDuration.hours,
+            value: this.watchedDuration.hours,
             desc: `h`
           },
           {
-            value: totalDuration.mins,
+            value: this.watchedDuration.mins,
             desc: `m`
           }
         ]
@@ -146,7 +109,7 @@ export default class UserStats {
       {
         name: `Top genre`,
         values: [{
-          value: this.getTopGenre()
+          value: this.topGenre
         }]
       },
     ];

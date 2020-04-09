@@ -23,7 +23,7 @@ const filter = new Filter(cardsData);
 const sort = new Sort();
 const films = new Films(cardsData);
 const details = new Details(cardsData[0]);
-const userStats = new UserStats({userData, cardsData});
+const userStats = new UserStats(userData);
 const filmsTotal = new FilmsTotal(cardsData.length);
 
 const render = (container, template) => {
