@@ -1,4 +1,4 @@
-import { MAX_CARDS, MAX_CARDS_LOAD } from './const.js';
+import { TOTAL_FILMS } from './const.js';
 
 import Profile from './components/profile';
 import Filter from './components/filter';
@@ -11,7 +11,7 @@ import UserStats from './components/user-stats';
 import {getCardsData} from './mocks/cards';
 import {getUserData} from './mocks/user';
 
-const cardsData = getCardsData(MAX_CARDS);
+const cardsData = getCardsData(TOTAL_FILMS);
 const userData = getUserData(cardsData);
 
 const siteHeaderElem = document.querySelector(`.header`);

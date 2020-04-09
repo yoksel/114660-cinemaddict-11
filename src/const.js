@@ -108,8 +108,10 @@ const USER_STATUSES = [
   },
 ];
 
-const MAX_CARDS = 23;
-const MAX_CARDS_LOAD = 20;
+const TOTAL_FILMS = 27;
+const MAX_CARDS_TOP = 2;
+const MAX_CARDS_SHOW = 5;
+const MAX_CARDS_LOAD = 5;
 
 export {
   POSTERS,
@@ -121,6 +123,8 @@ export {
   AGE_RATINGS,
   COUNTRIES,
   USER_STATUSES,
-  MAX_CARDS,
-  MAX_CARDS_LOAD
+  TOTAL_FILMS,
+  MAX_CARDS_TOP,
+  MAX_CARDS_SHOW,
+  MAX_CARDS_LOAD,
 };

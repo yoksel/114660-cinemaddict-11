@@ -1,4 +1,6 @@
 import Card from './card';
+import {MAX_CARDS_SHOW, MAX_CARDS_LOAD} from '../const';
+import {createElement} from '../helpers/createElement';
 
 export default class FilmsList {
   constructor({type, title, quantity, films}) {
@@ -8,24 +10,61 @@ export default class FilmsList {
     this.films = films;
     this.className = `films-list`;
     this.isUpcoming = this.type === `upcoming`;
+    this.shownQuantity = 0;
+    this.elem = this.getSection();
+    this.filmsContainer = this.elem.querySelector(`.films-list__container`);
+    this.ShowMoreBtn = this.elem.querySelector(`.films-list__show-more`);
+    this.addCards = this.addCards.bind(this);
+
+    this.addCards();
+
+    this.addEvents();
+  }
+
+  addEvents() {
+    if (!this.ShowMoreBtn) {
+      return;
+    }
+
+    this.ShowMoreBtn.addEventListener(`click`, this.addCards);
+  }
+
+  getFilmsList() {
+    if (this.films.length <= MAX_CARDS_SHOW) {
+      return this.films;
+    }
+
+    const nextQuantity = this.shownQuantity + MAX_CARDS_LOAD;
+    const films = this.films.slice(this.shownQuantity, nextQuantity);
+
+    if (nextQuantity >= this.films.length) {
+      this.ShowMoreBtn.remove();
+    }
+
+    this.shownQuantity = nextQuantity;
+
+    return films;
   }
 
   getCards() {
-    let cardsMarkup = ``;
+    let cards = [];
+    const films = this.getFilmsList();
 
-    for (const film of this.films) {
+    for (const film of films) {
       const card = new Card(film);
-
-      cardsMarkup += card.getTmpl();
+      cards.push(card.getElement());
     }
 
-    return cardsMarkup;
+    return cards;
+  }
+
+  addCards() {
+    const cards = this.getCards();
+    this.filmsContainer.append(...cards);
   }
 
   getShowMoreBtn() {
-    // По-хорошему, тут должно проверяться
-    // количество выводимых карточек, а не тип
-    if (!this.isUpcoming) {
+    if (this.films.length <= MAX_CARDS_SHOW) {
       return ``;
     }
 
@@ -58,17 +97,23 @@ export default class FilmsList {
     );
   }
 
-  getTmpl() {
-    return (
-      `<section class="${this.getClassName()}">
+  getSection() {
+    if (this.films.length === 0) {
+      return ``;
+    }
+
+    return createElement(
+        `<section class="${this.getClassName()}">
         ${this.getTitle()}
 
-        <div class="films-list__container">
-          ${this.getCards()}
-        </div>
+        <div class="films-list__container"></div>
 
         ${this.getShowMoreBtn()}
       </section>`
     );
+  }
+
+  getElement() {
+    return this.elem;
   }
 }
