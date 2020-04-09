@@ -64,12 +64,11 @@ const NAMES = [
 ];
 
 const AGE_RATINGS = {
-  'G': 'General audiences',
-  'PG': 'Parental guidance',
-  'PG-13': 'Parents strongly cautioned',
-  'R': 'Restricted',
-  'NC-17': 'No One 17 & Under Admitted',
-  'NR': 'Not Rated',
+  '0+': 'General audiences',
+  '6+': 'Parental guidance',
+  '12+': 'Parents strongly cautioned',
+  '16+': 'Restricted',
+  '18+': 'No One 17 & Under Admitted',
 };
 
 const COUNTRIES = [
