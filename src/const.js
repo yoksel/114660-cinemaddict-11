@@ -91,6 +91,23 @@ const COUNTRIES = [
   'Nepal',
 ];
 
+const USER_STATUSES = [
+  {
+    min: 1,
+    max: 10,
+    name: 'Novice',
+  },
+  {
+    min: 11,
+    max: 20,
+    name: 'Fan',
+  },
+  {
+    min: 21,
+    name: 'Movie buff'
+  },
+];
+
 const MAX_CARDS = 23;
 const MAX_CARDS_LOAD = 20;
 
@@ -103,6 +120,7 @@ export {
   NAMES,
   AGE_RATINGS,
   COUNTRIES,
+  USER_STATUSES,
   MAX_CARDS,
   MAX_CARDS_LOAD
 };

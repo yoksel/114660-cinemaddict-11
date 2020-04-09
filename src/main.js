@@ -8,14 +8,16 @@ import Details from './components/details';
 import Statistics from './components/statistics';
 
 import {getCardsData} from './mocks/cards';
+import {getUserData} from './mocks/user';
 
 const cardsData = getCardsData(MAX_CARDS);
+const userData = getUserData(cardsData);
 
 const siteHeaderElem = document.querySelector(`.header`);
 const siteMainElem = document.querySelector(`.main`);
 const siteFooterElem = document.querySelector(`.footer`);
 
-const profile = new Profile();
+const profile = new Profile(userData);
 const filter = new Filter(cardsData);
 const sort = new Sort();
 const films = new Films(cardsData);
