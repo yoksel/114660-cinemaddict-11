@@ -20,7 +20,7 @@ const filter = new Filter(cardsData);
 const sort = new Sort();
 const films = new Films(cardsData);
 const details = new Details(cardsData[0]);
-const statistics = new Statistics();
+const statistics = new Statistics(cardsData.length);
 
 const render = (container, template) => {
   container.insertAdjacentHTML(`beforeend`, template);
