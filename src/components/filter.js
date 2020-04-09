@@ -1,4 +1,4 @@
-export default class Menu {
+export default class Filter {
   getTmpl() {
     return (
       `<nav class="main-navigation">
