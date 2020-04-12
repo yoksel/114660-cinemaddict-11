@@ -1,4 +1,4 @@
-import {getClass, getRuntime, getFilmControlsData, createElement} from '../helpers';
+import {getClass, getRuntime, getFilmControlsData, createElement, getPlurals} from '../helpers';
 
 export default class Card {
   constructor({
@@ -60,6 +60,11 @@ export default class Card {
     );
   }
 
+  getCommentsLink() {
+    const commentsText = getPlurals(this.commentsCount, [`comment`, `comments`]);
+    return `<a class="film-card__comments">${this.commentsCount} ${commentsText}</a>`;
+  }
+
   getElement() {
     const markup = `<article class="film-card">
       <h3 class="film-card__title">${this.title}</h3>
@@ -74,7 +79,7 @@ export default class Card {
       <img src="./images/posters/${this.poster}" alt="" class="film-card__poster">
 
       <p class="film-card__description">${this.shortDesc}</p>
-      <a class="film-card__comments">${this.commentsCount} comments</a>
+      ${this.getCommentsLink()}
 
       ${this.getCardForm()}
     </article>`;
