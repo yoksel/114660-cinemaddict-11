@@ -12,8 +12,8 @@ export default class FilmsList {
     this.isUpcoming = this.type === `upcoming`;
     this.shownQuantity = 0;
     this.ShowMoreBtn = this.getShowMoreBtn();
+    this.filmsContainer = createElement(`<div class="films-list__container"></div>`);
     this.elem = this.getSection();
-    this.filmsContainer = this.elem.querySelector(`.films-list__container`);
     this.addCards = this.addCards.bind(this);
 
     this.addCards();
@@ -103,11 +103,10 @@ export default class FilmsList {
 
     const markup = `<section class="${this.getClassName()}">
       ${this.getTitle()}
-
-      <div class="films-list__container"></div>
     </section>`;
 
     const section = createElement(markup);
+    section.append(this.filmsContainer);
     section.append(this.ShowMoreBtn);
 
     return section;
