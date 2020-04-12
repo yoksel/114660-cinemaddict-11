@@ -1,7 +1,9 @@
 import {createElement} from '../helpers';
 
 export default class UserStats {
-  constructor({status, avatar, watchedQuantity, watchedDuration, topGenre}) {
+  constructor({userData, currentFilter}) {
+    const {status, avatar, watchedQuantity, watchedDuration, topGenre} = userData;
+    this.currentFilter = currentFilter;
     this.status = status;
     this.avatar = avatar;
     this.watchedQuantity = watchedQuantity;
@@ -48,9 +50,8 @@ export default class UserStats {
       },
     ];
 
-    return itemsData.reduce((prev, item, index) => {
-      const {value, text} = item;
-      const checkedAttr = index === 0 ? `checked` : ``;
+    return itemsData.reduce((prev, {value, text}) => {
+      const checkedAttr = value === this.currentFilter ? `checked` : ``;
 
       return (
         `${prev} <input

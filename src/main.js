@@ -19,11 +19,11 @@ const siteMainElem = document.querySelector(`.main`);
 const filmsTotalElem = document.querySelector(`.footer__statistics`);
 
 const profile = new Profile(userData);
-const filter = new Filter(cardsData);
+const filter = new Filter({cardsData, currentFilter: `all`});
 const sort = new Sort();
 const films = new Films(cardsData);
 const details = new Details(cardsData[0]);
-const userStats = new UserStats(userData);
+const userStats = new UserStats({userData, currentFilter: `all-time`});
 const filmsTotal = new FilmsTotal(cardsData.length);
 
 const render = (target, elem) => {

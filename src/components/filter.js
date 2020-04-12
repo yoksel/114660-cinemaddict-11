@@ -1,8 +1,9 @@
 import {createElement} from '../helpers';
 
 export default class Filter {
-  constructor(data) {
-    this.data = data;
+  constructor({cardsData, currentFilter}) {
+    this.data = cardsData;
+    this.currentFilter = currentFilter || `all`;
 
     this.sections = [
       {
@@ -41,7 +42,7 @@ export default class Filter {
         </span>`;
       }
 
-      if (id === `all`) {
+      if (id === this.currentFilter) {
         className += ` ${className}--active`;
       }
 
