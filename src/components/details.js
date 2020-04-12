@@ -37,10 +37,6 @@ export default class Details {
     this.writers = writers;
     this.actors = actors;
 
-    this.isInWatchList = isInWatchList;
-    this.isWatched = isWatched;
-    this.isFavorite = isFavorite;
-
     this.controlsData = getFilmControlsData({
       isInWatchList,
       isWatched,
