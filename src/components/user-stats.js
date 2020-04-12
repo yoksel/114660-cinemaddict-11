@@ -3,7 +3,7 @@ import {createElement} from '../helpers';
 export default class UserStats {
   constructor({userData, currentFilter}) {
     const {status, avatar, watchedQuantity, watchedDuration, topGenre} = userData;
-    this.currentFilter = currentFilter;
+    this.currentFilter = currentFilter || `all-time`;
     this.status = status;
     this.avatar = avatar;
     this.watchedQuantity = watchedQuantity;
