@@ -11,9 +11,9 @@ export default class FilmsList {
     this.className = `films-list`;
     this.isUpcoming = this.type === `upcoming`;
     this.shownQuantity = 0;
+    this.ShowMoreBtn = this.getShowMoreBtn();
     this.elem = this.getSection();
     this.filmsContainer = this.elem.querySelector(`.films-list__container`);
-    this.ShowMoreBtn = this.elem.querySelector(`.films-list__show-more`);
     this.addCards = this.addCards.bind(this);
 
     this.addCards();
@@ -67,10 +67,9 @@ export default class FilmsList {
     if (this.films.length <= MAX_CARDS_SHOW) {
       return ``;
     }
+    const markup = `<button class="films-list__show-more">Show more</button>`;
 
-    return (
-      `<button class="films-list__show-more">Show more</button>`
-    );
+    return createElement(markup);
   }
 
   getClassName() {
@@ -106,11 +105,12 @@ export default class FilmsList {
       ${this.getTitle()}
 
       <div class="films-list__container"></div>
-
-      ${this.getShowMoreBtn()}
     </section>`;
 
-    return createElement(markup);
+    const section = createElement(markup);
+    section.append(this.ShowMoreBtn);
+
+    return section;
   }
 
   getElement() {
