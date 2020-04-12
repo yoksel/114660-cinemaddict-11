@@ -1,5 +1,5 @@
 import {getRelativeDate} from '../helpers';
-import {EMOJI} from '../const';
+import {EMOJI} from '../constants';
 
 export default class Comments {
   constructor(comments) {

@@ -1,4 +1,4 @@
-import { TOTAL_FILMS } from './const.js';
+import { TOTAL_FILMS } from './constants';
 
 import Profile from './components/profile';
 import Filter from './components/filter';

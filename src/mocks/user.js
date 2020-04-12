@@ -1,4 +1,4 @@
-import {USER_STATUSES} from '../const.js';
+import {USER_STATUSES} from '../constants';
 
 const getTotalDuration = (watched) => {
   const totalTimeMins = watched.reduce((prev, {runtime}) => {

@@ -1,5 +1,5 @@
 import {createElement, getRuntime, getFullDate, getFilmControlsData, getPlurals} from '../helpers';
-import {AGE_RATINGS} from '../const';
+import {AGE_RATINGS} from '../constants';
 import Comments from './comments';
 
 export default class Details {
