@@ -41,16 +41,8 @@ export const getUserData = (data) => {
   const watchedQuantity = watched.length;
   const watchedDuration = getTotalDuration(watched);
   const topGenre = getTopGenre(watched);
-  let status = ``;
-
-  for (let statusData of USER_STATUSES) {
-    const {min, name} = statusData;
-
-    if (watchedQuantity >= min) {
-      status = name;
-      break;
-    }
-  }
+  const statusData = USER_STATUSES.find(({min}) => watchedQuantity >= min);
+  const status = statusData ? statusData.name : ``;
 
   return {
     status,
