@@ -1,4 +1,4 @@
-import {EMOJI, AGE_RATINGS} from '../constants';
+import {EMOJIS, AGE_RATINGS} from '../constants';
 import {POSTERS, TITLES, SENTENCES, GENRES, NAMES, COUNTRIES} from './constants';
 
 const getRandomItem = (list) => {
@@ -54,7 +54,7 @@ const getRandomComments = () => {
     const author = getRandomItem(NAMES);
     const text = getRandomItem(SENTENCES);
     const date = getRandomDate();
-    const emoji = getRandomItem(EMOJI);
+    const emoji = getRandomItem(EMOJIS);
 
     list.push({
       author,

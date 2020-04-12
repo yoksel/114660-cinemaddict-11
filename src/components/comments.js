@@ -1,5 +1,5 @@
 import {getRelativeDate} from '../helpers';
-import {EMOJI} from '../constants';
+import {EMOJIS} from '../constants';
 
 export default class Comments {
   constructor(comments) {
@@ -64,7 +64,7 @@ export default class Comments {
   }
 
   getEmojiControls() {
-    const emojiControls = EMOJI.reduce((prev, item) => {
+    const emojiControls = EMOJIS.reduce((prev, item) => {
       return prev + this.getEmojiControl(item);
     }, ``);
 

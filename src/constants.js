@@ -1,4 +1,4 @@
-const EMOJI = [
+const EMOJIS = [
   `smile`,
   `sleeping`,
   `puke`,
@@ -33,7 +33,7 @@ const MAX_CARDS_SHOW = 5;
 const MAX_CARDS_LOAD = 5;
 
 export {
-  EMOJI,
+  EMOJIS,
   USER_STATUSES,
   AGE_RATINGS,
   MAX_CARDS_TOP,
