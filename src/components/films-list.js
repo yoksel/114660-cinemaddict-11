@@ -47,7 +47,7 @@ export default class FilmsList {
   }
 
   getCards() {
-    let cards = [];
+    const cards = [];
     const films = this.getFilmsList();
 
     for (const film of films) {

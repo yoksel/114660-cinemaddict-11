@@ -41,7 +41,7 @@ export default class Card {
       mods.push(`active`);
     }
 
-    let className = getClass({
+    const className = getClass({
       base: `film-card__controls-item`,
       mods
     });
@@ -50,7 +50,7 @@ export default class Card {
   }
 
   getCardForm() {
-    let controlsMarkup = this.controlsData
+    const controlsMarkup = this.controlsData
       .reduce((prev, control) => prev + this.getCardControl(control), ``);
 
     return (
