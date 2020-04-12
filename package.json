@@ -5,8 +5,8 @@
   "description": "Личный проект «Киноман» от HTML Academy",
   "scripts": {
     "build": "webpack",
-    "eslint": "eslint src/**/*.js",
-    "eslint:fix": "eslint src/**/*.js --fix",
+    "eslint": "eslint src",
+    "eslint:fix": "eslint src --fix",
     "start": "webpack-dev-server --open",
     "test": "npm run eslint"
   },
