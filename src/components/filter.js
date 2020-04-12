@@ -45,9 +45,11 @@ export default class Filter {
         className += ` ${className}--active`;
       }
 
-      return `${prev} <a href="#${id}" class="${className}">
-        ${name} ${counterMarkup}
-      </a>`;
+      return (
+        `${prev} <a href="#${id}" class="${className}">
+          ${name} ${counterMarkup}
+        </a>`
+      );
     }, ``);
   }
 

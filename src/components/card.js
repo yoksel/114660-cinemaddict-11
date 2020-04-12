@@ -43,7 +43,9 @@ export default class Card {
       mods
     });
 
-    return `<button class="${className}">${text}</button>`;
+    return (
+      `<button class="${className}">${text}</button>`
+    );
   }
 
   getCardForm() {
@@ -59,7 +61,9 @@ export default class Card {
 
   getCommentsLink() {
     const commentsText = getPlurals(this.commentsCount, [`comment`, `comments`]);
-    return `<a class="film-card__comments">${this.commentsCount} ${commentsText}</a>`;
+    return (
+      `<a class="film-card__comments">${this.commentsCount} ${commentsText}</a>`
+    );
   }
 
   getElement() {

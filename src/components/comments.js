@@ -39,14 +39,18 @@ export default class Comments {
 
     const commentsMarkup = this.comments
       .reduce((prev, item) => {
-        return prev + `<li class="film-details__comment">
-        ${this.getComment(item)}
-        </li>`;
+        return (
+          `${prev}<li class="film-details__comment">
+            ${this.getComment(item)}
+          </li>`
+        );
       }, ``);
 
-    return `<ul class="film-details__comments-list">
-      ${commentsMarkup}
-    </ul>`;
+    return (
+      `<ul class="film-details__comments-list">
+        ${commentsMarkup}
+      </ul>`
+    );
   }
 
   getEmojiControl(name) {
@@ -64,9 +68,11 @@ export default class Comments {
       return prev + this.getEmojiControl(item);
     }, ``);
 
-    return `<div class="film-details__emoji-list">
-      ${emojiControls}
-    </div>`;
+    return (
+      `<div class="film-details__emoji-list">
+        ${emojiControls}
+      </div>`
+    );
   }
 
   getCommentForm() {

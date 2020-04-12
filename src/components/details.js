@@ -54,7 +54,9 @@ export default class Details {
 
   getGenresMarkup() {
     return this.genres.reduce((prev, item) => {
-      return `${prev} <span class="film-details__genre">${item}</span>`;
+      return (
+        `${prev} <span class="film-details__genre">${item}</span>`
+      );
     },
     ``);
   }
@@ -118,10 +120,12 @@ export default class Details {
 
     const rowsMarkup = dataList
       .reduce((prev, {name, value}) => {
-        return prev + `<tr class="film-details__row">
+        return (
+          `${prev}<tr class="film-details__row">
             <td class="film-details__term">${name}</td>
             <td class="film-details__cell">${value}</td>
-          </tr>`;
+          </tr>`
+        );
       }, ``);
 
     return (

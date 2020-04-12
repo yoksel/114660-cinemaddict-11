@@ -52,18 +52,20 @@ export default class UserStats {
       const {value, text} = item;
       const checkedAttr = index === 0 ? `checked` : ``;
 
-      return `${prev} <input
-        type="radio"
-        class="statistic__filters-input visually-hidden"
-        name="statistic-filter"
-        id="statistic-${value}"
-        value="${value}"
-        ${checkedAttr}
-      >
-      <label
-        for="statistic-${value}"
-        class="statistic__filters-label"
-      >${text}</label>`;
+      return (
+        `${prev} <input
+          type="radio"
+          class="statistic__filters-input visually-hidden"
+          name="statistic-filter"
+          id="statistic-${value}"
+          value="${value}"
+          ${checkedAttr}
+        >
+        <label
+          for="statistic-${value}"
+          class="statistic__filters-label"
+        >${text}</label>`
+      );
     }, ``);
   }
 
@@ -80,7 +82,9 @@ export default class UserStats {
   getStatValues(values) {
     return values.reduce((prev, {value, desc}) => {
       desc = desc ? `<span class="statistic__item-description">${desc}</span>` : ``;
-      return `${prev}${value}${desc}`;
+      return (
+        `${prev}${value}${desc}`
+      );
     }, ``);
   }
 
@@ -119,10 +123,12 @@ export default class UserStats {
     return itemsData.reduce((prev, item) => {
       const {name, values} = item;
 
-      return `${prev}<li class="statistic__text-item">
-        <h4 class="statistic__item-title">${name}</h4>
-        <p class="statistic__item-text">${this.getStatValues(values)}</p>
-      </li>`;
+      return (
+        `${prev}<li class="statistic__text-item">
+          <h4 class="statistic__item-title">${name}</h4>
+          <p class="statistic__item-text">${this.getStatValues(values)}</p>
+        </li>`
+      );
     }, ``);
   }
 
