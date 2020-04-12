@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 const getDate = (date) => {
-  if (!date) {
+  if (!date || !(date instanceof Date)) {
     return ``;
   }
 
@@ -9,7 +9,7 @@ const getDate = (date) => {
 };
 
 const getFullDate = (date) => {
-  if (!date) {
+  if (!date || !(date instanceof Date)) {
     return ``;
   }
 
@@ -17,7 +17,7 @@ const getFullDate = (date) => {
 };
 
 const getRelativeDate = (date) => {
-  if (!date) {
+  if (!date || !(date instanceof Date)) {
     return ``;
   }
 
