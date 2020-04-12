@@ -6,7 +6,9 @@ const getRandomItem = (list) => {
 };
 
 const getDesc = () => {
-  const quantity = Math.floor(Math.random() * SENTENCES.length);
+  const min = 1;
+  const max = SENTENCES.length - 1;
+  const quantity = Math.floor(Math.random() * max) + min;
   let desc = ``;
 
   for (let i = 0; i < quantity; i++) {
