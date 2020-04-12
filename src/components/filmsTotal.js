@@ -6,8 +6,8 @@ export default class FilmsTotal {
   }
 
   getElement() {
-    return createElement(
-        `<p>${this.counter} movies inside</p>`
-    );
+    const markup = `<p>${this.counter} movies inside</p>`;
+
+    return createElement(markup);
   }
 }

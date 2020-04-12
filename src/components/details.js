@@ -160,34 +160,34 @@ export default class Details {
   }
 
   getElement() {
-    return createElement(
-        `<section class="film-details" hidden>
-        <form class="film-details__inner" action="" method="get">
-          <div class="form-details__top-container">
-            <div class="film-details__close">
-              <button class="film-details__close-btn" type="button">close</button>
-            </div>
-
-            <div class="film-details__info-wrap">
-              ${this.getPoster()}
-
-              <div class="film-details__info">
-                ${this.getDetailsHead()}
-
-                ${this.getDetailsList()}
-
-                <p class="film-details__film-description">
-                  ${this.desc}
-                </p>
-              </div>
-            </div>
-
-            ${this.getDetailsControls()}
+    const markup = `<section class="film-details" hidden>
+      <form class="film-details__inner" action="" method="get">
+        <div class="form-details__top-container">
+          <div class="film-details__close">
+            <button class="film-details__close-btn" type="button">close</button>
           </div>
 
-          ${this.getComments()}
-        </form>
-      </section>`
-    );
+          <div class="film-details__info-wrap">
+            ${this.getPoster()}
+
+            <div class="film-details__info">
+              ${this.getDetailsHead()}
+
+              ${this.getDetailsList()}
+
+              <p class="film-details__film-description">
+                ${this.desc}
+              </p>
+            </div>
+          </div>
+
+          ${this.getDetailsControls()}
+        </div>
+
+        ${this.getComments()}
+      </form>
+    </section>`;
+
+    return createElement(markup);
   }
 }

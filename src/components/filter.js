@@ -52,15 +52,15 @@ export default class Filter {
   }
 
   getElement() {
-    return createElement(
-        `<nav class="main-navigation">
-        <div class="main-navigation__items">
-          ${this.getItems()}
-        </div>
+    const markup = `<nav class="main-navigation">
+      <div class="main-navigation__items">
+        ${this.getItems()}
+      </div>
 
-        <a href="#stats"
-          class="main-navigation__additional">Stats</a>
-      </nav>`
-    );
+      <a href="#stats"
+        class="main-navigation__additional">Stats</a>
+    </nav>`;
+
+    return createElement(markup);
   }
 }

@@ -61,24 +61,24 @@ export default class Card {
   }
 
   getElement() {
-    return createElement(
-        `<article class="film-card">
-        <h3 class="film-card__title">${this.title}</h3>
-        <p class="film-card__rating">${this.rating}</p>
+    const markup = `<article class="film-card">
+      <h3 class="film-card__title">${this.title}</h3>
+      <p class="film-card__rating">${this.rating}</p>
 
-        <p class="film-card__info">
-          <span class="film-card__year">${this.year}</span>
-          <span class="film-card__duration">${this.runtime}</span>
-          <span class="film-card__genre">${this.genre}</span>
-        </p>
+      <p class="film-card__info">
+        <span class="film-card__year">${this.year}</span>
+        <span class="film-card__duration">${this.runtime}</span>
+        <span class="film-card__genre">${this.genre}</span>
+      </p>
 
-        <img src="./images/posters/${this.poster}" alt="" class="film-card__poster">
+      <img src="./images/posters/${this.poster}" alt="" class="film-card__poster">
 
-        <p class="film-card__description">${this.shortDesc}</p>
-        <a class="film-card__comments">${this.commentsCount} comments</a>
+      <p class="film-card__description">${this.shortDesc}</p>
+      <a class="film-card__comments">${this.commentsCount} comments</a>
 
-        ${this.getCardForm()}
-      </article>`
-    );
+      ${this.getCardForm()}
+    </article>`;
+
+    return createElement(markup);
   }
 }

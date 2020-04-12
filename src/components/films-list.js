@@ -102,15 +102,15 @@ export default class FilmsList {
       return ``;
     }
 
-    return createElement(
-        `<section class="${this.getClassName()}">
-        ${this.getTitle()}
+    const markup = `<section class="${this.getClassName()}">
+      ${this.getTitle()}
 
-        <div class="films-list__container"></div>
+      <div class="films-list__container"></div>
 
-        ${this.getShowMoreBtn()}
-      </section>`
-    );
+      ${this.getShowMoreBtn()}
+    </section>`;
+
+    return createElement(markup);
   }
 
   getElement() {
