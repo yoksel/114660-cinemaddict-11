@@ -80,26 +80,15 @@ const getShortDesc = (desc) => {
   return `${desc}&hellip;`;
 };
 
-const getRandomNames = (min, max) => {
+const getRandomList = (list, min, max) => {
   const quantity = Math.floor(Math.random() * (max - min)) + min;
-  const list = new Set();
+  const newList = new Set();
 
-  while (list.size < quantity) {
-    list.add(getRandomItem(NAMES));
+  while (newList.size < quantity) {
+    newList.add(getRandomItem(list));
   }
 
-  return Array.from(list);
-};
-
-const getRandomGenres = () => {
-  const quantity = Math.floor(Math.random() * 3) + 1;
-  const list = new Set();
-
-  while (list.size < quantity) {
-    list.add(getRandomItem(GENRES));
-  }
-
-  return Array.from(list);
+  return Array.from(newList);
 };
 
 const getCardsData = (quantity) => {
@@ -111,7 +100,7 @@ const getCardsData = (quantity) => {
     const origTitle = getRandomItem(TITLES);
     const desc = getDesc();
     const shortDesc = getShortDesc(desc);
-    const genres = getRandomGenres();
+    const genres = getRandomList(GENRES, 1, 3);
     const releaseDate = getRandomDate(`years`);
     const runtime = getRandomDuration();
     const rating = getRandomRating();
@@ -122,8 +111,8 @@ const getCardsData = (quantity) => {
     const ageRating = getRandomItem(Object.keys(AGE_RATINGS));
     const country = getRandomItem(COUNTRIES);
     const director = getRandomItem(NAMES);
-    const writers = getRandomNames(2, 5);
-    const actors = getRandomNames(5, 10);
+    const writers = getRandomList(NAMES, 2, 5);
+    const actors = getRandomList(NAMES, 5, 10);
 
     data.push({
       poster,
