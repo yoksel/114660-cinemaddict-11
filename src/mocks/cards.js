@@ -1,4 +1,5 @@
-import {POSTERS, EMOJI, TITLES, SENTENCES, GENRES, NAMES, AGE_RATINGS, COUNTRIES} from '../constants';
+import {EMOJI, AGE_RATINGS} from '../constants';
+import {POSTERS, TITLES, SENTENCES, GENRES, NAMES, COUNTRIES} from './constants';
 
 const getRandomItem = (list) => {
   return list[Math.floor(Math.random() * list.length)];
