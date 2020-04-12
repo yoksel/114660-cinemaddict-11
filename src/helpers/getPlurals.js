@@ -1,5 +1,5 @@
 export const getPlurals = (count, variants) => {
-  if (count < 2) {
+  if (count === 1) {
     return variants[0];
   }
 
