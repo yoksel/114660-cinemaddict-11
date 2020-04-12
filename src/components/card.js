@@ -76,7 +76,10 @@ export default class Card {
         <span class="film-card__genre">${this.genre}</span>
       </p>
 
-      <img src="./images/posters/${this.poster}" alt="" class="film-card__poster">
+      <img
+        src="./images/posters/${this.poster}"
+        alt="The poster of the film '${this.title}'"
+        class="film-card__poster">
 
       <p class="film-card__description">${this.shortDesc}</p>
       ${this.getCommentsLink()}
