@@ -5,8 +5,12 @@ const getTotalDuration = (watched) => {
     return prev + runtime.hours * 60 + runtime.mins;
   }, 0);
 
-  const mins = totalTimeMins % 60;
+  let mins = totalTimeMins % 60;
   const hours = (totalTimeMins - mins) / 60;
+
+  if (mins < 10) {
+    mins = `0${mins}`;
+  }
 
   return {hours, mins};
 };
