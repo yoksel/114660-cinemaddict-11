@@ -2,28 +2,19 @@ const controlsData = {
   watchlist: {
     key: `isInWatchList`,
     getVariants(value) {
-      if (value) {
-        return `Already in watchlist`;
-      }
-      return `Add to watchlist`;
+      return value ? `Already in watchlist` : `Add to watchlist`;
     }
   },
   watched: {
     key: `isWatched`,
     getVariants(value) {
-      if (value) {
-        return `Already watched`;
-      }
-      return `Mark as watched`;
+      return value ? `Already watched` : `Mark as watched`;
     }
   },
   favorite: {
     key: `isFavorite`,
     getVariants(value) {
-      if (value) {
-        return `Already in favorites`;
-      }
-      return `Add to favorites`;
+      return value ? `Already in favorites` : `Add to favorites`;
     }
   },
 };
