@@ -143,7 +143,7 @@ export default class Details {
     );
   }
 
-  getDetailsControls() {
+  getDetailsControlsList() {
     const controlsMarkup = this.controlsData
       .reduce((prev, item) => {
         return prev + this.getDetailControl(item);
@@ -183,7 +183,7 @@ export default class Details {
             </div>
           </div>
 
-          ${this.getDetailsControls()}
+          ${this.getDetailsControlsList()}
         </div>
 
         ${this.getComments()}
