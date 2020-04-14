@@ -1,39 +1,75 @@
 import Card from './card';
+import {createElement} from '../helpers';
+import {MAX_CARDS_SHOW, MAX_CARDS_LOAD} from '../constants';
 
 export default class FilmsList {
-  constructor({type, title, quantity}) {
+  constructor({type, title, quantity, films}) {
     this.title = title;
     this.type = type;
     this.quantity = quantity;
+    this.films = films;
     this.className = `films-list`;
     this.isUpcoming = this.type === `upcoming`;
+    this.shownQuantity = 0;
+    this.ShowMoreBtn = this.getShowMoreBtn();
+    this.filmsContainer = createElement(`<div class="films-list__container"></div>`);
+    this.elem = this.getSection();
+    this.addCards = this.addCards.bind(this);
+
+    this.addCards();
+
+    this.addEvents();
+  }
+
+  addEvents() {
+    if (!this.ShowMoreBtn) {
+      return;
+    }
+
+    this.ShowMoreBtn.addEventListener(`click`, this.addCards);
+  }
+
+  getFilmsList() {
+    if (this.films.length <= MAX_CARDS_SHOW) {
+      return this.films;
+    }
+
+    const nextQuantity = this.shownQuantity + MAX_CARDS_LOAD;
+    const films = this.films.slice(this.shownQuantity, nextQuantity);
+
+    if (nextQuantity >= this.films.length) {
+      this.ShowMoreBtn.remove();
+    }
+
+    this.shownQuantity = nextQuantity;
+
+    return films;
   }
 
   getCards() {
-    let cardsMarkup = ``;
+    const cards = [];
+    const films = this.getFilmsList();
 
-    for (let i = 0; i < this.quantity; i++) {
-      // Предполагается, что у каждой карточки
-      // будет своё содержимое, и в конструктор
-      // будет подаваться объект с данными
-      const card = new Card();
-
-      cardsMarkup += card.getTmpl();
+    for (const film of films) {
+      const card = new Card(film);
+      cards.push(card.getElement());
     }
 
-    return cardsMarkup;
+    return cards;
+  }
+
+  addCards() {
+    const cards = this.getCards();
+    this.filmsContainer.append(...cards);
   }
 
   getShowMoreBtn() {
-    // По-хорошему, тут должно проверяться
-    // количество выводимых карточек, а не тип
-    if (!this.isUpcoming) {
+    if (this.films.length <= MAX_CARDS_SHOW) {
       return ``;
     }
+    const markup = `<button class="films-list__show-more">Show more</button>`;
 
-    return (
-      `<button class="films-list__show-more">Show more</button>`
-    );
+    return createElement(markup);
   }
 
   getClassName() {
@@ -60,17 +96,23 @@ export default class FilmsList {
     );
   }
 
-  getTmpl() {
-    return (
-      `<section class="${this.getClassName()}">
-        ${this.getTitle()}
+  getSection() {
+    if (this.films.length === 0) {
+      return ``;
+    }
 
-        <div class="films-list__container">
-          ${this.getCards()}
-        </div>
+    const markup = `<section class="${this.getClassName()}">
+      ${this.getTitle()}
+    </section>`;
 
-        ${this.getShowMoreBtn()}
-      </section>`
-    );
+    const section = createElement(markup);
+    section.append(this.filmsContainer);
+    section.append(this.ShowMoreBtn);
+
+    return section;
+  }
+
+  getElement() {
+    return this.elem;
   }
 }

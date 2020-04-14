@@ -427,12 +427,12 @@ button {
   opacity: 0.7;
 }
 
-.film-card__controls-item--add-to-watchlist {
+.film-card__controls-item--watchlist {
   background-image: url('../images/icons/icon-watchlist.svg');
   background-size: 17px 15px;
 }
 
-.film-card__controls-item--mark-as-watched {
+.film-card__controls-item--watched {
   background-image: url('../images/icons/icon-watched.svg');
   background-size: 14px 10px;
 }
@@ -442,11 +442,11 @@ button {
   background-size: 18px 18px;
 }
 
-.film-card__controls-item--active.film-card__controls-item--add-to-watchlist {
+.film-card__controls-item--active.film-card__controls-item--watchlist {
   background-image: url('../images/icons/icon-watchlist-active.svg')
 }
 
-.film-card__controls-item--active.film-card__controls-item--mark-as-watched {
+.film-card__controls-item--active.film-card__controls-item--watched {
   background-image: url('../images/icons/icon-watched-active.svg')
 }
 
