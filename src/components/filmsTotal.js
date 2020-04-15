@@ -2,19 +2,19 @@ import {createElement, getPlurals} from '../helpers';
 
 export default class FilmsTotal {
   constructor(counter) {
-    this.counter = counter;
-    this.element = createElement(this.getTmpl());
+    this._counter = counter;
+    this._element = createElement(this._getTmpl());
   }
 
-  getTmpl() {
-    const moviesText = getPlurals(this.counter, [`movie`, `movies`]);
+  _getTmpl() {
+    const moviesText = getPlurals(this._counter, [`movie`, `movies`]);
 
     return (
-      `<p>${this.counter} ${moviesText} inside</p>`
+      `<p>${this._counter} ${moviesText} inside</p>`
     );
   }
 
   getElement() {
-    return this.element;
+    return this._element;
   }
 }

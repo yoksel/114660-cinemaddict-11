@@ -2,22 +2,22 @@ import {createElement} from '../helpers';
 
 export default class Sort {
   constructor(currentSort) {
-    this.currentSort = currentSort || `default`;
+    this._currentSort = currentSort || `default`;
 
-    this.sections = [
+    this._sections = [
       `default`,
       `date`,
       `rating`
     ];
 
-    this.element = createElement(this.getTmpl());
+    this._element = createElement(this._getTmpl());
   }
 
-  getItems() {
-    return this.sections.reduce((prev, item) => {
+  _getItems() {
+    return this._sections.reduce((prev, item) => {
       let className = `sort__button`;
 
-      if (item === this.currentSort) {
+      if (item === this._currentSort) {
         className += ` ${className}--active`;
       }
 
@@ -29,13 +29,13 @@ export default class Sort {
     }, ``);
   }
 
-  getTmpl() {
+  _getTmpl() {
     return (
-      `<ul class="sort">${this.getItems()}</ul>`
+      `<ul class="sort">${this._getItems()}</ul>`
     );
   }
 
   getElement() {
-    return this.element;
+    return this._element;
   }
 }
