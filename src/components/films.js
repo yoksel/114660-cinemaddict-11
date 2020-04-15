@@ -5,7 +5,9 @@ import {MAX_CARDS_TOP} from '../constants';
 export default class Films {
   constructor(data) {
     this.data = data;
-    this.elem = createElement(`<section class="films"></section>`);
+    this.element = createElement(`<section class="films"></section>`);
+
+    this.addSections();
   }
 
   getTopRated() {
@@ -48,12 +50,14 @@ export default class Films {
     ];
   }
 
-  getElement() {
+  addSections() {
     for (const section of this.getSectionsData()) {
       const filmsSection = new FilmsList(section);
-      this.elem.append(filmsSection.getElement());
+      this.element.append(filmsSection.getElement());
     }
+  }
 
-    return this.elem;
+  getElement() {
+    return this.element;
   }
 }

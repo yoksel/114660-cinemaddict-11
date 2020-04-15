@@ -43,7 +43,7 @@ export default class Details {
       isFavorite,
     });
 
-    this.section = this.createElement();
+    this.element = this.createElement();
   }
 
   getListStr(list) {
@@ -57,6 +57,14 @@ export default class Details {
       );
     },
     ``);
+  }
+
+  getCloseBtn() {
+    return (
+      `<div class="film-details__close">
+        <button class="film-details__close-btn" type="button">close</button>
+      </div>`
+    );
   }
 
   getPoster() {
@@ -156,44 +164,60 @@ export default class Details {
     );
   }
 
-  getComments() {
-    const comments = new Comments(this.comments);
-    return comments.getTmpl();
+  getInfoContainer() {
+    return (
+      `<div class="film-details__info-wrap">
+        ${this.getPoster()}
+
+        <div class="film-details__info">
+          ${this.getDetailsHead()}
+
+          ${this.getDetailsList()}
+
+          <p class="film-details__film-description">
+            ${this.desc}
+          </p>
+        </div>
+      </div>`
+    );
   }
 
-  createElement() {
-    const markup = `<section class="film-details" hidden>
-      <form class="film-details__inner" action="" method="get">
-        <div class="form-details__top-container">
-          <div class="film-details__close">
-            <button class="film-details__close-btn" type="button">close</button>
-          </div>
+  getTopContainer() {
+    const markup = `<div class="form-details__top-container">
+      ${this.getCloseBtn()}
 
-          <div class="film-details__info-wrap">
-            ${this.getPoster()}
+      ${this.getInfoContainer()}
 
-            <div class="film-details__info">
-              ${this.getDetailsHead()}
-
-              ${this.getDetailsList()}
-
-              <p class="film-details__film-description">
-                ${this.desc}
-              </p>
-            </div>
-          </div>
-
-          ${this.getDetailsControlsList()}
-        </div>
-
-        ${this.getComments()}
-      </form>
-    </section>`;
+      ${this.getDetailsControlsList()}
+    </div>`;
 
     return createElement(markup);
   }
 
+  getComments() {
+    const comments = new Comments(this.comments);
+    return comments.getElement();
+  }
+
+  getTmpl() {
+    return (
+      `<section class="film-details" hidden>
+        <form class="film-details__inner" action="" method="get"></form>
+      </section>`
+    );
+  }
+
+  createElement() {
+    const element = createElement(this.getTmpl());
+    const form = element.querySelector(`.film-details__inner`);
+
+    form.append(this.getTopContainer());
+    form.append(this.getComments());
+
+    return element;
+  }
+
   getElement() {
-    return this.section;
+    return this.element;
   }
 }

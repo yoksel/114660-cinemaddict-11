@@ -9,6 +9,8 @@ export default class Sort {
       `date`,
       `rating`
     ];
+
+    this.element = createElement(this.getTmpl());
   }
 
   getItems() {
@@ -27,11 +29,13 @@ export default class Sort {
     }, ``);
   }
 
-  getElement() {
-    const markup = `<ul class="sort">
-      ${this.getItems()}
-    </ul>`;
+  getTmpl() {
+    return (
+      `<ul class="sort">${this.getItems()}</ul>`
+    );
+  }
 
-    return createElement(markup);
+  getElement() {
+    return this.element;
   }
 }

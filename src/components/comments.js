@@ -1,9 +1,10 @@
-import {getRelativeDate} from '../helpers';
+import {getRelativeDate, createElement} from '../helpers';
 import {EMOJIS} from '../constants';
 
 export default class Comments {
   constructor(comments) {
     this.comments = comments;
+    this.element = createElement(this.getTmpl());
   }
 
   getComment({author, text, emoji, date}) {
@@ -106,5 +107,9 @@ export default class Comments {
         </section>
       </div>`
     );
+  }
+
+  getElement() {
+    return this.element;
   }
 }

@@ -29,6 +29,8 @@ export default class Card {
       isWatched,
       isFavorite,
     });
+
+    this.element = createElement(this.getTmpl());
   }
 
   getCardControl({id, text, isActive}) {
@@ -66,28 +68,32 @@ export default class Card {
     );
   }
 
+  getTmpl() {
+    return (
+      `<article class="film-card">
+        <h3 class="film-card__title">${this.title}</h3>
+        <p class="film-card__rating">${this.rating}</p>
+
+        <p class="film-card__info">
+          <span class="film-card__year">${this.year}</span>
+          <span class="film-card__duration">${this.runtime}</span>
+          <span class="film-card__genre">${this.genre}</span>
+        </p>
+
+        <img
+          src="./images/posters/${this.poster}"
+          alt="The poster of the film '${this.title}'"
+          class="film-card__poster">
+
+        <p class="film-card__description">${this.shortDesc}</p>
+        ${this.getCommentsLink()}
+
+        ${this.getCardForm()}
+      </article>`
+    );
+  }
+
   getElement() {
-    const markup = `<article class="film-card">
-      <h3 class="film-card__title">${this.title}</h3>
-      <p class="film-card__rating">${this.rating}</p>
-
-      <p class="film-card__info">
-        <span class="film-card__year">${this.year}</span>
-        <span class="film-card__duration">${this.runtime}</span>
-        <span class="film-card__genre">${this.genre}</span>
-      </p>
-
-      <img
-        src="./images/posters/${this.poster}"
-        alt="The poster of the film '${this.title}'"
-        class="film-card__poster">
-
-      <p class="film-card__description">${this.shortDesc}</p>
-      ${this.getCommentsLink()}
-
-      ${this.getCardForm()}
-    </article>`;
-
-    return createElement(markup);
+    return this.element;
   }
 }
