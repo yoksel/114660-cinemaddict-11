@@ -156,4 +156,8 @@ export default class UserStats {
   getElement() {
     return this._element;
   }
+
+  removeElement() {
+    this._element = null;
+  }
 }

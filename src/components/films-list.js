@@ -117,4 +117,8 @@ export default class FilmsList {
   getElement() {
     return this._element;
   }
+
+  removeElement() {
+    this._element = null;
+  }
 }

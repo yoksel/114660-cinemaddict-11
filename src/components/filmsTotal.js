@@ -17,4 +17,8 @@ export default class FilmsTotal {
   getElement() {
     return this._element;
   }
+
+  removeElement() {
+    this._element = null;
+  }
 }

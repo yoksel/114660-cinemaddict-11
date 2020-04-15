@@ -112,4 +112,8 @@ export default class Comments {
   getElement() {
     return this._element;
   }
+
+  removeElement() {
+    this._element = null;
+  }
 }

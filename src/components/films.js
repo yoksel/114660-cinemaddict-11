@@ -60,4 +60,8 @@ export default class Films {
   getElement() {
     return this._element;
   }
+
+  removeElement() {
+    this._element = null;
+  }
 }
