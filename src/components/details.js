@@ -20,7 +20,8 @@ export default class Details {
     actors,
     isInWatchList,
     isWatched,
-    isFavorite
+    isFavorite,
+    hideDetails
   }) {
     this._poster = poster;
     this._title = title;
@@ -36,6 +37,7 @@ export default class Details {
     this._director = director;
     this._writers = writers;
     this._actors = actors;
+    this._hideDetails = hideDetails;
 
     this._controlsData = getFilmControlsData({
       isInWatchList,
@@ -44,6 +46,13 @@ export default class Details {
     });
 
     this._element = this._createElement();
+
+    this._addEvents();
+  }
+
+  _addEvents() {
+    const closeBtn = this._element.querySelector(`.film-details__close-btn`);
+    closeBtn.addEventListener(`click`, this._hideDetails);
   }
 
   _getListStr(list) {
@@ -208,7 +217,7 @@ export default class Details {
 
   _getTmpl() {
     return (
-      `<section class="film-details" hidden>
+      `<section class="film-details">
         <form class="film-details__inner" action="" method="get"></form>
       </section>`
     );

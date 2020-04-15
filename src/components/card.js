@@ -1,19 +1,21 @@
 import {getClass, getRuntime, getFilmControlsData, createElement, getPlurals} from '../helpers';
+import Details from './details';
 
 export default class Card {
-  constructor({
-    poster,
-    title,
-    shortDesc,
-    genres,
-    releaseDate,
-    runtime,
-    rating,
-    comments,
-    isInWatchList,
-    isWatched,
-    isFavorite
-  }) {
+  constructor(data) {
+    const {
+      poster,
+      title,
+      shortDesc,
+      genres,
+      releaseDate,
+      runtime,
+      rating,
+      comments,
+      isInWatchList,
+      isWatched,
+      isFavorite
+    } = data;
 
     this._poster = poster;
     this._title = title;
@@ -31,6 +33,34 @@ export default class Card {
     });
 
     this._element = createElement(this._getTmpl());
+
+    this._showDetails = this._showDetails.bind(this);
+    this._hideDetails = this._hideDetails.bind(this);
+
+    data.hideDetails = this._hideDetails;
+    const details = new Details(data);
+    this._detailsElement = details.getElement();
+
+    this._addEvents();
+  }
+
+  _addEvents() {
+    const poster = this._element.querySelector(`.film-card__poster`);
+    const title = this._element.querySelector(`.film-card__title`);
+    const comments = this._element.querySelector(`.film-card__comments`);
+    const elementsList = [poster, title, comments];
+
+    for (let element of elementsList) {
+      element.addEventListener(`click`, this._showDetails);
+    }
+  }
+
+  _showDetails() {
+    document.body.append(this._detailsElement);
+  }
+
+  _hideDetails() {
+    this._detailsElement.remove();
   }
 
   _getCardControl({id, text, isActive}) {
