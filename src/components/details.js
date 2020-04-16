@@ -21,7 +21,6 @@ export default class Details {
     isInWatchList,
     isWatched,
     isFavorite,
-    hideDetails
   }) {
     this._poster = poster;
     this._title = title;
@@ -37,7 +36,8 @@ export default class Details {
     this._director = director;
     this._writers = writers;
     this._actors = actors;
-    this._hideDetails = hideDetails;
+
+    this._hideDetails = this._hideDetails.bind(this);
 
     this._controlsData = getFilmControlsData({
       isInWatchList,
@@ -52,7 +52,12 @@ export default class Details {
 
   _addEvents() {
     const closeBtn = this._element.querySelector(`.film-details__close-btn`);
+
     closeBtn.addEventListener(`click`, this._hideDetails);
+  }
+
+  _hideDetails() {
+    this._element.remove();
   }
 
   _getListStr(list) {
