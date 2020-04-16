@@ -1,4 +1,4 @@
-import {createElement, getRuntime, getFullDate, getFilmControlsData, getPlurals} from '../helpers';
+import {createElement, getRuntime, getFullDate, getFilmControlsData, getPlurals, getListAsStr} from '../helpers';
 import {AGE_RATINGS} from '../constants';
 import Comments from './comments';
 
@@ -60,10 +60,6 @@ export default class Details {
     this._element.remove();
   }
 
-  _getListStr(list) {
-    return list.join(`, `);
-  }
-
   _getGenresMarkup() {
     return this._genres.reduce((prev, item) => {
       return (
@@ -113,11 +109,11 @@ export default class Details {
       },
       {
         name: getPlurals(this._writers.length, [`Writer`, `Writers`]),
-        value: this._getListStr(this._writers)
+        value: getListAsStr(this._writers)
       },
       {
         name: getPlurals(this._actors.length, [`Actor`, `Actors`]),
-        value: this._getListStr(this._actors)
+        value: getListAsStr(this._actors)
       },
       {
         name: `Release`,
