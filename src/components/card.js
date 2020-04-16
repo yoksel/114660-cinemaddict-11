@@ -33,13 +33,9 @@ export default class Card {
       isFavorite,
     });
 
-    this._element = createElement(this._getTmpl());
-
     this._detailsElement = this._getDetailsElement();
 
     this._showDetails = this._showDetails.bind(this);
-
-    this._addEvents();
   }
 
   _addEvents() {
@@ -124,6 +120,11 @@ export default class Card {
   }
 
   getElement() {
+    if (!this._element) {
+      this._element = createElement(this._getTmpl());
+      this._addEvents();
+    }
+
     return this._element;
   }
 

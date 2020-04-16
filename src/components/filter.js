@@ -26,8 +26,6 @@ export default class Filter {
         name: `Favorites`
       },
     ];
-
-    this._element = createElement(this._getTmpl());
   }
 
   _getItems() {
@@ -70,6 +68,10 @@ export default class Filter {
   }
 
   getElement() {
+    if (!this._element) {
+      this._element = createElement(this._getTmpl());
+    }
+
     return this._element;
   }
 

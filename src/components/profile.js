@@ -4,8 +4,6 @@ export default class Profile {
   constructor({status, avatar}) {
     this._status = status;
     this._avatar = avatar;
-
-    this._element = createElement(this._getTmpl());
   }
 
   _getTmpl() {
@@ -23,6 +21,10 @@ export default class Profile {
   }
 
   getElement() {
+    if (!this._element) {
+      this._element = createElement(this._getTmpl());
+    }
+
     return this._element;
   }
 

@@ -44,10 +44,6 @@ export default class Details {
       isWatched,
       isFavorite,
     });
-
-    this._element = this._createElement();
-
-    this._addEvents();
   }
 
   _addEvents() {
@@ -235,6 +231,11 @@ export default class Details {
   }
 
   getElement() {
+    if (!this._element) {
+      this._element = this._createElement();
+      this._addEvents();
+    }
+
     return this._element;
   }
 

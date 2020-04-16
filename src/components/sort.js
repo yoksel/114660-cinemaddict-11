@@ -9,8 +9,6 @@ export default class Sort {
       `date`,
       `rating`
     ];
-
-    this._element = createElement(this._getTmpl());
   }
 
   _getItems() {
@@ -36,6 +34,10 @@ export default class Sort {
   }
 
   getElement() {
+    if (!this._element) {
+      this._element = createElement(this._getTmpl());
+    }
+
     return this._element;
   }
 

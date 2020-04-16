@@ -11,12 +11,7 @@ export default class FilmsList {
     this._shownQuantity = 0;
     this._ShowMoreBtn = this._getShowMoreBtn();
     this._filmsContainer = createElement(`<div class="films-list__container"></div>`);
-    this._element = this._createElement();
-    this._addCards = this._addCards.bind(this);
-
-    this._addCards();
-
-    this._addEvents();
+    this._showMoreClick = this._showMoreClick.bind(this);
   }
 
   _addEvents() {
@@ -24,7 +19,11 @@ export default class FilmsList {
       return;
     }
 
-    this._ShowMoreBtn.addEventListener(`click`, this._addCards);
+    this._ShowMoreBtn.addEventListener(`click`, this._showMoreClick);
+  }
+
+  _showMoreClick() {
+    this._addCards();
   }
 
   _getFilmsList() {
@@ -111,10 +110,18 @@ export default class FilmsList {
     element.append(this._filmsContainer);
     element.append(this._ShowMoreBtn);
 
+    this._addCards();
+
+    this._addEvents();
+
     return element;
   }
 
   getElement() {
+    if (!this._element) {
+      this._element = this._createElement();
+    }
+
     return this._element;
   }
 
