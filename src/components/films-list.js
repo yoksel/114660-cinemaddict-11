@@ -3,52 +3,49 @@ import {createElement} from '../helpers';
 import {MAX_CARDS_SHOW, MAX_CARDS_LOAD} from '../constants';
 
 export default class FilmsList {
-  constructor({type, title, quantity, films}) {
-    this.title = title;
-    this.type = type;
-    this.quantity = quantity;
-    this.films = films;
-    this.className = `films-list`;
-    this.isUpcoming = this.type === `upcoming`;
-    this.shownQuantity = 0;
-    this.ShowMoreBtn = this.getShowMoreBtn();
-    this.filmsContainer = createElement(`<div class="films-list__container"></div>`);
-    this.elem = this.getSection();
-    this.addCards = this.addCards.bind(this);
-
-    this.addCards();
-
-    this.addEvents();
+  constructor({type, title, films}) {
+    this._title = title;
+    this._type = type;
+    this._films = films;
+    this._isUpcoming = this._type === `upcoming`;
+    this._shownQuantity = 0;
+    this._ShowMoreBtn = this._getShowMoreBtn();
+    this._filmsContainer = createElement(`<div class="films-list__container"></div>`);
+    this._showMoreClick = this._showMoreClick.bind(this);
   }
 
-  addEvents() {
-    if (!this.ShowMoreBtn) {
+  _addEvents() {
+    if (!this._ShowMoreBtn) {
       return;
     }
 
-    this.ShowMoreBtn.addEventListener(`click`, this.addCards);
+    this._ShowMoreBtn.addEventListener(`click`, this._showMoreClick);
   }
 
-  getFilmsList() {
-    if (this.films.length <= MAX_CARDS_SHOW) {
-      return this.films;
+  _showMoreClick() {
+    this._addCards();
+  }
+
+  _getFilmsList() {
+    if (this._films.length <= MAX_CARDS_SHOW) {
+      return this._films;
     }
 
-    const nextQuantity = this.shownQuantity + MAX_CARDS_LOAD;
-    const films = this.films.slice(this.shownQuantity, nextQuantity);
+    const nextQuantity = this._shownQuantity + MAX_CARDS_LOAD;
+    const films = this._films.slice(this._shownQuantity, nextQuantity);
 
-    if (nextQuantity >= this.films.length) {
-      this.ShowMoreBtn.remove();
+    if (nextQuantity >= this._films.length) {
+      this._ShowMoreBtn.remove();
     }
 
-    this.shownQuantity = nextQuantity;
+    this._shownQuantity = nextQuantity;
 
     return films;
   }
 
-  getCards() {
+  _getCards() {
     const cards = [];
-    const films = this.getFilmsList();
+    const films = this._getFilmsList();
 
     for (const film of films) {
       const card = new Card(film);
@@ -58,13 +55,13 @@ export default class FilmsList {
     return cards;
   }
 
-  addCards() {
-    const cards = this.getCards();
-    this.filmsContainer.append(...cards);
+  _addCards() {
+    const cards = this._getCards();
+    this._filmsContainer.append(...cards);
   }
 
-  getShowMoreBtn() {
-    if (this.films.length <= MAX_CARDS_SHOW) {
+  _getShowMoreBtn() {
+    if (this._films.length <= MAX_CARDS_SHOW) {
       return ``;
     }
     const markup = `<button class="films-list__show-more">Show more</button>`;
@@ -72,47 +69,63 @@ export default class FilmsList {
     return createElement(markup);
   }
 
-  getClassName() {
-    let className = this.className;
+  _getClassName() {
+    let className = `films-list`;
 
-    if (!this.isUpcoming) {
-      className += ` ${this.className}--${this.type}`;
+    if (!this._isUpcoming) {
+      className += ` ${className}--${this._type}`;
     }
 
     return className;
   }
 
-  getTitle() {
+  _getTitle() {
     let className = `films-list__title`;
 
-    if (this.isUpcoming) {
+    if (this._isUpcoming) {
       className += ` visually-hidden`;
     }
 
     return (
       `<h2 class="${className}">
-        ${this.title}
+        ${this._title}
       </h2>`
     );
   }
 
-  getSection() {
-    if (this.films.length === 0) {
+  _getTmpl() {
+    return (
+      `<section class="${this._getClassName()}">
+        ${this._getTitle()}
+      </section>`
+    );
+  }
+
+  _createElement() {
+    if (this._films.length === 0) {
       return ``;
     }
 
-    const markup = `<section class="${this.getClassName()}">
-      ${this.getTitle()}
-    </section>`;
+    const element = createElement(this._getTmpl());
+    element.append(this._filmsContainer);
+    element.append(this._ShowMoreBtn);
 
-    const section = createElement(markup);
-    section.append(this.filmsContainer);
-    section.append(this.ShowMoreBtn);
+    this._addCards();
 
-    return section;
+    this._addEvents();
+
+    return element;
   }
 
   getElement() {
-    return this.elem;
+    if (!this._element) {
+      this._element = this._createElement();
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
   }
 }
