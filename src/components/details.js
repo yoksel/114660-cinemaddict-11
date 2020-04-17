@@ -1,6 +1,6 @@
 import AbstractComponent from './abstract-component';
 import Comments from './comments';
-import {createElement, renderElement, getRuntime, getFullDate, getFilmControlsData, getPlurals, getListAsStr} from '../helpers';
+import {createElement, renderElement, removeElement, getRuntime, getFullDate, getFilmControlsData, getPlurals, getListAsStr} from '../helpers';
 import {AGE_RATINGS} from '../constants';
 
 export default class Details extends AbstractComponent {
@@ -50,7 +50,7 @@ export default class Details extends AbstractComponent {
   }
 
   _hideDetails() {
-    this._element.remove();
+    removeElement(this);
   }
 
   _getGenresMarkup() {
