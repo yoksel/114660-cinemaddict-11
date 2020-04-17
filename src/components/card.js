@@ -1,6 +1,7 @@
 import AbstractComponent from './abstract-component';
+import CardControls from './card-controls';
 import Details from './details';
-import {getClass, getRuntime, getFilmControlsData, createElement, renderElement, getPlurals} from '../helpers';
+import {getRuntime, createElement, renderElement, getPlurals} from '../helpers';
 
 export default class Card extends AbstractComponent {
   constructor(data) {
@@ -13,9 +14,6 @@ export default class Card extends AbstractComponent {
       runtime,
       rating,
       comments,
-      isInWatchList,
-      isWatched,
-      isFavorite
     } = data;
     super();
 
@@ -29,12 +27,7 @@ export default class Card extends AbstractComponent {
     this._rating = rating;
     this._commentsCount = comments.length;
 
-    this._controlsData = getFilmControlsData({
-      isInWatchList,
-      isWatched,
-      isFavorite,
-    });
-
+    this._cardControls = new CardControls(data);
     this._details = new Details(this._data);
 
     this._showDetails = this._showDetails.bind(this);
@@ -53,34 +46,6 @@ export default class Card extends AbstractComponent {
 
   _showDetails() {
     renderElement(document.body, this._details);
-  }
-
-  _getCardControl({id, text, isActive}) {
-    const mods = [id];
-
-    if (isActive) {
-      mods.push(`active`);
-    }
-
-    const className = getClass({
-      base: `film-card__controls-item`,
-      mods
-    });
-
-    return (
-      `<button class="${className}">${text}</button>`
-    );
-  }
-
-  _getCardForm() {
-    const controlsMarkup = this._controlsData
-      .reduce((prev, control) => prev + this._getCardControl(control), ``);
-
-    return (
-      `<form class="film-card__controls">
-        ${controlsMarkup}
-      </form>`
-    );
   }
 
   _getCommentsLink() {
@@ -110,14 +75,13 @@ export default class Card extends AbstractComponent {
 
         <p class="film-card__description">${this._shortDesc}</p>
         ${this._getCommentsLink()}
-
-        ${this._getCardForm()}
       </article>`
     );
   }
 
   _createElement() {
     const element = createElement(this._getTmpl());
+    renderElement(element, this._cardControls);
     this._addEvents(element);
 
     return element;
