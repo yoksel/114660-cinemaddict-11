@@ -1,6 +1,6 @@
 import AbstractComponent from './abstract-component';
 import Comments from './comments';
-import {createElement, getRuntime, getFullDate, getFilmControlsData, getPlurals, getListAsStr} from '../helpers';
+import {createElement, renderElement, getRuntime, getFullDate, getFilmControlsData, getPlurals, getListAsStr} from '../helpers';
 import {AGE_RATINGS} from '../constants';
 
 export default class Details extends AbstractComponent {
@@ -207,11 +207,6 @@ export default class Details extends AbstractComponent {
     return element;
   }
 
-  _getComments() {
-    const comments = new Comments(this._comments);
-    return comments.getElement();
-  }
-
   _getTmpl() {
     return (
       `<section class="film-details">
@@ -225,7 +220,7 @@ export default class Details extends AbstractComponent {
     const form = element.querySelector(`.film-details__inner`);
 
     form.append(this._getTopContainer());
-    form.append(this._getComments());
+    renderElement(form, new Comments(this._comments));
 
     return element;
   }

@@ -1,5 +1,3 @@
-import {TOTAL_FILMS} from './mocks/constants';
-
 import Profile from './components/profile';
 import Filter from './components/filter';
 import Sort from './components/sort';
@@ -7,6 +5,9 @@ import Films from './components/films';
 import FilmsTotal from './components/films-total';
 import UserStats from './components/user-stats';
 
+import {renderElement} from './helpers';
+
+import {TOTAL_FILMS} from './mocks/constants';
 import {getCardsData} from './mocks/cards';
 import {getUserData} from './mocks/user';
 
@@ -24,15 +25,11 @@ const films = new Films(cardsData);
 const userStats = new UserStats({userData, currentFilter: `all-time`});
 const filmsTotal = new FilmsTotal(cardsData.length);
 
-const render = (target, elem) => {
-  target.append(elem);
-};
+renderElement(siteHeaderElem, profile);
 
-render(siteHeaderElem, profile.getElement());
+renderElement(siteMainElem, filter);
+renderElement(siteMainElem, sort);
+renderElement(siteMainElem, films);
+renderElement(siteMainElem, userStats);
 
-render(siteMainElem, filter.getElement());
-render(siteMainElem, sort.getElement());
-render(siteMainElem, films.getElement());
-render(siteMainElem, userStats.getElement());
-
-render(filmsTotalElem, filmsTotal.getElement());
+renderElement(filmsTotalElem, filmsTotal);

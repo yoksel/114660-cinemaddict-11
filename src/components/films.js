@@ -1,6 +1,6 @@
 import AbstractComponent from './abstract-component';
 import FilmsList from './films-list';
-import {createElement} from '../helpers';
+import {createElement, renderElement} from '../helpers';
 import {MAX_CARDS_TOP} from '../constants';
 
 export default class Films extends AbstractComponent {
@@ -54,8 +54,7 @@ export default class Films extends AbstractComponent {
     const element = createElement(this._getTmpl());
 
     for (const section of this._getSectionsData()) {
-      const filmsSection = new FilmsList(section);
-      element.append(filmsSection.getElement());
+      renderElement(element, new FilmsList(section));
     }
 
     return element;

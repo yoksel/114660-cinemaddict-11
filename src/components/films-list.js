@@ -1,6 +1,6 @@
 import AbstractComponent from './abstract-component';
 import Card from './card';
-import {createElement} from '../helpers';
+import {createElement, renderElement} from '../helpers';
 import {MAX_CARDS_SHOW, MAX_CARDS_LOAD} from '../constants';
 
 export default class FilmsLis extends AbstractComponent {
@@ -46,21 +46,12 @@ export default class FilmsLis extends AbstractComponent {
     return films;
   }
 
-  _getCards() {
-    const cards = [];
+  _addCards() {
     const films = this._getFilmsList();
 
     for (const film of films) {
-      const card = new Card(film);
-      cards.push(card.getElement());
+      renderElement(this._filmsContainer, new Card(film));
     }
-
-    return cards;
-  }
-
-  _addCards() {
-    const cards = this._getCards();
-    this._filmsContainer.append(...cards);
   }
 
   _getShowMoreBtn() {
