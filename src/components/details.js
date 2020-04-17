@@ -1,8 +1,9 @@
+import AbstractComponent from './abstract-component';
+import Comments from './comments';
 import {createElement, getRuntime, getFullDate, getFilmControlsData, getPlurals, getListAsStr} from '../helpers';
 import {AGE_RATINGS} from '../constants';
-import Comments from './comments';
 
-export default class Details {
+export default class Details extends AbstractComponent {
   constructor({
     poster,
     title,
@@ -22,6 +23,8 @@ export default class Details {
     isWatched,
     isFavorite,
   }) {
+    super();
+
     this._poster = poster;
     this._title = title;
     this._origTitle = origTitle;
@@ -46,12 +49,6 @@ export default class Details {
     });
   }
 
-  _addEvents() {
-    const closeBtn = this._element.querySelector(`.film-details__close-btn`);
-
-    closeBtn.addEventListener(`click`, this._hideDetails);
-  }
-
   _hideDetails() {
     this._element.remove();
   }
@@ -65,11 +62,15 @@ export default class Details {
   }
 
   _getCloseBtn() {
-    return (
-      `<div class="film-details__close">
-        <button class="film-details__close-btn" type="button">close</button>
-      </div>`
-    );
+    const markup = `<div class="film-details__close">
+      <button class="film-details__close-btn" type="button">close</button>
+    </div>`;
+
+    const element = createElement(markup);
+
+    element.addEventListener(`click`, this._hideDetails);
+
+    return element;
   }
 
   _getPoster() {
@@ -170,41 +171,40 @@ export default class Details {
         return prev + this._getDetailControl(item);
       }, ``);
 
-    return (
-      `<section class="film-details__controls">
-        ${controlsMarkup}
-      </section>`
-    );
+    const markup = `<section class="film-details__controls">
+      ${controlsMarkup}
+    </section>`;
+
+    return createElement(markup);
   }
 
   _getInfoContainer() {
-    return (
-      `<div class="film-details__info-wrap">
-        ${this._getPoster()}
+    const markup = `<div class="film-details__info-wrap">
+      ${this._getPoster()}
 
-        <div class="film-details__info">
-          ${this._getDetailsHead()}
+      <div class="film-details__info">
+        ${this._getDetailsHead()}
 
-          ${this._getDetailsList()}
+        ${this._getDetailsList()}
 
-          <p class="film-details__film-description">
-            ${this._desc}
-          </p>
-        </div>
-      </div>`
-    );
-  }
-
-  _getTopContainer() {
-    const markup = `<div class="form-details__top-container">
-      ${this._getCloseBtn()}
-
-      ${this._getInfoContainer()}
-
-      ${this._getDetailsControlsList()}
+        <p class="film-details__film-description">
+          ${this._desc}
+        </p>
+      </div>
     </div>`;
 
     return createElement(markup);
+  }
+
+  _getTopContainer() {
+    const markup = `<div class="form-details__top-container"></div>`;
+
+    const element = createElement(markup);
+    element.append(this._getCloseBtn());
+    element.append(this._getInfoContainer());
+    element.append(this._getDetailsControlsList());
+
+    return element;
   }
 
   _getComments() {
@@ -228,18 +228,5 @@ export default class Details {
     form.append(this._getComments());
 
     return element;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = this._createElement();
-      this._addEvents();
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

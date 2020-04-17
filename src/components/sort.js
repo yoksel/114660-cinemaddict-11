@@ -1,7 +1,9 @@
-import {createElement} from '../helpers';
+import AbstractComponent from './abstract-component';
 
-export default class Sort {
+export default class Sort extends AbstractComponent {
   constructor(currentSort) {
+    super();
+
     this._currentSort = currentSort || `default`;
 
     this._sections = [
@@ -31,17 +33,5 @@ export default class Sort {
     return (
       `<ul class="sort">${this._getItems()}</ul>`
     );
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this._getTmpl());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

@@ -1,7 +1,10 @@
-import {createElement, getPlurals} from '../helpers';
+import AbstractComponent from './abstract-component';
+import {getPlurals} from '../helpers';
 
-export default class FilmsTotal {
+export default class FilmsTotal extends AbstractComponent {
   constructor(counter) {
+    super();
+
     this._counter = counter;
   }
 
@@ -11,17 +14,5 @@ export default class FilmsTotal {
     return (
       `<p>${this._counter} ${moviesText} inside</p>`
     );
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this._getTmpl());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
