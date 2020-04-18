@@ -3,7 +3,7 @@ import FilmsList from './films-list';
 import {createElement, renderElement} from '../helpers';
 import {MAX_CARDS_TOP} from '../constants';
 
-export default class Films extends AbstractComponent {
+export default class FilmsBoard extends AbstractComponent {
   constructor(data) {
     super();
 
