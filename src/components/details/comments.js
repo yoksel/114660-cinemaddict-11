@@ -1,9 +1,9 @@
-import AbstractComponent from './abstract-component';
-import {getRelativeDate} from '../helpers';
-import {EMOJIS} from '../constants';
+import AbstractComponent from '../abstract-component';
+import {getRelativeDate} from '../../helpers';
+import {EMOJIS} from '../../constants';
 
 export default class Comments extends AbstractComponent {
-  constructor(comments) {
+  constructor({comments}) {
     super();
 
     this._comments = comments;

@@ -1,6 +1,6 @@
 import AbstractComponent from './abstract-component';
 import CardControls from './card-controls';
-import Details from './details';
+import Details from './details/index';
 import {getRuntime, createElement, renderElement, getPlurals} from '../helpers';
 
 export default class Card extends AbstractComponent {
