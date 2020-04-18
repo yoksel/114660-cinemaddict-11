@@ -1,8 +1,8 @@
-import AbstractComponent from './abstract-component';
+import AbstractComponent from '../abstract-component';
 
-import {getClass, getFilmControlsData} from '../helpers';
+import {getClass, getFilmControlsData} from '../../helpers';
 
-export default class CardControls extends AbstractComponent {
+export default class Controls extends AbstractComponent {
   constructor({isInWatchList, isWatched, isFavorite}) {
     super();
 

@@ -1,5 +1,5 @@
 import AbstractComponent from './abstract-component';
-import Card from './card';
+import Card from './card/index';
 import ShowMoreBtn from './show-more-btn';
 import {createElement, renderElement, removeElement} from '../helpers';
 import {MAX_CARDS_SHOW, MAX_CARDS_LOAD} from '../constants';

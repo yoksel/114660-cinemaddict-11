@@ -1,7 +1,7 @@
-import AbstractComponent from './abstract-component';
-import CardControls from './card-controls';
-import Details from './details/index';
-import {getRuntime, createElement, renderElement, getPlurals} from '../helpers';
+import AbstractComponent from '../abstract-component';
+import Details from '../details/index';
+import Controls from './controls';
+import {getRuntime, createElement, renderElement, getPlurals} from '../../helpers';
 
 export default class Card extends AbstractComponent {
   constructor(data) {
@@ -27,7 +27,7 @@ export default class Card extends AbstractComponent {
     this._rating = rating;
     this._commentsCount = comments.length;
 
-    this._cardControls = new CardControls(data);
+    this._controls = new Controls(data);
     this._details = new Details(this._data);
 
     this._showDetails = this._showDetails.bind(this);
@@ -81,7 +81,7 @@ export default class Card extends AbstractComponent {
 
   _createElement() {
     const element = createElement(this._getTmpl());
-    renderElement(element, this._cardControls);
+    renderElement(element, this._controls);
     this._addEvents(element);
 
     return element;
