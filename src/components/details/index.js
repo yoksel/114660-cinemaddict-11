@@ -4,7 +4,7 @@ import Poster from './poster';
 import Desc from './desc';
 import Head from './head';
 import Table from './table';
-import DetailsControls from './controls';
+import Controls from './controls';
 import Comments from './comments';
 import {createElement, renderElement, removeElement} from '../../helpers';
 
@@ -20,7 +20,7 @@ export default class Details extends AbstractComponent {
     this._head = new Head(data);
     this._table = new Table(data);
     this._comments = new Comments(data);
-    this._detailsControls = new DetailsControls(data);
+    this._controls = new Controls(data);
   }
 
   _hideDetails() {
@@ -48,7 +48,7 @@ export default class Details extends AbstractComponent {
     this._closeBtn.setClickHandler(this._hideDetails);
 
     renderElement(element, this._getInfoContainer());
-    renderElement(element, this._detailsControls);
+    renderElement(element, this._controls);
 
     return element;
   }
