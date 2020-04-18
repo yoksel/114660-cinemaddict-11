@@ -81,7 +81,7 @@ export default class FilmsLis extends AbstractComponent {
     }
 
     const element = createElement(this._getTmpl());
-    element.append(this._filmsContainer);
+    renderElement(element, this._filmsContainer);
 
     if (this._films.length > MAX_CARDS_SHOW) {
       renderElement(element, this._ShowMoreBtn);
