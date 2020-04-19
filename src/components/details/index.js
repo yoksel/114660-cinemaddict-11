@@ -12,7 +12,6 @@ export default class Details extends AbstractComponent {
   constructor(data) {
     super();
 
-
     this._closeBtn = new CloseBtn();
     this._poster = new Poster(data);
     this._desc = new Desc(data);
