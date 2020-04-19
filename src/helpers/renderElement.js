@@ -5,6 +5,12 @@ const handleComponent = (target, component) => {
     return;
   }
 
+  const element = component.getElement();
+
+  if(!element) {
+    return;
+  }
+
   target.append(component.getElement());
 };
 

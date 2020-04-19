@@ -78,7 +78,7 @@ export default class FilmsLis extends AbstractComponent {
 
   _createElement() {
     if (this._films.length === 0) {
-      return ``;
+      return null;
     }
 
     const element = createElement(this._getTmpl());
