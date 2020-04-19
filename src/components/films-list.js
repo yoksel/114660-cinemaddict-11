@@ -16,6 +16,7 @@ export default class FilmsLis extends AbstractComponent {
     this._ShowMoreBtn = new ShowMoreBtn();
     this._filmsContainer = createElement(`<div class="films-list__container"></div>`);
     this._addCards = this._addCards.bind(this);
+    this._ShowMoreBtn.setClickHandler(this._addCards);
   }
 
   _getFilmsList() {
@@ -85,8 +86,6 @@ export default class FilmsLis extends AbstractComponent {
 
     if (this._films.length > MAX_CARDS_SHOW) {
       renderElement(element, this._ShowMoreBtn);
-
-      this._ShowMoreBtn.setClickHandler(this._addCards);
     }
 
     this._addCards();
