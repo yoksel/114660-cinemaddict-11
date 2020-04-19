@@ -1,5 +1,5 @@
 import AbstractComponent from '../abstract-component';
-import Details from '../details/index';
+import Details from '../details';
 import Controls from './controls';
 import {getRuntime, createElement, renderElement, getPlurals} from '../../helpers';
 
