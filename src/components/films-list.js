@@ -4,7 +4,7 @@ import ShowMoreBtn from './show-more-btn';
 import {createElement, renderElement, removeElement} from '../helpers';
 import {MAX_CARDS_SHOW, MAX_CARDS_LOAD} from '../constants';
 
-export default class FilmsLis extends AbstractComponent {
+export default class FilmsList extends AbstractComponent {
   constructor({type, title, films}) {
     super();
 
