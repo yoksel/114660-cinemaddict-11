@@ -7,7 +7,7 @@ const handleComponent = (target, component) => {
 
   const element = component.getElement();
 
-  if(!element) {
+  if (!element) {
     return;
   }
 
