@@ -3,19 +3,66 @@ import FilmsList from './films-list';
 import {createElement, renderElement} from '../helpers';
 import {MAX_CARDS_TOP} from '../constants';
 
+const sortByRating = (a, b) => {
+  return b.rating - a.rating;
+};
+
+const sortByDate = (a, b) => {
+  return b.releaseDate - a.releaseDate;
+};
+
+const sortByComments = (a, b) => {
+  return b.comments.length - a.comments.length;
+};
+
 export default class FilmsBoard extends AbstractComponent {
   constructor(filmsData) {
     super();
 
     this._filmsData = filmsData;
+    this._topRated = this._getTopRated();
+    this._topCommented = this._getTopCommented();
+
+    this._sortedByType = {
+      default: {
+        films: this._filmsData.slice()
+      },
+      rating: {
+        func: sortByRating
+      },
+      date: {
+        func: sortByDate
+      }
+    };
+
+    this.changeSorting = this.changeSorting.bind(this);
+  }
+
+  _getAndSaveSortedFilms(sortedByType) {
+    const defaultFilms = this._sortedByType.default.films;
+    sortedByType.films = defaultFilms.slice();
+    sortedByType.films.sort(sortedByType.func);
+
+    return sortedByType.films;
+  }
+
+  changeSorting(type) {
+    const sortedByType = this._sortedByType[type];
+    let films = sortedByType.films;
+
+    if (!sortedByType.films) {
+      films = this._getAndSaveSortedFilms(sortedByType);
+    }
+
+    this._filmsData = films;
+
+    this._updateElement();
   }
 
   _getTopRated() {
     const films = this._filmsData.slice();
 
-    films.sort((a, b) => {
-      return b.rating - a.rating;
-    });
+    films.sort(sortByRating);
 
     return films.slice(0, MAX_CARDS_TOP);
   }
@@ -23,9 +70,7 @@ export default class FilmsBoard extends AbstractComponent {
   _getTopCommented() {
     const films = this._filmsData.slice();
 
-    films.sort((a, b) => {
-      return b.comments.length - a.comments.length;
-    });
+    films.sort(sortByComments);
 
     return films.slice(0, MAX_CARDS_TOP);
   }
@@ -40,12 +85,12 @@ export default class FilmsBoard extends AbstractComponent {
       {
         type: `extra`,
         title: `Top rated`,
-        films: this._getTopRated()
+        films: this._topRated,
       },
       {
         type: `extra`,
         title: `Most commented`,
-        films: this._getTopCommented()
+        films: this._topCommented
       }
     ];
   }
@@ -58,6 +103,14 @@ export default class FilmsBoard extends AbstractComponent {
     }
 
     return element;
+  }
+
+  _updateElement() {
+    this._element.innerHTML = ``;
+
+    for (const section of this._getSectionsData()) {
+      renderElement(this._element, new FilmsList(section));
+    }
   }
 
   _getTmpl() {
