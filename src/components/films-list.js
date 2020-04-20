@@ -37,9 +37,9 @@ export default class FilmsList extends AbstractComponent {
   }
 
   _addCards() {
-    const films = this._getFilmsList();
+    const filmsList = this._getFilmsList();
 
-    for (const film of films) {
+    for (const film of filmsList) {
       renderElement(this._filmsContainer, new Card(film));
     }
   }
