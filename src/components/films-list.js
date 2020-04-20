@@ -19,6 +19,13 @@ export default class FilmsList extends AbstractComponent {
     this._ShowMoreBtn.setClickHandler(this._addCards);
   }
 
+  update(filmsData) {
+    this._films = filmsData;
+    this._shownQuantity = 0;
+    this._filmsContainer.innerHTML = ``;
+    this._addCards();
+  }
+
   _getFilmsList() {
     if (this._films.length <= MAX_CARDS_SHOW) {
       return this._films;

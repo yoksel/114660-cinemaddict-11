@@ -14,7 +14,7 @@ export default class PageController {
     const filmsBoard = new FilmsBoard(cardsData);
     const sort = new Sort();
 
-    sort.setClickHandler(filmsBoard.changeSorting);
+    sort.setClickHandler(filmsBoard.changeUpcomingSorting);
 
     renderElement(this._container, [
       filter,

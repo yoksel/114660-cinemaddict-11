@@ -20,8 +20,6 @@ export default class FilmsBoard extends AbstractComponent {
     super();
 
     this._filmsData = filmsData;
-    this._topRated = this._getTopRated();
-    this._topCommented = this._getTopCommented();
 
     this._sortedByType = {
       default: {
@@ -35,7 +33,25 @@ export default class FilmsBoard extends AbstractComponent {
       }
     };
 
-    this.changeSorting = this.changeSorting.bind(this);
+    this._sectionsComponents = {
+      upcoming: new FilmsList({
+        type: `upcoming`,
+        title: `All movies. Upcoming`,
+        films: this._filmsData
+      }),
+      topRated: new FilmsList({
+        type: `extra`,
+        title: `Top rated`,
+        films: this._getTopRated(),
+      }),
+      topCommented: new FilmsList({
+        type: `extra`,
+        title: `Most commented`,
+        films: this._getTopCommented()
+      })
+    };
+
+    this.changeUpcomingSorting = this.changeUpcomingSorting.bind(this);
   }
 
   _getAndSaveSortedFilms(sortedByType) {
@@ -46,7 +62,7 @@ export default class FilmsBoard extends AbstractComponent {
     return sortedByType.films;
   }
 
-  changeSorting(type) {
+  changeUpcomingSorting(type) {
     const sortedByType = this._sortedByType[type];
     let films = sortedByType.films;
 
@@ -54,9 +70,7 @@ export default class FilmsBoard extends AbstractComponent {
       films = this._getAndSaveSortedFilms(sortedByType);
     }
 
-    this._filmsData = films;
-
-    this._updateElement();
+    this._sectionsComponents.upcoming.update(films);
   }
 
   _getTopRated() {
@@ -75,42 +89,14 @@ export default class FilmsBoard extends AbstractComponent {
     return films.slice(0, MAX_CARDS_TOP);
   }
 
-  _getSectionsData() {
-    return [
-      {
-        type: `upcoming`,
-        title: `All movies. Upcoming`,
-        films: this._filmsData
-      },
-      {
-        type: `extra`,
-        title: `Top rated`,
-        films: this._topRated,
-      },
-      {
-        type: `extra`,
-        title: `Most commented`,
-        films: this._topCommented
-      }
-    ];
-  }
-
   _createElement() {
     const element = createElement(this._getTmpl());
 
-    for (const section of this._getSectionsData()) {
-      renderElement(element, new FilmsList(section));
+    for (const component of Object.values(this._sectionsComponents)) {
+      renderElement(element, component);
     }
 
     return element;
-  }
-
-  _updateElement() {
-    this._element.innerHTML = ``;
-
-    for (const section of this._getSectionsData()) {
-      renderElement(this._element, new FilmsList(section));
-    }
   }
 
   _getTmpl() {
