@@ -4,14 +4,14 @@ import {createElement, renderElement} from '../helpers';
 import {MAX_CARDS_TOP} from '../constants';
 
 export default class FilmsBoard extends AbstractComponent {
-  constructor(data) {
+  constructor(filmsData) {
     super();
 
-    this._data = data;
+    this._filmsData = filmsData;
   }
 
   _getTopRated() {
-    const films = this._data.slice();
+    const films = this._filmsData.slice();
 
     films.sort((a, b) => {
       return b.rating - a.rating;
@@ -21,7 +21,7 @@ export default class FilmsBoard extends AbstractComponent {
   }
 
   _getTopCommented() {
-    const films = this._data.slice();
+    const films = this._filmsData.slice();
 
     films.sort((a, b) => {
       return b.comments.length - a.comments.length;
@@ -35,7 +35,7 @@ export default class FilmsBoard extends AbstractComponent {
       {
         type: `upcoming`,
         title: `All movies. Upcoming`,
-        films: this._data
+        films: this._filmsData
       },
       {
         type: `extra`,

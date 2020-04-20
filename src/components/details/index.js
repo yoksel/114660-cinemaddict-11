@@ -9,16 +9,16 @@ import Comments from '../comments';
 import {createElement, renderElement, removeElement} from '../../helpers';
 
 export default class Details extends AbstractComponent {
-  constructor(data) {
+  constructor(filmData) {
     super();
 
     this._closeBtn = new CloseBtn();
-    this._poster = new Poster(data);
-    this._desc = new Desc(data);
-    this._head = new Head(data);
-    this._table = new Table(data);
-    this._comments = new Comments(data);
-    this._controls = new Controls(data);
+    this._poster = new Poster(filmData);
+    this._desc = new Desc(filmData);
+    this._head = new Head(filmData);
+    this._table = new Table(filmData);
+    this._comments = new Comments(filmData);
+    this._controls = new Controls(filmData);
 
     this._hideDetails = this._hideDetails.bind(this);
     this._closeBtn.setClickHandler(this._hideDetails);
