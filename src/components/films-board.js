@@ -1,14 +1,17 @@
+import AbstractComponent from './abstract-component';
 import FilmsList from './films-list';
-import {createElement} from '../helpers';
+import {createElement, renderElement} from '../helpers';
 import {MAX_CARDS_TOP} from '../constants';
 
-export default class Films {
-  constructor(data) {
-    this._data = data;
+export default class FilmsBoard extends AbstractComponent {
+  constructor(filmsData) {
+    super();
+
+    this._filmsData = filmsData;
   }
 
   _getTopRated() {
-    const films = this._data.slice();
+    const films = this._filmsData.slice();
 
     films.sort((a, b) => {
       return b.rating - a.rating;
@@ -18,7 +21,7 @@ export default class Films {
   }
 
   _getTopCommented() {
-    const films = this._data.slice();
+    const films = this._filmsData.slice();
 
     films.sort((a, b) => {
       return b.comments.length - a.comments.length;
@@ -32,7 +35,7 @@ export default class Films {
       {
         type: `upcoming`,
         title: `All movies. Upcoming`,
-        films: this._data
+        films: this._filmsData
       },
       {
         type: `extra`,
@@ -51,8 +54,7 @@ export default class Films {
     const element = createElement(this._getTmpl());
 
     for (const section of this._getSectionsData()) {
-      const filmsSection = new FilmsList(section);
-      element.append(filmsSection.getElement());
+      renderElement(element, new FilmsList(section));
     }
 
     return element;
@@ -62,17 +64,5 @@ export default class Films {
     return (
       `<section class="films"></section>`
     );
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = this._createElement();
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

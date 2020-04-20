@@ -1,29 +1,22 @@
+import AbstractComponent from './abstract-component';
 import Card from './card';
-import {createElement} from '../helpers';
+import ShowMoreBtn from './show-more-btn';
+import {createElement, renderElement, removeElement} from '../helpers';
 import {MAX_CARDS_SHOW, MAX_CARDS_LOAD} from '../constants';
 
-export default class FilmsList {
+export default class FilmsList extends AbstractComponent {
   constructor({type, title, films}) {
+    super();
+
     this._title = title;
     this._type = type;
     this._films = films;
     this._isUpcoming = this._type === `upcoming`;
     this._shownQuantity = 0;
-    this._ShowMoreBtn = this._getShowMoreBtn();
+    this._ShowMoreBtn = new ShowMoreBtn();
     this._filmsContainer = createElement(`<div class="films-list__container"></div>`);
-    this._showMoreClick = this._showMoreClick.bind(this);
-  }
-
-  _addEvents() {
-    if (!this._ShowMoreBtn) {
-      return;
-    }
-
-    this._ShowMoreBtn.addEventListener(`click`, this._showMoreClick);
-  }
-
-  _showMoreClick() {
-    this._addCards();
+    this._addCards = this._addCards.bind(this);
+    this._ShowMoreBtn.setClickHandler(this._addCards);
   }
 
   _getFilmsList() {
@@ -35,7 +28,7 @@ export default class FilmsList {
     const films = this._films.slice(this._shownQuantity, nextQuantity);
 
     if (nextQuantity >= this._films.length) {
-      this._ShowMoreBtn.remove();
+      removeElement(this._ShowMoreBtn);
     }
 
     this._shownQuantity = nextQuantity;
@@ -43,30 +36,12 @@ export default class FilmsList {
     return films;
   }
 
-  _getCards() {
-    const cards = [];
-    const films = this._getFilmsList();
-
-    for (const film of films) {
-      const card = new Card(film);
-      cards.push(card.getElement());
-    }
-
-    return cards;
-  }
-
   _addCards() {
-    const cards = this._getCards();
-    this._filmsContainer.append(...cards);
-  }
+    const filmsList = this._getFilmsList();
 
-  _getShowMoreBtn() {
-    if (this._films.length <= MAX_CARDS_SHOW) {
-      return ``;
+    for (const film of filmsList) {
+      renderElement(this._filmsContainer, new Card(film));
     }
-    const markup = `<button class="films-list__show-more">Show more</button>`;
-
-    return createElement(markup);
   }
 
   _getClassName() {
@@ -103,29 +78,18 @@ export default class FilmsList {
 
   _createElement() {
     if (this._films.length === 0) {
-      return ``;
+      return null;
     }
 
     const element = createElement(this._getTmpl());
-    element.append(this._filmsContainer);
-    element.append(this._ShowMoreBtn);
+    renderElement(element, this._filmsContainer);
+
+    if (this._films.length > MAX_CARDS_SHOW) {
+      renderElement(element, this._ShowMoreBtn);
+    }
 
     this._addCards();
 
-    this._addEvents();
-
     return element;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = this._createElement();
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
