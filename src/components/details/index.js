@@ -5,7 +5,7 @@ import Desc from './desc';
 import Head from './head';
 import Table from './table';
 import Controls from './controls';
-import Comments from './comments';
+import Comments from '../comments';
 import {createElement, renderElement, removeElement} from '../../helpers';
 
 export default class Details extends AbstractComponent {
