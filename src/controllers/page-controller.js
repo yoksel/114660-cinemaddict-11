@@ -14,8 +14,10 @@ export default class PageController {
     const sort = new Sort();
     const filmsBoard = new FilmsBoard(cardsData);
 
-    renderElement(this._container, filter);
-    renderElement(this._container, sort);
-    renderElement(this._container, filmsBoard);
+    renderElement(this._container, [
+      filter,
+      sort,
+      filmsBoard
+    ]);
   }
 }

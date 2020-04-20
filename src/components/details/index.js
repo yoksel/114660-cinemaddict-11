@@ -37,7 +37,10 @@ export default class Details extends AbstractComponent {
 
   _getInfoContainer() {
     const element = createElement(`<div class="film-details__info-wrap"></div>`);
-    renderElement(element, [this._poster, this._getInfo()]);
+    renderElement(element, [
+      this._poster,
+      this._getInfo()
+    ]);
 
     return element;
   }
@@ -45,10 +48,11 @@ export default class Details extends AbstractComponent {
   _getTopContainer() {
     const element = createElement(`<div class="form-details__top-container"></div>`);
 
-    renderElement(element, this._closeBtn);
-
-    renderElement(element, this._getInfoContainer());
-    renderElement(element, this._controls);
+    renderElement(element, [
+      this._closeBtn,
+      this._getInfoContainer(),
+      this._controls
+    ]);
 
     return element;
   }
@@ -56,7 +60,10 @@ export default class Details extends AbstractComponent {
   _getForm() {
     const element = createElement(`<form class="film-details__inner" action="" method="get"></form>`);
 
-    renderElement(element, [this._getTopContainer(), this._comments]);
+    renderElement(element, [
+      this._getTopContainer(),
+      this._comments
+    ]);
 
     return element;
   }
