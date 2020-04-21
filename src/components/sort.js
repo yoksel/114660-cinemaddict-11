@@ -1,5 +1,10 @@
 import AbstractComponent from './abstract-component';
 
+const classes = {
+  default: `sort__button`,
+  active: `sort__button--active`
+};
+
 export default class Sort extends AbstractComponent {
   constructor(currentSort) {
     super();
@@ -11,16 +16,11 @@ export default class Sort extends AbstractComponent {
       `date`,
       `rating`
     ];
-
-    this._classes = {
-      default: `sort__button`,
-      active: `sort__button--active`
-    };
   }
 
   _createHandler(handler) {
     return (event) => {
-      const btn = event.target.closest(`.sort__button`);
+      const btn = event.target.closest(`.${classes.default}`);
 
       if (!btn) {
         return;
@@ -33,11 +33,11 @@ export default class Sort extends AbstractComponent {
       }
 
       if (!this._currentBtn) {
-        this._currentBtn = this.getElement().querySelector(`.${this._classes.active}`);
+        this._currentBtn = this.getElement().querySelector(`.${classes.active}`);
       }
 
-      this._currentBtn.classList.remove(this._classes.active);
-      btn.classList.add(this._classes.active);
+      this._currentBtn.classList.remove(classes.active);
+      btn.classList.add(classes.active);
 
       this._currentBtn = btn;
       this._currentSort = type;
@@ -53,10 +53,10 @@ export default class Sort extends AbstractComponent {
 
   _getItems() {
     return this._sections.reduce((prev, item) => {
-      let className = this._classes.default;
+      let className = classes.default;
 
       if (item === this._currentSort) {
-        className += ` ${this._classes.active}`;
+        className += ` ${classes.active}`;
       }
 
       return (
