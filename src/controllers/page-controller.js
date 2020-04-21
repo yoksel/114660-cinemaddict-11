@@ -11,8 +11,10 @@ export default class PageController {
 
   render(cardsData) {
     const filter = new Filter({cardsData, currentFilter: `all`});
-    const sort = new Sort();
     const filmsBoard = new FilmsBoard(cardsData);
+    const sort = new Sort();
+
+    sort.setClickHandler(filmsBoard.changeUpcomingSorting);
 
     renderElement(this._container, [
       filter,

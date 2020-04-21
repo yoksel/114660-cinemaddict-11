@@ -1,7 +1,7 @@
 import AbstractComponent from './abstract-component';
 import Card from './card';
 import ShowMoreBtn from './show-more-btn';
-import {createElement, renderElement, removeElement} from '../helpers';
+import {createElement, renderElement} from '../helpers';
 import {MAX_CARDS_SHOW, MAX_CARDS_LOAD} from '../constants';
 
 export default class FilmsList extends AbstractComponent {
@@ -19,6 +19,13 @@ export default class FilmsList extends AbstractComponent {
     this._ShowMoreBtn.setClickHandler(this._addCards);
   }
 
+  update(filmsData) {
+    this._films = filmsData;
+    this._shownQuantity = 0;
+    this._filmsContainer.innerHTML = ``;
+    this._addCards();
+  }
+
   _getFilmsList() {
     if (this._films.length <= MAX_CARDS_SHOW) {
       return this._films;
@@ -26,10 +33,9 @@ export default class FilmsList extends AbstractComponent {
 
     const nextQuantity = this._shownQuantity + MAX_CARDS_LOAD;
     const films = this._films.slice(this._shownQuantity, nextQuantity);
+    const isShowMoreHidden = nextQuantity >= this._films.length;
 
-    if (nextQuantity >= this._films.length) {
-      removeElement(this._ShowMoreBtn);
-    }
+    this._ShowMoreBtn.hideElement(isShowMoreHidden);
 
     this._shownQuantity = nextQuantity;
 
