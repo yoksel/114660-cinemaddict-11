@@ -21,17 +21,7 @@ export default class FilmsBoard extends AbstractComponent {
 
     this._filmsData = filmsData;
 
-    this._sortedByType = {
-      default: {
-        films: this._filmsData.slice()
-      },
-      rating: {
-        func: sortByRating
-      },
-      date: {
-        func: sortByDate
-      }
-    };
+    this._sortedByDefault = this._filmsData.slice();
 
     this._sectionsComponents = {
       upcoming: new FilmsList({
@@ -54,20 +44,30 @@ export default class FilmsBoard extends AbstractComponent {
     this.changeUpcomingSorting = this.changeUpcomingSorting.bind(this);
   }
 
-  _getAndSaveSortedFilms(sortedByType) {
-    const defaultFilms = this._sortedByType.default.films;
-    sortedByType.films = defaultFilms.slice();
-    sortedByType.films.sort(sortedByType.func);
+  _getSortedFilms(sortFunc) {
+    const films = this._sortedByDefault.slice();
+    films.sort(sortFunc);
 
-    return sortedByType.films;
+    return films;
   }
 
   changeUpcomingSorting(type) {
-    const sortedByType = this._sortedByType[type];
-    let films = sortedByType.films;
+    let films = [];
 
-    if (!sortedByType.films) {
-      films = this._getAndSaveSortedFilms(sortedByType);
+    if (type === `default`) {
+      films = this._sortedByDefault;
+    } else if (type === `rating`) {
+      if (!this._sortedByRating) {
+        this._sortedByRating = this._getSortedFilms(sortByRating);
+      }
+
+      films = this._sortedByRating;
+    } else if (type === `date`) {
+      if (!this._sortedByDate) {
+        this._sortedByDate = this._getSortedFilms(sortByDate);
+      }
+
+      films = this._sortedByDate;
     }
 
     this._sectionsComponents.upcoming.update(films);
