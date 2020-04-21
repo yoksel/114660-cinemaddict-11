@@ -54,20 +54,25 @@ export default class FilmsBoard extends AbstractComponent {
   changeUpcomingSorting(type) {
     let films = [];
 
-    if (type === `default`) {
-      films = this._sortedByDefault;
-    } else if (type === `rating`) {
-      if (!this._sortedByRating) {
-        this._sortedByRating = this._getSortedFilms(sortByRating);
-      }
+    switch (type) {
+      case `rating`:
+        if (!this._sortedByRating) {
+          this._sortedByRating = this._getSortedFilms(sortByRating);
+        }
 
-      films = this._sortedByRating;
-    } else if (type === `date`) {
-      if (!this._sortedByDate) {
-        this._sortedByDate = this._getSortedFilms(sortByDate);
-      }
+        films = this._sortedByRating;
+        break;
 
-      films = this._sortedByDate;
+      case `date`:
+        if (!this._sortedByDate) {
+          this._sortedByDate = this._getSortedFilms(sortByDate);
+        }
+
+        films = this._sortedByDate;
+        break;
+
+      default:
+        films = this._sortedByDefault;
     }
 
     this._sectionsComponents.upcoming.update(films);
