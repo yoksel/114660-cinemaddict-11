@@ -33,28 +33,22 @@ export default class FilmsBoard extends AbstractComponent {
       }
     };
 
-    const upcoming = new FilmsList({
-      type: `upcoming`,
-      title: `All movies. Upcoming`,
-      films: this._filmsData
-    });
-
-    const topRated = new FilmsList({
-      type: `extra`,
-      title: `Top rated`,
-      films: this._getTopRated(),
-    });
-
-    const topCommented = new FilmsList({
-      type: `extra`,
-      title: `Most commented`,
-      films: this._getTopCommented()
-    });
-
     this._sectionsComponents = {
-      upcoming,
-      topRated,
-      topCommented
+      upcoming: new FilmsList({
+        type: `upcoming`,
+        title: `All movies. Upcoming`,
+        films: this._filmsData
+      }),
+      topRated: new FilmsList({
+        type: `extra`,
+        title: `Top rated`,
+        films: this._getTopRated(),
+      }),
+      topCommented: new FilmsList({
+        type: `extra`,
+        title: `Most commented`,
+        films: this._getTopCommented()
+      })
     };
 
     this.changeUpcomingSorting = this.changeUpcomingSorting.bind(this);
