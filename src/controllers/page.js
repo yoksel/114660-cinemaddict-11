@@ -154,6 +154,7 @@ export default class PageController {
     const newCards = this._getUpcoming(MAX_CARDS_LOAD);
     const newControllers = this._upcomingListController.renderCards(newCards);
     this._upcomingFilmsControllers = this._upcomingFilmsControllers.concat(newControllers);
+    this._allFilmsControllers = this._collectAllFilmsControllers();
 
     if (this._shownQuantity >= this._films.length) {
       this._upcomingListController.hideMoreBtn();
