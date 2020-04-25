@@ -12,7 +12,30 @@ export default class Controls extends AbstractComponent {
       isFavorite,
     });
   }
-  _getCardControl({id, text, isActive}) {
+
+  _getClickHandler(handler) {
+    return (event) => {
+      const control = event.target.closest(`.film-card__controls-item`);
+
+      if (!control) {
+        return;
+      }
+
+      const {prop} = control.dataset;
+
+      if (!prop) {
+        return;
+      }
+
+      handler(prop);
+    };
+  }
+
+  setClickHandler(handler) {
+    this.getElement().addEventListener(`click`, this._getClickHandler(handler));
+  }
+
+  _getCardControl({id, key, text, isActive}) {
     const mods = [id];
 
     if (isActive) {
@@ -25,7 +48,10 @@ export default class Controls extends AbstractComponent {
     });
 
     return (
-      `<button class="${className}">${text}</button>`
+      `<button
+        class="${className}"
+        data-prop="${key}"
+      >${text}</button>`
     );
   }
 
