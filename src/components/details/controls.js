@@ -12,7 +12,29 @@ export default class Controls extends AbstractComponent {
     });
   }
 
-  _getDetailControl({id, text, isActive}) {
+  _getClickHandler(handler) {
+    return (event) => {
+      const control = event.target.closest(`.film-details__control-input`);
+
+      if (!control) {
+        return;
+      }
+
+      const {prop} = control.dataset;
+
+      if (!prop) {
+        return;
+      }
+
+      handler(prop);
+    };
+  }
+
+  setClickHandler(handler) {
+    this.getElement().addEventListener(`click`, this._getClickHandler(handler));
+  }
+
+  _getDetailControl({id, key, text, isActive}) {
     const checkedAttr = isActive ? `checked` : ``;
 
     return (
@@ -21,6 +43,7 @@ export default class Controls extends AbstractComponent {
         class="film-details__control-input visually-hidden"
         id="${id}"
         name="${id}"
+        data-prop="${key}"
         ${checkedAttr}
       >
       <label
