@@ -147,20 +147,20 @@ export default class PageController {
     this._allFilmsControllers = this._collectAllFilmsControllers();
   }
 
-  _changeUpcomingSorting(prop) {
+  _changeUpcomingSorting(sort) {
     this._currentFilter = ``;
-    this._currentSort = prop;
+    this._currentSort = sort;
 
     this._filterController.reset();
     this._updateUpcoming();
   }
 
-  _changeUpcomingFiltering(filterProp) {
-    this._currentFilter = filterProp;
+  _changeUpcomingFiltering(filter) {
+    this._currentFilter = filter;
     this._currentSort = ``;
 
     this._sort.reset();
-    this._filterController.setCurrentFilter(filterProp);
+    this._filterController.setCurrentFilter(filter);
     this._updateUpcoming();
   }
 
@@ -217,6 +217,7 @@ export default class PageController {
     ]);
 
     this._upcomingFilmsControllers = this._upcomingListController.render(this._getUpcoming(MAX_CARDS_SHOW));
+
     if (this._films.length > MAX_CARDS_SHOW) {
       this._upcomingListController.showMoreBtn();
     }
