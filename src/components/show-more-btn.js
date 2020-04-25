@@ -3,12 +3,16 @@ import AbstractComponent from './abstract-component';
 export default class showMoreBtn extends AbstractComponent {
   _getTmpl() {
     return (
-      `<button class="films-list__show-more">Show more</button>`
+      `<button class="films-list__show-more" hidden>Show more</button>`
     );
   }
 
-  hideElement(isHidden) {
-    this.getElement().hidden = isHidden;
+  show() {
+    this.getElement().hidden = false;
+  }
+
+  hide() {
+    this.getElement().hidden = true;
   }
 
   setClickHandler(handler) {
