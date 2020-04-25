@@ -1,4 +1,4 @@
-import AbstractComponent from '../abstract-component';
+import AbstractSmartComponent from '../abstract-smart-component';
 import CloseBtn from './close-btn';
 import Poster from './poster';
 import Desc from './desc';
@@ -6,9 +6,9 @@ import Head from './head';
 import Table from './table';
 import Controls from './controls';
 import Comments from '../comments';
-import {createElement, renderElement, removeElement} from '../../helpers';
+import {createElement, renderElement} from '../../helpers';
 
-export default class Details extends AbstractComponent {
+export default class Details extends AbstractSmartComponent {
   constructor(filmData) {
     super();
 
@@ -19,18 +19,31 @@ export default class Details extends AbstractComponent {
     this._table = new Table(filmData);
     this._comments = new Comments(filmData);
     this._controls = new Controls(filmData);
-
-    this._hideDetails = this._hideDetails.bind(this);
-    this._closeBtn.setClickHandler(this._hideDetails);
+    this._chosenEmoji = null;
   }
 
-  _hideDetails() {
-    removeElement(this);
+  setEmojiClickHandler(handler) {
+    this._comments.setEmojiClickHandler(handler);
   }
+
+  setCloseBtnClickHandler(handler) {
+    this._closeBtn.setClickHandler(handler);
+  }
+
+  setControlsClickHandler(handler) {
+    this._controls.setClickHandler(handler);
+  }
+
+  _recoveryListeners() {}
 
   _getInfo() {
     const element = createElement(`<div class="film-details__info"></div>`);
-    renderElement(element, [this._head, this._table, this._desc]);
+
+    renderElement(element, [
+      this._head,
+      this._table,
+      this._desc
+    ]);
 
     return element;
   }

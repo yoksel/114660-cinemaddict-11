@@ -1,9 +1,8 @@
-import AbstractComponent from '../abstract-component';
-import Details from '../details';
+import AbstractSmartComponent from '../abstract-smart-component';
 import Controls from './controls';
 import {getRuntime, createElement, renderElement, getPlurals} from '../../helpers';
 
-export default class Card extends AbstractComponent {
+export default class Card extends AbstractSmartComponent {
   constructor(filmData) {
     const {
       poster,
@@ -27,24 +26,29 @@ export default class Card extends AbstractComponent {
     this._commentsCount = comments.length;
 
     this._controls = new Controls(filmData);
-    this._details = new Details(filmData);
-
-    this._showDetails = this._showDetails.bind(this);
+    this._cardClickHandler = null;
   }
 
-  _addEvents(element) {
+  setCardClickHandler(handler) {
+    const element = this.getElement();
     const poster = element.querySelector(`.film-card__poster`);
     const title = element.querySelector(`.film-card__title`);
     const comments = element.querySelector(`.film-card__comments`);
     const controlsList = [poster, title, comments];
 
     for (const control of controlsList) {
-      control.addEventListener(`click`, this._showDetails);
+      control.addEventListener(`click`, handler);
     }
+
+    this._cardClickHandler = handler;
   }
 
-  _showDetails() {
-    renderElement(document.body, this._details);
+  setControlsClickHandler(handler) {
+    this._controls.setClickHandler(handler);
+  }
+
+  _recoveryListeners() {
+    this.setCardClickHandler(this._cardClickHandler);
   }
 
   _getTmpl() {
@@ -76,7 +80,6 @@ export default class Card extends AbstractComponent {
   _createElement() {
     const element = createElement(this._getTmpl());
     renderElement(element, this._controls);
-    this._addEvents(element);
 
     return element;
   }
