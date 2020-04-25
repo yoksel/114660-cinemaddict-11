@@ -6,10 +6,10 @@ const classes = {
 };
 
 export default class Filter extends AbstractComponent {
-  constructor({cardsData, currentFilter}) {
+  constructor(filmsData, currentFilter) {
     super();
 
-    this._data = cardsData;
+    this._data = filmsData;
     this._defaultFilter = `all`;
     this._currentFilter = currentFilter || this._defaultFilter;
 
@@ -37,12 +37,21 @@ export default class Filter extends AbstractComponent {
     ];
   }
 
+  setCurrentFilter(filter) {
+    this._currentFilter = filter;
+  }
+
   reset() {
     if (this._currentFilter === this._defaultFilter) {
       return;
     }
 
     this._currentFilter = this._defaultFilter;
+
+    if (!this._currentControl) {
+      this._currentControl = this.getElement().querySelector(`.${classes.active}`);
+    }
+
     this._currentControl.classList.remove(classes.active);
     this._currentControl = this.getElement().querySelector(`.${classes.default}--all`);
     this._currentControl.classList.add(classes.active);
@@ -97,7 +106,7 @@ export default class Filter extends AbstractComponent {
         </span>`;
       }
 
-      if (id === this._currentFilter) {
+      if (key === this._currentFilter) {
         className += ` ${classes.active}`;
       }
 

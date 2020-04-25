@@ -1,6 +1,6 @@
-import Filter from '../components/filter';
-import Sort from '../components/sort';
+import FilterController from './filter';
 import FilmsListController from './films-list';
+import Sort from '../components/sort';
 
 import {createElement, renderElement, sortByRating, sortByDate, sortByComments} from '../helpers';
 
@@ -14,27 +14,24 @@ export default class PageController {
     this._topRatedFilmsControllers = [];
     this._topCommentedFilmsControllers = [];
     this._shownQuantity = 0;
+    this._currentFilter = ``;
+    this._currentSort = ``;
 
     this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
     this._changeUpcomingSorting = this._changeUpcomingSorting.bind(this);
     this._changeUpcomingFiltering = this._changeUpcomingFiltering.bind(this);
     this._loadMoreUpcoming = this._loadMoreUpcoming.bind(this);
-
-    this._cachedFilmsLists = {};
   }
 
   _getSortedFilms(sortFunc) {
-    const films = this._cachedFilmsLists.all.slice();
+    const films = this._films.slice();
     films.sort(sortFunc);
+
     return films;
   }
 
   _getFilmsSortedByProp(prop) {
-    if (this._cachedFilmsLists[prop]) {
-      return this._cachedFilmsLists[prop];
-    }
-
     let films = [];
 
     switch (prop) {
@@ -48,19 +45,46 @@ export default class PageController {
         films = this._getSortedFilms(sortByDate);
         break;
       default:
-        films = this._cachedFilmsLists.all;
+        films = this._films.slice();
     }
 
-    this._cachedFilmsLists[prop] = films;
     return films;
   }
 
+  _getFilteredFilms(filterProp) {
+    const films = this._films.slice();
+
+    if (!filterProp || filterProp === `all`) {
+      return films;
+    }
+
+    return films.filter((item) => item[filterProp]);
+  }
+
+  _getActualFilmsList() {
+    if (this._currentFilter) {
+      return this._getFilteredFilms(this._currentFilter);
+    }
+    if (this._currentSort) {
+      return this._getFilmsSortedByProp(this._currentSort);
+    }
+
+    return this._films.slice();
+  }
+
   _getUpcoming(quantity = MAX_CARDS_LOAD) {
+    const films = this._getActualFilmsList();
     const nextQuantity = this._shownQuantity + quantity;
-    const films = this._films.slice(this._shownQuantity, nextQuantity);
+    const cuttedFilms = films.slice(this._shownQuantity, nextQuantity);
     this._shownQuantity = nextQuantity;
 
-    return films;
+    if (this._shownQuantity >= films.length) {
+      this._upcomingListController.hideMoreBtn();
+    } else {
+      this._upcomingListController.showMoreBtn();
+    }
+
+    return cuttedFilms;
   }
 
   _getTopRated() {
@@ -118,40 +142,30 @@ export default class PageController {
     upcomingFilmsContainer.innerHTML = ``;
     this._upcomingFilmsControllers = [];
     this._shownQuantity = 0;
+
     this._upcomingFilmsControllers = this._upcomingListController.renderCards(this._getUpcoming());
     this._allFilmsControllers = this._collectAllFilmsControllers();
-
-    if (this._films.length > MAX_CARDS_SHOW) {
-      this._upcomingListController.showMoreBtn();
-    } else {
-      this._upcomingListController.hideMoreBtn();
-    }
   }
 
   _changeUpcomingSorting(prop) {
-    this._films = this._getFilmsSortedByProp(prop);
+    this._currentFilter = ``;
+    this._currentSort = prop;
 
+    this._filterController.reset();
     this._updateUpcoming();
-    this._filter.reset();
-  }
-
-  _getFilteredFilms(filterProp) {
-    const films = this._cachedFilmsLists.all.slice();
-    return films.filter((item) => item[filterProp]);
   }
 
   _changeUpcomingFiltering(filterProp) {
-    if (!this._cachedFilmsLists[filterProp]) {
-      this._cachedFilmsLists[filterProp] = this._getFilteredFilms(filterProp);
-    }
-    this._films = this._cachedFilmsLists[filterProp];
+    this._currentFilter = filterProp;
+    this._currentSort = ``;
 
-    this._updateUpcoming();
     this._sort.reset();
+    this._filterController.setCurrentFilter(filterProp);
+    this._updateUpcoming();
   }
 
   _loadMoreUpcoming() {
-    const newCards = this._getUpcoming(MAX_CARDS_LOAD);
+    const newCards = this._getUpcoming();
     const newControllers = this._upcomingListController.renderCards(newCards);
     this._upcomingFilmsControllers = this._upcomingFilmsControllers.concat(newControllers);
     this._allFilmsControllers = this._collectAllFilmsControllers();
@@ -179,6 +193,8 @@ export default class PageController {
     filmsControllersToUpdate.forEach((item) => {
       item.render(newData);
     });
+
+    this._filterController.render(this._films);
   }
 
   _onViewChange() {
@@ -187,22 +203,20 @@ export default class PageController {
 
   render(filmsData) {
     this._films = filmsData;
-    this._cachedFilmsLists.all = this._films;
-
-    this._filter = new Filter({cardsData: filmsData, currentFilter: `all`});
+    this._filterController = new FilterController(this._container, this._changeUpcomingFiltering);
     this._sort = new Sort();
     const filmsSection = this._getFilmsSection();
 
-    this._filter.setClickHandler(this._changeUpcomingFiltering);
     this._sort.setClickHandler(this._changeUpcomingSorting);
 
+    this._filterController.render(this._films);
+
     renderElement(this._container, [
-      this._filter,
       this._sort,
       filmsSection
     ]);
 
-    this._upcomingFilmsControllers = this._upcomingListController.render(this._getUpcoming());
+    this._upcomingFilmsControllers = this._upcomingListController.render(this._getUpcoming(MAX_CARDS_SHOW));
     if (this._films.length > MAX_CARDS_SHOW) {
       this._upcomingListController.showMoreBtn();
     }
