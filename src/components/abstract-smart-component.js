@@ -1,5 +1,4 @@
 import AbstractComponent from './abstract-component';
-import {replaceElement} from '../helpers';
 
 export default class AbstractSmartComponent extends AbstractComponent {
   _recoveryListeners() {
@@ -11,7 +10,7 @@ export default class AbstractSmartComponent extends AbstractComponent {
     this.removeElement();
 
     const newElement = this.getElement();
-    replaceElement(oldElement, newElement);
+    oldElement.replaceWith(newElement);
 
     this._recoveryListeners();
   }
