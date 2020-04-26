@@ -41,7 +41,6 @@ export default class FilmsListController {
   }
 
   render(films) {
-    this._films = films;
     const props = Object.assign({}, this._props, {films});
     this._filmsListComponent = new FilmsListComponent(props);
     this._filmsContainerElement = this._filmsListComponent.getFilmsContainerElement();
