@@ -7,7 +7,7 @@ export default class Form extends AbstractComponent {
     super();
 
     this._selectedEmoji = selectedEmoji;
-    this._emojiControls = new EmojiControls();
+    this._emojiControls = new EmojiControls({selectedEmoji});
   }
 
   setEmojiClickHandler(handler) {
