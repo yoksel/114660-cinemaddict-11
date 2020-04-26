@@ -24,28 +24,29 @@ export default class PageController {
     this._loadMoreUpcoming = this._loadMoreUpcoming.bind(this);
   }
 
-  _getSortedFilms(sortFunc) {
-    const films = this._films.slice();
+  _getSortedFilms(sortFunc, filmsToSort) {
+    const films = filmsToSort.slice();
     films.sort(sortFunc);
 
     return films;
   }
 
-  _getFilmsSortedByProp(prop) {
+  _getFilmsSortedByProp(prop, filmsToSort) {
     let films = [];
+    filmsToSort = filmsToSort || this._films;
 
     switch (prop) {
       case `rating`:
-        films = this._getSortedFilms(sortByRating);
+        films = this._getSortedFilms(sortByRating, filmsToSort);
         break;
       case `comments`:
-        films = this._getSortedFilms(sortByComments);
+        films = this._getSortedFilms(sortByComments, filmsToSort);
         break;
       case `date`:
-        films = this._getSortedFilms(sortByDate);
+        films = this._getSortedFilms(sortByDate, filmsToSort);
         break;
       default:
-        films = this._films.slice();
+        films = filmsToSort;
     }
 
     return films;
@@ -62,14 +63,21 @@ export default class PageController {
   }
 
   _getActualFilmsList() {
-    if (this._currentFilter) {
-      return this._getFilteredFilms(this._currentFilter);
-    }
-    if (this._currentSort) {
-      return this._getFilmsSortedByProp(this._currentSort);
+    if (!this._currentFilter && !this._currentSort) {
+      return this._films.slice();
     }
 
-    return this._films.slice();
+    let films = [];
+
+    if (this._currentFilter) {
+      films = this._getFilteredFilms(this._currentFilter);
+    }
+
+    if (this._currentSort) {
+      films = this._getFilmsSortedByProp(this._currentSort, films);
+    }
+
+    return films;
   }
 
   _getUpcoming(quantity = MAX_CARDS_LOAD) {
@@ -148,18 +156,12 @@ export default class PageController {
   }
 
   _changeUpcomingSorting(sort) {
-    this._currentFilter = ``;
     this._currentSort = sort;
-
-    this._filterController.reset();
     this._updateUpcoming();
   }
 
   _changeUpcomingFiltering(filter) {
     this._currentFilter = filter;
-    this._currentSort = ``;
-
-    this._sort.reset();
     this._filterController.setCurrentFilter(filter);
     this._updateUpcoming();
   }
