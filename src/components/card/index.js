@@ -1,8 +1,8 @@
-import AbstractSmartComponent from '../abstract-smart-component';
+import AbstractComponent from '../abstract-component';
 import Controls from './controls';
 import {getRuntime, createElement, renderElement, getPlurals} from '../../helpers';
 
-export default class Card extends AbstractSmartComponent {
+export default class Card extends AbstractComponent {
   constructor(filmData) {
     const {
       poster,
