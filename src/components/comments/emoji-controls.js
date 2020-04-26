@@ -9,25 +9,13 @@ export default class EmojiControls extends AbstractComponent {
     this._selectedEmoji = selectedEmoji;
   }
 
-  _getClickHandler(handler) {
-    return () => {
-      const control = event.target.closest(`.film-details__emoji-item`);
-
-      if (!control) {
-        return;
-      }
-
-      handler(control.value);
-    };
-  }
-
   setClickHandler(handler) {
-    const clickHandler = this._getClickHandler(handler);
+    const clickHandler = getHandlerWithValue(`.film-details__emoji-item`, handler);
     this.getElement().addEventListener(`click`, clickHandler);
   }
 
   _getEmojiControl(name) {
-    const checkedAttr = name === this._selectedEmoji ? 'checked' : '';
+    const checkedAttr = name === this._selectedEmoji ? `checked` : ``;
 
     return (
       `<input
