@@ -14,23 +14,14 @@ export default class FilmController {
     this._showDetails = this._showDetails.bind(this);
     this._hideDetails = this._hideDetails.bind(this);
     this._toggleProp = this._toggleProp.bind(this);
-    this._setEmoji = this._setEmoji.bind(this);
 
     this._detaislIsOpened = false;
   }
 
   setDefaultView() {
     this._hideDetails();
+    this._detailsComponent.reset();
     this._detaislIsOpened = false;
-  }
-
-  _setEmoji(emoji) {
-    const newFilmData = Object.assign(
-        {},
-        this.filmData,
-        {selectedEmoji: emoji}
-    );
-    this._onDataChange(this.filmData, newFilmData);
   }
 
   _showDetails() {
@@ -62,7 +53,6 @@ export default class FilmController {
   _setDetailsHandlers() {
     this._detailsComponent.setCloseBtnClickHandler(this._hideDetails);
     this._detailsComponent.setControlsClickHandler(this._toggleProp);
-    this._detailsComponent.setEmojiClickHandler(this._setEmoji);
   }
 
   render(filmData) {
