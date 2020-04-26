@@ -47,10 +47,6 @@ export default class Card extends AbstractComponent {
     this._controls.setClickHandler(handler);
   }
 
-  _recoveryListeners() {
-    this.setCardClickHandler(this._cardClickHandler);
-  }
-
   _getTmpl() {
     const commentsText = getPlurals(this._commentsCount, [`comment`, `comments`]);
     const commentsLinkMarkup = `<a class="film-card__comments">${this._commentsCount} ${commentsText}</a>`;
