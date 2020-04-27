@@ -69,9 +69,7 @@ export default class PageController {
 
     let films = [];
 
-    if (this._currentFilter) {
-      films = this._getFilteredFilms(this._currentFilter);
-    }
+    films = this._getFilteredFilms(this._currentFilter);
 
     if (this._currentSort) {
       films = this._getFilmsSortedByProp(this._currentSort, films);
