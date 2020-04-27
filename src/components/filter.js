@@ -1,4 +1,5 @@
 import AbstractComponent from './abstract-component';
+import {FILTERS} from '../constants';
 
 const classes = {
   default: `main-navigation__item`,
@@ -12,29 +13,6 @@ export default class Filter extends AbstractComponent {
     this._data = filmsData;
     this._defaultFilter = `all`;
     this._currentFilter = currentFilter || this._defaultFilter;
-
-    this._sections = [
-      {
-        id: `all`,
-        key: `all`,
-        name: `All movies`
-      },
-      {
-        id: `watchlist`,
-        key: `isInWatchList`,
-        name: `Watchlist`
-      },
-      {
-        id: `history`,
-        key: `isWatched`,
-        name: `History`
-      },
-      {
-        id: `favorites`,
-        key: `isFavorite`,
-        name: `Favorites`
-      },
-    ];
   }
 
   setCurrentFilter(filter) {
@@ -92,15 +70,15 @@ export default class Filter extends AbstractComponent {
   }
 
   _getItems() {
-    return this._sections.reduce((prev, section) => {
-      const {id, key, name} = section;
+    return Object.entries(FILTERS).reduce((prev, item) => {
+      const [key, {id, name}] = item;
       let counter = 0;
       let counterMarkup = ``;
       let className = classes.default;
       className += ` ${classes.default}--${id}`;
 
       if (key !== `all`) {
-        counter = this._data.filter((item) => item[key]).length;
+        counter = this._data.filter((filmItem) => filmItem[key]).length;
         counterMarkup = `<span class="main-navigation__item-count">
           ${counter}
         </span>`;
