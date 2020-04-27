@@ -1,14 +1,12 @@
 import AbstractComponent from './abstract-component';
 
 export default class FilmsList extends AbstractComponent {
-  constructor({type, title, films}) {
+  constructor({type, title}) {
     super();
 
     this._title = title;
     this._type = type;
-    this._films = films;
     this._isUpcoming = this._type === `upcoming`;
-    this._shownQuantity = 0;
   }
 
   _getClassName() {
