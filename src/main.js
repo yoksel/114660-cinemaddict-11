@@ -1,4 +1,4 @@
-import PageController from './controllers/page-controller';
+import PageController from './controllers/page';
 
 import Profile from './components/profile';
 import FilmsTotal from './components/films-total';

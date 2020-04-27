@@ -9,7 +9,8 @@ export default class Sort extends AbstractComponent {
   constructor(currentSort) {
     super();
 
-    this._currentSort = currentSort || `default`;
+    this._defaultSort = `default`;
+    this._currentSort = currentSort || this._defaultSort;
 
     this._sections = [
       `default`,
@@ -18,28 +19,39 @@ export default class Sort extends AbstractComponent {
     ];
   }
 
+  reset() {
+    if (this._currentSort === this._defaultSort) {
+      return;
+    }
+
+    this._currentSort = this._defaultSort;
+    this._currentControl.classList.remove(classes.active);
+    this._currentControl = this.getElement().querySelector(`.${classes.default}--default`);
+    this._currentControl.classList.add(classes.active);
+  }
+
   _createHandler(handler) {
     return (event) => {
-      const btn = event.target.closest(`.${classes.default}`);
+      const control = event.target.closest(`.${classes.default}`);
 
-      if (!btn) {
+      if (!control) {
         return;
       }
 
-      const {type} = btn.dataset;
+      const {type} = control.dataset;
 
       if (type === this._currentSort) {
         return;
       }
 
-      if (!this._currentBtn) {
-        this._currentBtn = this.getElement().querySelector(`.${classes.active}`);
+      if (!this._currentControl) {
+        this._currentControl = this.getElement().querySelector(`.${classes.active}`);
       }
 
-      this._currentBtn.classList.remove(classes.active);
-      btn.classList.add(classes.active);
+      this._currentControl.classList.remove(classes.active);
+      control.classList.add(classes.active);
 
-      this._currentBtn = btn;
+      this._currentControl = control;
       this._currentSort = type;
       handler(type);
     };
@@ -54,6 +66,7 @@ export default class Sort extends AbstractComponent {
   _getItems() {
     return this._sections.reduce((prev, item) => {
       let className = classes.default;
+      className += ` ${classes.default}--${item}`;
 
       if (item === this._currentSort) {
         className += ` ${classes.active}`;

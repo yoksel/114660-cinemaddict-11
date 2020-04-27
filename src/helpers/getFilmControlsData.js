@@ -28,6 +28,7 @@ export const getFilmControlsData = (data) => {
 
       return {
         id,
+        key,
         text,
         isActive
       };

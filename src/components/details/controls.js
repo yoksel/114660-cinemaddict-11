@@ -1,5 +1,5 @@
 import AbstractComponent from '../abstract-component';
-import {getFilmControlsData} from '../../helpers';
+import {getFilmControlsData, getHandlerWithProp} from '../../helpers';
 
 export default class Controls extends AbstractComponent {
   constructor({isInWatchList, isWatched, isFavorite}) {
@@ -12,7 +12,12 @@ export default class Controls extends AbstractComponent {
     });
   }
 
-  _getDetailControl({id, text, isActive}) {
+  setClickHandler(handler) {
+    const clickHandler = getHandlerWithProp(`.film-details__control-input`, handler);
+    this.getElement().addEventListener(`click`, clickHandler);
+  }
+
+  _getDetailControl({id, key, text, isActive}) {
     const checkedAttr = isActive ? `checked` : ``;
 
     return (
@@ -21,6 +26,7 @@ export default class Controls extends AbstractComponent {
         class="film-details__control-input visually-hidden"
         id="${id}"
         name="${id}"
+        data-prop="${key}"
         ${checkedAttr}
       >
       <label

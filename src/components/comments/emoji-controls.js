@@ -1,10 +1,31 @@
 import AbstractComponent from '../abstract-component';
+import {getHandlerWithValue} from '../../helpers';
 import {EMOJIS} from '../../constants';
 
 export default class EmojiControls extends AbstractComponent {
+  constructor({selectedEmoji}) {
+    super();
+
+    this._selectedEmoji = selectedEmoji;
+  }
+
+  setClickHandler(handler) {
+    const clickHandler = getHandlerWithValue(`.film-details__emoji-item`, handler);
+    this.getElement().addEventListener(`click`, clickHandler);
+  }
+
   _getEmojiControl(name) {
+    const checkedAttr = name === this._selectedEmoji ? `checked` : ``;
+
     return (
-      `<input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-${name}" value="${name}">
+      `<input
+        class="film-details__emoji-item visually-hidden"
+        name="comment-emoji"
+        type="radio"
+        id="emoji-${name}"
+        value="${name}"
+        ${checkedAttr}
+      >
 
       <label class="film-details__emoji-label" for="emoji-${name}">
         <img src="./images/emoji/${name}.png" width="30" height="30" alt="emoji ${name}">

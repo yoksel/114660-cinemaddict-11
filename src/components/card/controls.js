@@ -1,6 +1,5 @@
 import AbstractComponent from '../abstract-component';
-
-import {getClass, getFilmControlsData} from '../../helpers';
+import {getClass, getFilmControlsData, getHandlerWithProp} from '../../helpers';
 
 export default class Controls extends AbstractComponent {
   constructor({isInWatchList, isWatched, isFavorite}) {
@@ -12,7 +11,13 @@ export default class Controls extends AbstractComponent {
       isFavorite,
     });
   }
-  _getCardControl({id, text, isActive}) {
+
+  setClickHandler(handler) {
+    const clickHandler = getHandlerWithProp(`.film-card__controls-item`, handler);
+    this.getElement().addEventListener(`click`, clickHandler);
+  }
+
+  _getCardControl({id, key, text, isActive}) {
     const mods = [id];
 
     if (isActive) {
@@ -25,7 +30,10 @@ export default class Controls extends AbstractComponent {
     });
 
     return (
-      `<button class="${className}">${text}</button>`
+      `<button
+        class="${className}"
+        data-prop="${key}"
+      >${text}</button>`
     );
   }
 
