@@ -1,6 +1,8 @@
 import FilterController from './filter';
 import FilmsListController from './films-list';
 import Sort from '../components/sort';
+import FilmsEmpty from '../components/films-empty';
+import {FILTERS} from '../constants';
 
 import {createElement, renderElement, sortByRating, sortByDate, sortByComments} from '../helpers';
 
@@ -137,12 +139,19 @@ export default class PageController {
   }
 
   _updateUpcoming(quantity) {
+    this._shownQuantity = 0;
+    const films = this._getUpcoming(quantity);
+
+    if (films.length === 0) {
+      this._upcomingListController.showNoFilmsMessage(`There are no movies for filter "${FILTERS[this._currentFilter].name}"`);
+      return;
+    }
+
+    this._upcomingListController.hideNoFilmsMessage();
+
     const upcomingFilmsContainer = this._upcomingListController.getFilmsContainerElement();
     upcomingFilmsContainer.innerHTML = ``;
-    this._upcomingFilmsControllers = [];
-    this._shownQuantity = 0;
-
-    this._upcomingFilmsControllers = this._upcomingListController.renderCards(this._getUpcoming(quantity));
+    this._upcomingFilmsControllers = this._upcomingListController.renderCards(films);
     this._allFilmsControllers = this._collectAllFilmsControllers();
   }
 
@@ -216,6 +225,11 @@ export default class PageController {
       this._sort,
       filmsSection
     ]);
+
+    if (this._films.length === 0) {
+      renderElement(filmsSection, new FilmsEmpty(`There are no movies in our database`));
+      return;
+    }
 
     this._upcomingFilmsControllers = this._upcomingListController.render(this._getUpcoming(MAX_CARDS_SHOW));
 
