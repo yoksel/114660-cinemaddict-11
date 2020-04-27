@@ -31,25 +31,23 @@ export default class PageController {
     return films;
   }
 
-  _getFilmsSortedByProp(prop, filmsToSort) {
-    let films = [];
-    filmsToSort = filmsToSort || this._films;
+  _getFilmsSortedByProp(prop, films) {
+    films = films || this._films.slice();
+
+    if (!this._currentSort) {
+      return films;
+    }
 
     switch (prop) {
       case `rating`:
-        films = this._getSortedFilms(sortByRating, filmsToSort);
-        break;
+        return this._getSortedFilms(sortByRating, films);
       case `comments`:
-        films = this._getSortedFilms(sortByComments, filmsToSort);
-        break;
+        return this._getSortedFilms(sortByComments, films);
       case `date`:
-        films = this._getSortedFilms(sortByDate, filmsToSort);
-        break;
+        return this._getSortedFilms(sortByDate, films);
       default:
-        films = filmsToSort;
+        return films;
     }
-
-    return films;
   }
 
   _getFilteredFilms(filterProp) {
@@ -67,13 +65,8 @@ export default class PageController {
       return this._films.slice();
     }
 
-    let films = [];
-
-    films = this._getFilteredFilms(this._currentFilter);
-
-    if (this._currentSort) {
-      films = this._getFilmsSortedByProp(this._currentSort, films);
-    }
+    let films = this._getFilteredFilms(this._currentFilter);
+    films = this._getFilmsSortedByProp(this._currentSort, films);
 
     return films;
   }
