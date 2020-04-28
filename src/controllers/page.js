@@ -1,7 +1,7 @@
 import FilterController from './filter';
 import FilmsListController from './films-list';
 import Sort from '../components/sort';
-import FilmsEmpty from '../components/films-empty';
+import FilmsEmpty from '../components/films-list';
 import {FILTERS} from '../constants';
 
 import {createElement, renderElement, sortByRating, sortByDate, sortByComments} from '../helpers';
@@ -227,7 +227,7 @@ export default class PageController {
     ]);
 
     if (this._films.length === 0) {
-      renderElement(filmsSection, new FilmsEmpty(`There are no movies in our database`));
+      renderElement(filmsSection, new FilmsEmpty({title: `There are no movies in our database`}));
       return;
     }
 

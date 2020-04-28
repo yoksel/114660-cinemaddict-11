@@ -1,6 +1,5 @@
 import FilmController from './film';
 import FilmsListComponent from '../components/films-list';
-import FilmsEmpty from '../components/films-empty';
 import ShowMoreBtn from '../components/show-more-btn';
 import {renderElement, replaceElement} from '../helpers';
 
@@ -11,7 +10,7 @@ export default class FilmsListController {
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
     this._moreBtn = new ShowMoreBtn();
-    this._emptyFilmsComponent = new FilmsEmpty();
+    this._emptyFilmsComponent = new FilmsListComponent({type: `empty`});
     this._isFilmsMessageShown = false;
   }
 
@@ -44,7 +43,11 @@ export default class FilmsListController {
   }
 
   showNoFilmsMessage(text) {
-    this._emptyFilmsComponent.setText(text);
+    if (!this._filmsListComponent) {
+      return;
+    }
+
+    this._emptyFilmsComponent.setTitle(text);
     replaceElement(this._filmsListComponent, this._emptyFilmsComponent);
     this._isFilmsMessageShown = true;
   }
@@ -59,8 +62,7 @@ export default class FilmsListController {
   }
 
   render(films) {
-    const props = Object.assign({}, this._props, {films});
-    this._filmsListComponent = new FilmsListComponent(props);
+    this._filmsListComponent = new FilmsListComponent(this._props);
     this._filmsContainerElement = this.getFilmsContainerElement();
 
     renderElement(this._filmsListComponent.getElement(), this._moreBtn);
