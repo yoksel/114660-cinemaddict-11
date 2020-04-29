@@ -158,8 +158,6 @@ export default class PageController {
       item.render(newData);
     });
 
-    this._filterController.render();
-
     if (isNeedToUpdateFiltered) {
       this._updateUpcoming(this._upcomingFilmsControllers.length);
     }

@@ -9,11 +9,18 @@ export default class FilterController {
     this._currentFilter = FilterType.ALL;
 
     this._onFilterChange = this._onFilterChange.bind(this);
+    this._onDataChange = this._onDataChange.bind(this);
+
+    this._filmsModel.addDataChangeHandler(this._onDataChange);
   }
 
   _onFilterChange(filter) {
     this._filmsModel.setFilterType(filter);
     this._currentFilter = filter;
+  }
+
+  _onDataChange() {
+    this.render();
   }
 
   render() {
