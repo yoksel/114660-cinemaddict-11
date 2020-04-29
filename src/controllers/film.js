@@ -25,6 +25,12 @@ export default class FilmController {
     this._detaislIsOpened = false;
   }
 
+  destroy() {
+    removeElement(this._cardComponent);
+    removeElement(this._detailsComponent);
+    document.removeEventListener(`keydown`, this._onEscKeyDown);
+  }
+
   _showDetails() {
     this._onViewChange();
     renderElement(document.body, this._detailsComponent);
