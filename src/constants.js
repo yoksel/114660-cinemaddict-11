@@ -28,6 +28,25 @@ const AGE_RATINGS = {
   '18+': `No One 17 & Under Admitted`,
 };
 
+const FILTERS = {
+  all: {
+    id: `all`,
+    name: `All movies`
+  },
+  isInWatchList: {
+    id: `watchlist`,
+    name: `Watchlist`
+  },
+  isWatched: {
+    id: `history`,
+    name: `History`
+  },
+  isFavorite: {
+    id: `favorites`,
+    name: `Favorites`
+  },
+};
+
 const MAX_CARDS_TOP = 2;
 const MAX_CARDS_SHOW = 5;
 const MAX_CARDS_LOAD = 5;
@@ -36,6 +55,7 @@ export {
   EMOJIS,
   USER_STATUSES,
   AGE_RATINGS,
+  FILTERS,
   MAX_CARDS_TOP,
   MAX_CARDS_SHOW,
   MAX_CARDS_LOAD,
