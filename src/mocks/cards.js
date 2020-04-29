@@ -97,6 +97,7 @@ const getCardsData = (quantity) => {
   const data = [];
 
   for (let i = 0; i < quantity; i++) {
+    const id = String(new Date() + Math.random());
     const poster = getRandomItem(POSTERS);
     const title = getRandomItem(TITLES);
     const origTitle = getRandomItem(TITLES);
@@ -117,6 +118,7 @@ const getCardsData = (quantity) => {
     const actors = getRandomList(NAMES, 5, 10);
 
     data.push({
+      id,
       poster,
       title,
       origTitle,
