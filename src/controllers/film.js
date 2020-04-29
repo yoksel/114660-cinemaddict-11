@@ -14,6 +14,7 @@ export default class FilmController {
     this._showDetails = this._showDetails.bind(this);
     this._hideDetails = this._hideDetails.bind(this);
     this._toggleProp = this._toggleProp.bind(this);
+    this._onEscKeyDown = this._onEscKeyDown.bind(this);
 
     this._detaislIsOpened = false;
   }
@@ -29,11 +30,15 @@ export default class FilmController {
     renderElement(document.body, this._detailsComponent);
     this._setDetailsHandlers();
     this._detaislIsOpened = true;
+
+    document.addEventListener(`keydown`, this._onEscKeyDown);
   }
 
   _hideDetails() {
     removeElement(this._detailsComponent);
     this._detaislIsOpened = false;
+
+    document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 
   _toggleProp(prop) {
@@ -43,6 +48,14 @@ export default class FilmController {
         {[prop]: !this.filmData[prop]}
     );
     this._onDataChange(this.filmData, newFilmData);
+  }
+
+  _onEscKeyDown(event) {
+    const isEscKey = event.key === `Escape` || event.key === `Esc`;
+
+    if (isEscKey) {
+      this._hideDetails();
+    }
   }
 
   _setCardHandlers() {
