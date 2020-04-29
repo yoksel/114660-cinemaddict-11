@@ -1,4 +1,5 @@
 import AbstractComponent from './abstract-component';
+import {SortType} from '../constants';
 
 const classes = {
   default: `sort__button`,
@@ -9,25 +10,14 @@ export default class Sort extends AbstractComponent {
   constructor(currentSort) {
     super();
 
-    this._defaultSort = `default`;
+    this._defaultSort = SortType.DEFAULT;
     this._currentSort = currentSort || this._defaultSort;
 
     this._sections = [
-      `default`,
-      `date`,
-      `rating`
+      SortType.DEFAULT,
+      SortType.DATE,
+      SortType.RATING
     ];
-  }
-
-  reset() {
-    if (this._currentSort === this._defaultSort) {
-      return;
-    }
-
-    this._currentSort = this._defaultSort;
-    this._currentControl.classList.remove(classes.active);
-    this._currentControl = this.getElement().querySelector(`.${classes.default}--default`);
-    this._currentControl.classList.add(classes.active);
   }
 
   _createHandler(handler) {
