@@ -16,6 +16,15 @@ export default class Comments extends AbstractComponent {
     this._form.setEmojiClickHandler(handler);
   }
 
+  setActionsHandler(handler) {
+    this._commentsList.setDeleteClickHandler(handler);
+    this._form.setSubmitHandler(handler);
+  }
+
+  destroyEvents() {
+    this._form.destroyEvents();
+  }
+
   _createElement() {
     const element = createElement(this._getTmpl());
     const wrapper = element.querySelector(`.film-details__comments-wrap`);

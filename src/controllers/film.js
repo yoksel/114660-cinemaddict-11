@@ -14,6 +14,7 @@ export default class FilmController {
     this._showDetails = this._showDetails.bind(this);
     this._hideDetails = this._hideDetails.bind(this);
     this._toggleProp = this._toggleProp.bind(this);
+    this._updateComments = this._updateComments.bind(this);
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
 
     this._detaislIsOpened = false;
@@ -26,6 +27,7 @@ export default class FilmController {
   }
 
   destroy() {
+    this._detailsComponent.destroyEvents();
     removeElement(this._cardComponent);
     removeElement(this._detailsComponent);
     document.removeEventListener(`keydown`, this._onEscKeyDown);
@@ -56,6 +58,26 @@ export default class FilmController {
     this._onDataChange(this.filmData, newFilmData);
   }
 
+  _updateComments(id, newData) {
+    const comments = this.filmData.comments;
+    let newComments = [];
+
+    if (newData === null) {
+      // deletion
+      newComments = comments.filter((comment) => comment.id !== id);
+    } else if (id === null) {
+      newComments = comments.concat([newData]);
+    }
+
+    const newFilmData = Object.assign(
+        {},
+        this.filmData,
+        {comments: newComments}
+    );
+
+    this._onDataChange(this.filmData, newFilmData);
+  }
+
   _onEscKeyDown(event) {
     const isEscKey = event.key === `Escape` || event.key === `Esc`;
 
@@ -72,12 +94,16 @@ export default class FilmController {
   _setDetailsHandlers() {
     this._detailsComponent.setCloseBtnClickHandler(this._hideDetails);
     this._detailsComponent.setControlsClickHandler(this._toggleProp);
+    this._detailsComponent.setCommentsActionsHandler(this._updateComments);
   }
 
   render(filmData) {
     this.filmData = filmData;
     const oldCardComponent = this._cardComponent;
     const oldDetailsComponent = this._detailsComponent;
+    if (this._detailsComponent) {
+      this._detailsComponent.destroyEvents();
+    }
     this._cardComponent = new CardComponent(filmData);
     this._detailsComponent = new DetailsComponent(filmData);
 

@@ -53,12 +53,14 @@ const getRandomComments = () => {
   const list = [];
 
   for (let i = 0; i < quantity; i++) {
+    const id = String(new Date() + Math.random());
     const author = getRandomItem(NAMES);
     const text = getRandomItem(SENTENCES);
     const date = getRandomDate();
     const emoji = getRandomItem(EMOJIS);
 
     list.push({
+      id,
       author,
       text,
       emoji,

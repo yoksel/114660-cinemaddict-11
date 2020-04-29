@@ -8,10 +8,54 @@ export default class Form extends AbstractComponent {
 
     this._selectedEmoji = selectedEmoji;
     this._emojiControls = new EmojiControls({selectedEmoji});
+    this._pressedButtons = {};
+
+    this._keyDownHandler = null;
+    this._keyUpHandler = () => {
+      this._pressedButtons = {};
+    };
   }
 
   setEmojiClickHandler(handler) {
     this._emojiControls.setClickHandler(handler);
+  }
+
+  _getSubmitHandler(handler) {
+    const textareaElement = this.getElement().querySelector(`.film-details__comment-input`);
+
+    return (event) => {
+      if (event.key === `Enter`) {
+        this._pressedButtons.enter = true;
+      } else if (event.key === `Control` || event.key === `Meta`) {
+        this._pressedButtons.ctrl = true;
+      }
+
+      if (this._pressedButtons.enter && this._pressedButtons.ctrl) {
+        if (!textareaElement.value) {
+          return;
+        }
+
+        handler(null, {
+          id: String(new Date() + Math.random()),
+          author: `Anonimus`,
+          text: textareaElement.value,
+          emoji: this._selectedEmoji,
+          date: new Date()
+        });
+      }
+    };
+  }
+
+  destroyEvents() {
+    document.removeEventListener(`keydown`, this._keyDownHandler);
+    document.removeEventListener(`keyup`, this._keyUpHandler);
+  }
+
+  setSubmitHandler(handler) {
+    this._keyDownHandler = this._getSubmitHandler(handler);
+
+    document.addEventListener(`keydown`, this._keyDownHandler);
+    document.addEventListener(`keyup`, this._keyUpHandler);
   }
 
   _createElement() {
