@@ -37,7 +37,7 @@ export default class Form extends AbstractComponent {
 
         handler(null, {
           id: String(new Date() + Math.random()),
-          author: `Anonimus`,
+          author: `Anonymous`,
           text: textareaElement.value,
           emoji: this._selectedEmoji,
           date: new Date()

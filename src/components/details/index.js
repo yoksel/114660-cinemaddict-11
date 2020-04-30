@@ -21,7 +21,7 @@ export default class Details extends AbstractSmartComponent {
     this._comments = new Comments(filmData);
     this._controls = new Controls(filmData);
 
-    this._setEmoji = this._setEmoji.bind(this);
+    this.setEmoji = this.setEmoji.bind(this);
 
     this._addEvents();
   }
@@ -58,7 +58,7 @@ export default class Details extends AbstractSmartComponent {
     this.rerender();
   }
 
-  _setEmoji(emoji) {
+  setEmoji(emoji = ``) {
     this._filmData = Object.assign(
         this._filmData,
         {selectedEmoji: emoji}
@@ -72,7 +72,7 @@ export default class Details extends AbstractSmartComponent {
   }
 
   _addEvents() {
-    this._comments.setEmojiClickHandler(this._setEmoji);
+    this._comments.setEmojiClickHandler(this.setEmoji);
   }
 
   _recoveryListeners() {

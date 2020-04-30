@@ -1,5 +1,5 @@
 import AbstractComponent from '../abstract-component';
-import {createElement, renderElement} from '../../helpers';
+import {createElement, renderElement, getRelativeDate} from '../../helpers';
 
 export default class CommentsList extends AbstractComponent {
   constructor(comments) {
@@ -53,7 +53,7 @@ export default class CommentsList extends AbstractComponent {
           </span>
 
           <span class="film-details__comment-day">
-            ${date}
+            ${getRelativeDate(date)}
           </span>
 
           <button class="film-details__comment-delete" type="button">Delete</button>
