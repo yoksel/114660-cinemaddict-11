@@ -40,6 +40,10 @@ export default class Films {
     this._callHandlers(this._sortChangeHandlers);
   }
 
+  getSortType() {
+    return this._activeSortType;
+  }
+
   addDataChangeHandler(handler) {
     this._dataChangeHandlers.push(handler);
   }

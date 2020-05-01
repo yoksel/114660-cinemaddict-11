@@ -1,5 +1,5 @@
 import AbstractComponent from './abstract-component';
-import {getFilmsByFilter} from '../helpers';
+import {getFilmsByFilter, getHandlerWithProp} from '../helpers';
 import {FilterType, FILTERS} from '../constants';
 
 const classes = {
@@ -16,40 +16,8 @@ export default class Filter extends AbstractComponent {
     this._currentFilter = currentFilter || this._defaultFilter;
   }
 
-  setCurrentFilter(filter) {
-    this._currentFilter = filter;
-  }
-
-  _createHandler(handler) {
-    return (event) => {
-      const control = event.target.closest(`.${classes.default}`);
-      event.preventDefault();
-
-      if (!control) {
-        return;
-      }
-
-      const {filterType} = control.dataset;
-
-      if (filterType === this._currentFilter) {
-        return;
-      }
-
-      if (!this._currentControl) {
-        this._currentControl = this.getElement().querySelector(`.${classes.active}`);
-      }
-
-      this._currentControl.classList.remove(classes.active);
-      control.classList.add(classes.active);
-
-      this._currentControl = control;
-      this._currentFilter = filterType;
-      handler(filterType);
-    };
-  }
-
   setClickHandler(handler) {
-    this._clickHandler = this._createHandler(handler);
+    this._clickHandler = getHandlerWithProp(`.${classes.default}`, handler);
 
     this.getElement().addEventListener(`click`, this._clickHandler);
   }
@@ -73,7 +41,7 @@ export default class Filter extends AbstractComponent {
       }
 
       return (
-        `${prev} <a href="#${type}" class="${className}" data-filter-type="${type}">
+        `${prev} <a href="#${type}" class="${className}" data-prop="${type}">
           ${name} ${counterMarkup}
         </a>`
       );

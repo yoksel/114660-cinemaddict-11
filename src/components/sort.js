@@ -1,4 +1,5 @@
 import AbstractComponent from './abstract-component';
+import {getHandlerWithProp} from '../helpers';
 import {SortType} from '../constants';
 
 const classes = {
@@ -20,35 +21,8 @@ export default class Sort extends AbstractComponent {
     ];
   }
 
-  _createHandler(handler) {
-    return (event) => {
-      const control = event.target.closest(`.${classes.default}`);
-
-      if (!control) {
-        return;
-      }
-
-      const {type} = control.dataset;
-
-      if (type === this._currentSort) {
-        return;
-      }
-
-      if (!this._currentControl) {
-        this._currentControl = this.getElement().querySelector(`.${classes.active}`);
-      }
-
-      this._currentControl.classList.remove(classes.active);
-      control.classList.add(classes.active);
-
-      this._currentControl = control;
-      this._currentSort = type;
-      handler(type);
-    };
-  }
-
   setClickHandler(handler) {
-    this._clickHandler = this._createHandler(handler);
+    this._clickHandler = getHandlerWithProp(`.${classes.default}`, handler);
 
     this.getElement().addEventListener(`click`, this._clickHandler);
   }
@@ -67,7 +41,7 @@ export default class Sort extends AbstractComponent {
           <a
             href="#"
             class="${className}"
-            data-type="${item}">Sort by ${item}</a>
+            data-prop="${item}">Sort by ${item}</a>
         </li>`
       );
     }, ``);

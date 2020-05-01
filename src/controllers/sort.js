@@ -9,11 +9,19 @@ export default class SortController {
     this._currentSort = SortType.DEFAULT;
 
     this._setSortType = this._setSortType.bind(this);
+    this._onSortChange = this._onSortChange.bind(this);
+
+    this._filmsModel.addSortChangeHandler(this._onSortChange);
   }
 
   _setSortType(sortType) {
     this._filmsModel.setSortType(sortType);
     this._currentSort = sortType;
+  }
+
+  _onSortChange() {
+    this._currentSort = this._filmsModel.getSortType();
+    this.render();
   }
 
   render() {

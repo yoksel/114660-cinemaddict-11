@@ -10,8 +10,10 @@ export default class FilterController {
 
     this._setFilterType = this._setFilterType.bind(this);
     this._onDataChange = this._onDataChange.bind(this);
+    this._onFilterChange = this._onFilterChange.bind(this);
 
     this._filmsModel.addDataChangeHandler(this._onDataChange);
+    this._filmsModel.addFilterChangeHandler(this._onFilterChange);
   }
 
   _setFilterType(filterType) {
@@ -20,6 +22,11 @@ export default class FilterController {
   }
 
   _onDataChange() {
+    this.render();
+  }
+
+  _onFilterChange() {
+    this._currentFilter = this._filmsModel.getFilterType();
     this.render();
   }
 
