@@ -43,6 +43,7 @@ export default class FilmController {
   }
 
   _hideDetails() {
+    this._detailsComponent.destroyEvents();
     removeElement(this._detailsComponent);
     this._detaislIsOpened = false;
 
