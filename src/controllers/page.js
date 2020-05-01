@@ -1,6 +1,4 @@
-import FilterController from './filter';
 import FilmsListController from './films-list';
-import Sort from './sort';
 import {FilterType, FILTERS} from '../constants';
 
 import {createElement, renderElement, getFilmsSortedByProp} from '../helpers';
@@ -169,13 +167,9 @@ export default class PageController {
 
   render() {
     const films = this._filmsModel.getFilms();
-    this._filterController = new FilterController(this._container, this._filmsModel);
-    this._sortController = new Sort(this._container, this._filmsModel);
     const filmsSection = createElement(`<section class="films"></section>`);
     this._initFilmsControllers(filmsSection);
 
-    this._filterController.render();
-    this._sortController.render();
     renderElement(this._container, filmsSection);
 
     if (films.length === 0) {

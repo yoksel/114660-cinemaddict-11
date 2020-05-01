@@ -1,5 +1,7 @@
 import FilmsModel from './models/films';
 
+import FilterController from './controllers/filter';
+import SortController from './controllers/sort';
 import PageController from './controllers/page';
 
 import Profile from './components/profile';
@@ -21,10 +23,14 @@ const siteHeaderElem = document.querySelector(`.header`);
 const siteMainElem = document.querySelector(`.main`);
 const filmsTotalElem = document.querySelector(`.footer__statistics`);
 
+const filterController = new FilterController(siteMainElem, filmsModel);
+const sortController = new SortController(siteMainElem, filmsModel);
 const pageController = new PageController(siteMainElem, filmsModel);
 const profile = new Profile(userData);
 const filmsTotal = new FilmsTotal(cardsData.length);
 
 renderElement(siteHeaderElem, profile);
+filterController.render();
+sortController.render();
 pageController.render();
 renderElement(filmsTotalElem, filmsTotal);
