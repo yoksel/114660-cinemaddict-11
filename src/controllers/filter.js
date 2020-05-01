@@ -8,15 +8,15 @@ export default class FilterController {
     this._filmsModel = filmsModel;
     this._currentFilter = FilterType.ALL;
 
-    this._onFilterChange = this._onFilterChange.bind(this);
+    this._setFilterType = this._setFilterType.bind(this);
     this._onDataChange = this._onDataChange.bind(this);
 
     this._filmsModel.addDataChangeHandler(this._onDataChange);
   }
 
-  _onFilterChange(filter) {
-    this._filmsModel.setFilterType(filter);
-    this._currentFilter = filter;
+  _setFilterType(filterType) {
+    this._filmsModel.setFilterType(filterType);
+    this._currentFilter = filterType;
   }
 
   _onDataChange() {
@@ -27,7 +27,7 @@ export default class FilterController {
     const oldFilterComponent = this._filterComponent;
     this._filterComponent = new Filter(this._filmsModel.getFilmsAll(), this._currentFilter);
 
-    this._filterComponent.setClickHandler(this._onFilterChange);
+    this._filterComponent.setClickHandler(this._setFilterType);
 
     if (oldFilterComponent) {
       replaceElement(oldFilterComponent, this._filterComponent);
