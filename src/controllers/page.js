@@ -96,7 +96,9 @@ export default class PageController {
     this._removeUpcomingFilmsControllers();
 
     if (films.length === 0) {
-      this._upcomingListController.showNoFilmsMessage(`There are no movies for filter "${FILTERS[this._filmsModel.getFilterType()].name}"`);
+      const filterName = FILTERS[this._filmsModel.getFilterType()].name;
+      const message = `There are no movies for filter "${filterName}"`;
+      this._upcomingListController.showNoFilmsMessage(message);
       return;
     }
 
