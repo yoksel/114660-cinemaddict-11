@@ -26,8 +26,7 @@ export default class Filter extends AbstractComponent {
     return Object.entries(FILTERS).reduce((prev, [type, {name}]) => {
       let counter = 0;
       let counterMarkup = ``;
-      let className = classes.default;
-      className += ` ${classes.default}--${type}`;
+      let className = `${classes.default} ${classes.default}--${type}`;
 
       if (type !== FilterType.ALL) {
         counter = getFilmsByFilter(this._films, type).length;
