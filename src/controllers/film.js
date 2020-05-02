@@ -27,7 +27,7 @@ export default class FilmController {
   }
 
   destroy() {
-    this._detailsComponent.destroyEvents();
+    this._detailsComponent.removeEvents();
     removeElement(this._cardComponent);
     removeElement(this._detailsComponent);
     document.removeEventListener(`keydown`, this._onEscKeyDown);
@@ -43,7 +43,7 @@ export default class FilmController {
   }
 
   _hideDetails() {
-    this._detailsComponent.destroyEvents();
+    this._detailsComponent.removeEvents();
     removeElement(this._detailsComponent);
     this._detaislIsOpened = false;
 
@@ -104,7 +104,7 @@ export default class FilmController {
     const oldCardComponent = this._cardComponent;
     const oldDetailsComponent = this._detailsComponent;
     if (this._detailsComponent) {
-      this._detailsComponent.destroyEvents();
+      this._detailsComponent.removeEvents();
     }
     this._cardComponent = new CardComponent(filmData);
     this._detailsComponent = new DetailsComponent(filmData);

@@ -39,8 +39,8 @@ export default class Details extends AbstractSmartComponent {
     this._commentsActionsHandler = handler;
   }
 
-  destroyEvents() {
-    this._comments.destroyEvents();
+  removeEvents() {
+    this._comments.removeEvents();
   }
 
   reset() {
@@ -64,7 +64,7 @@ export default class Details extends AbstractSmartComponent {
         {selectedEmoji: emoji}
     );
 
-    this._comments.destroyEvents();
+    this._comments.removeEvents();
     this._comments = new Comments(this._filmData);
     this.setCommentsActionsHandler(this._commentsActionsHandler);
 

@@ -46,7 +46,7 @@ export default class Form extends AbstractComponent {
     };
   }
 
-  destroyEvents() {
+  removeEvents() {
     document.removeEventListener(`keydown`, this._keyDownHandler);
     document.removeEventListener(`keyup`, this._keyUpHandler);
   }

@@ -21,8 +21,8 @@ export default class Comments extends AbstractComponent {
     this._form.setSubmitHandler(handler);
   }
 
-  destroyEvents() {
-    this._form.destroyEvents();
+  removeEvents() {
+    this._form.removeEvents();
   }
 
   _createElement() {
