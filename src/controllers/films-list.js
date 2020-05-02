@@ -81,15 +81,15 @@ export default class FilmsListController {
   }
 
   render(films) {
-    if (films.length === 0) {
-      return [];
-    }
-
     this._filmsListComponent = new FilmsListComponent(this._props);
     this._filmsContainerElement = this._filmsListComponent.getFilmsContainerElement();
 
     renderElement(this._filmsListComponent.getElement(), this._moreBtn);
     renderElement(this._container, this._filmsListComponent);
+
+    if (films.length === 0) {
+      this.hide();
+    }
 
     return this.renderCards(films);
   }
