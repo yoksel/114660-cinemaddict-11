@@ -1,3 +1,4 @@
+import he from 'he';
 import AbstractComponent from '../abstract-component';
 import EmojiControls from './emoji-controls';
 import {createElement, renderElement, getRandomID} from '../../helpers';
@@ -38,7 +39,7 @@ export default class Form extends AbstractComponent {
         handler(null, {
           id: getRandomID(),
           author: `Anonymous`,
-          text: textareaElement.value,
+          text: he.encode(textareaElement.value),
           emoji: this._selectedEmoji,
           date: new Date()
         });
