@@ -15,11 +15,22 @@ export default class SortController {
   }
 
   _setSortType(sortType) {
+    if (this._currentSort === sortType) {
+      return;
+    }
+
     this._filmsModel.setSortType(sortType);
+    this._currentSort = sortType;
   }
 
   _onSortChange() {
-    this._currentSort = this._filmsModel.getSortType();
+    const newSort = this._filmsModel.getSortType();
+
+    if (newSort === this._currentSort) {
+      return;
+    }
+
+    this._currentSort = newSort;
     this.render();
   }
 
