@@ -22,7 +22,7 @@ export const getFilmsSortedByProp = (filmsToSort, prop) => {
       return films.sort(sortByDate);
     case SortType.COMMENTS:
       return films.sort(sortByComments);
+    default:
+      return films;
   }
-
-  return films;
 };
