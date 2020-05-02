@@ -27,7 +27,7 @@ const filterController = new FilterController(siteMainElem, filmsModel);
 const sortController = new SortController(siteMainElem, filmsModel);
 const pageController = new PageController(siteMainElem, filmsModel);
 const profile = new Profile(userData);
-const filmsTotal = new FilmsTotal(cardsData.length);
+const filmsTotal = new FilmsTotal(filmsModel.getFilmsQuantity());
 
 renderElement(siteHeaderElem, profile);
 filterController.render();

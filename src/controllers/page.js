@@ -121,7 +121,7 @@ export default class PageController {
     this._upcomingFilmsControllers = this._upcomingFilmsControllers.concat(newControllers);
     this._allFilmsControllers = this._collectAllFilmsControllers();
 
-    if (this._shownQuantity >= this._filmsModel.getFilms().length) {
+    if (this._shownQuantity >= this._filmsModel.getFilmsQuantity()) {
       this._upcomingListController.hideMoreBtn();
     }
   }
@@ -168,20 +168,20 @@ export default class PageController {
   }
 
   render() {
-    const films = this._filmsModel.getFilms();
+    const filmsQuantity = this._filmsModel.getFilmsQuantity();
     const filmsSection = createElement(`<section class="films"></section>`);
     this._initFilmsControllers(filmsSection);
 
     renderElement(this._container, filmsSection);
 
-    if (films.length === 0) {
+    if (filmsQuantity === 0) {
       this._upcomingListController.showNoFilmsMessage(`There are no movies in our database`);
       return;
     }
 
     this._upcomingFilmsControllers = this._upcomingListController.render(this._getUpcoming(MAX_CARDS_SHOW));
 
-    if (films.length > MAX_CARDS_SHOW) {
+    if (filmsQuantity > MAX_CARDS_SHOW) {
       this._upcomingListController.showMoreBtn();
     }
 

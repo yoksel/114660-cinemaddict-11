@@ -22,6 +22,10 @@ export default class Films {
     return this._films;
   }
 
+  getFilmsQuantity() {
+    return this._films.length;
+  }
+
   setFilms(films) {
     this._films = films;
   }
