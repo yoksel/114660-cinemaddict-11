@@ -40,15 +40,15 @@ const FILTERS = {
     name: `All movies`
   },
   [FilterType.WATCHLIST]: {
-    prop: `isInWatchList`,
+    propName: `isInWatchList`,
     name: `Watchlist`
   },
   [FilterType.HISTORY]: {
-    prop: `isWatched`,
+    propName: `isWatched`,
     name: `History`
   },
   [FilterType.FAVORITES]: {
-    prop: `isFavorite`,
+    propName: `isFavorite`,
     name: `Favorites`
   },
 };

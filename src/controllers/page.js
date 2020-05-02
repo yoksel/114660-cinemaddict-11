@@ -133,10 +133,10 @@ export default class PageController {
       return false;
     }
 
-    const filterProp = FILTERS[currentFilter].prop;
+    const filterPropName = FILTERS[currentFilter].propName;
 
-    return oldData[filterProp] !== newData[filterProp]
-      && newData[filterProp] === false;
+    return oldData[filterPropName] !== newData[filterPropName]
+      && newData[filterPropName] === false;
   }
 
   _onDataChange(oldData, newData) {

@@ -5,6 +5,6 @@ export const getFilmsByFilter = (films, filterType) => {
     case FilterType.ALL:
       return films;
     default:
-      return films.filter((item) => item[FILTERS[filterType].prop]);
+      return films.filter((item) => item[FILTERS[filterType].propName]);
   }
 };
