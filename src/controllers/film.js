@@ -18,6 +18,7 @@ export default class FilmController {
     this._updateComments = this._updateComments.bind(this);
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
 
+    this._isNeedToDestryOnClose = false;
     this._detaislIsOpened = false;
   }
 
@@ -29,6 +30,11 @@ export default class FilmController {
   }
 
   destroy() {
+    if (this._detaislIsOpened) {
+      this._isNeedToDestryOnClose = true;
+      return;
+    }
+
     this._detailsComponent.removeEvents();
     removeElement(this._cardComponent);
     removeElement(this._detailsComponent);
@@ -49,6 +55,11 @@ export default class FilmController {
     this._detailsComponent.removeEvents();
     removeElement(this._detailsComponent);
     this._detaislIsOpened = false;
+
+    if (this._isNeedToDestryOnClose) {
+      this.destroy();
+      this._isNeedToDestryOnClose = false;
+    }
 
     document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
