@@ -12,3 +12,4 @@ export {getFilmsByFilter} from './getFilmsByFilter';
 export {sortByRating, sortByDate, sortByComments, getFilmsSortedByProp} from './sort';
 export {getHandlerWithProp} from './getHandlerWithProp';
 export {getHandlerWithValue} from './getHandlerWithValue';
+export {getRandomID} from './getRandomID';

@@ -1,3 +1,4 @@
+import {getRandomID} from '../helpers';
 import {EMOJIS, AGE_RATINGS} from '../constants';
 import {POSTERS, TITLES, SENTENCES, GENRES, NAMES, COUNTRIES} from './constants';
 
@@ -53,7 +54,7 @@ const getRandomComments = () => {
   const list = [];
 
   for (let i = 0; i < quantity; i++) {
-    const id = String(new Date() + Math.random());
+    const id = getRandomID();
     const author = getRandomItem(NAMES);
     const text = getRandomItem(SENTENCES);
     const date = getRandomDate();
@@ -99,7 +100,7 @@ const getCardsData = (quantity) => {
   const data = [];
 
   for (let i = 0; i < quantity; i++) {
-    const id = String(new Date() + Math.random());
+    const id = getRandomID();
     const poster = getRandomItem(POSTERS);
     const title = getRandomItem(TITLES);
     const origTitle = getRandomItem(TITLES);
