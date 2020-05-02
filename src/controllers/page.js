@@ -47,7 +47,15 @@ export default class PageController {
   }
 
   _getTopCommented() {
-    let films = getFilmsSortedByProp(this._filmsModel.getFilms(), SortType.COMMENTS);
+    let filmsWithComments = this._filmsModel
+      .getFilms()
+      .filter((item) => item.comments.length > 0);
+
+    if (filmsWithComments.length === 0) {
+      return [];
+    }
+
+    let films = getFilmsSortedByProp(filmsWithComments, SortType.COMMENTS);
     films = films.slice(0, MAX_CARDS_TOP);
 
     return films;
@@ -117,12 +125,11 @@ export default class PageController {
     this._removeTopCommentedFilmsControllers();
 
     if (films.length === 0) {
-      const message = `There are no movies with comments"`;
-      this._topCommentedListController.showNoFilmsMessage(message);
+      this._topCommentedListController.hide();
       return;
     }
 
-    this._topCommentedListController.hideNoFilmsMessage();
+    this._topCommentedListController.show();
     this._topCommentedFilmsControllers = this._topCommentedListController.renderCards(films);
     this._allFilmsControllers = this._collectAllFilmsControllers();
   }
@@ -167,7 +174,7 @@ export default class PageController {
     }
 
     const isNeedToUpdateFiltered = this._checkIsNeedToUpdateFiltered(oldData, newData);
-    const isNeedToUpdateTopCommented = oldData.comments.length < newData.comments.length;
+    const isNeedToUpdateTopCommented = oldData.comments.length !== newData.comments.length;
     const filmsControllersToUpdate = this._allFilmsControllers.filter((item) => item.filmData.id === oldData.id);
 
     if (filmsControllersToUpdate.length === 0) {

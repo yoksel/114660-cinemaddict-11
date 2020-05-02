@@ -29,6 +29,14 @@ export default class FilmsListController {
     this._moreBtn.show();
   }
 
+  hide() {
+    this._filmsListComponent.hide();
+  }
+
+  show() {
+    this._filmsListComponent.show();
+  }
+
   _setOpenedID(id = null) {
     this._openedID = id;
   }
@@ -73,6 +81,10 @@ export default class FilmsListController {
   }
 
   render(films) {
+    if (films.length === 0) {
+      return [];
+    }
+
     this._filmsListComponent = new FilmsListComponent(this._props);
     this._filmsContainerElement = this._filmsListComponent.getFilmsContainerElement();
 
