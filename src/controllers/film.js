@@ -3,7 +3,7 @@ import DetailsComponent from '../components/details';
 import {renderElement, removeElement, replaceElement} from '../helpers';
 
 export default class FilmController {
-  constructor(container, onDataChange, onViewChange) {
+  constructor(container, onDataChange, onViewChange, setOpenedID) {
     this._container = container;
 
     this._cardComponent = null;
@@ -11,6 +11,7 @@ export default class FilmController {
 
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
+    this._setOpenedID = setOpenedID;
     this._showDetails = this._showDetails.bind(this);
     this._hideDetails = this._hideDetails.bind(this);
     this._toggleProp = this._toggleProp.bind(this);
@@ -24,6 +25,7 @@ export default class FilmController {
     this._hideDetails();
     this._detailsComponent.reset();
     this._detaislIsOpened = false;
+    this._setOpenedID();
   }
 
   destroy() {
@@ -38,6 +40,7 @@ export default class FilmController {
     renderElement(document.body, this._detailsComponent);
     this._setDetailsHandlers();
     this._detaislIsOpened = true;
+    this._setOpenedID(this.filmData.id);
 
     document.addEventListener(`keydown`, this._onEscKeyDown);
   }

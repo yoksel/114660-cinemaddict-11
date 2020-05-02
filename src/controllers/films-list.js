@@ -12,6 +12,9 @@ export default class FilmsListController {
     this._moreBtn = new ShowMoreBtn();
     this._emptyFilmsComponent = new FilmsListComponent({type: `empty`});
     this._isFilmsMessageShown = false;
+    this._openedID = null;
+
+    this._setOpenedID = this._setOpenedID.bind(this);
   }
 
   setMoreBtnClickHandler(handler) {
@@ -26,14 +29,24 @@ export default class FilmsListController {
     this._moreBtn.show();
   }
 
+  _setOpenedID(id = null) {
+    this._openedID = id;
+  }
+
   renderCards(films) {
     return films.map((film) => {
       const filmController = new FilmController(
           this._filmsContainerElement,
           this._onDataChange,
-          this._onViewChange
+          this._onViewChange,
+          this._setOpenedID
       );
+
       filmController.render(film);
+
+      if (this._openedID === film.id) {
+        filmController._showDetails();
+      }
       return filmController;
     });
   }
