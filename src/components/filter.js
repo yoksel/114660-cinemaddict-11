@@ -24,14 +24,12 @@ export default class Filter extends AbstractComponent {
 
   _getItems() {
     return Object.entries(FILTERS).reduce((prev, [type, {name}]) => {
-      let counter = 0;
       let counterMarkup = ``;
       let className = `${classes.default} ${classes.default}--${type}`;
 
       if (type !== FilterType.ALL) {
-        counter = getFilmsByFilter(this._films, type).length;
         counterMarkup = `<span class="main-navigation__item-count">
-          ${counter}
+          ${getFilmsByFilter(this._films, type).length}
         </span>`;
       }
 
