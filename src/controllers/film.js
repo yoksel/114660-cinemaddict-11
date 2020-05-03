@@ -3,7 +3,7 @@ import DetailsComponent from '../components/details';
 import {renderElement, removeElement, replaceElement} from '../helpers';
 
 export default class FilmController {
-  constructor(container, onDataChange, onViewChange, setOpenedID) {
+  constructor(container, onDataChange, onViewChange, checkFilmInRendered) {
     this._container = container;
 
     this._cardComponent = null;
@@ -11,30 +11,23 @@ export default class FilmController {
 
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
-    this._setOpenedID = setOpenedID;
+    this._checkFilmInRendered = checkFilmInRendered;
     this._showDetails = this._showDetails.bind(this);
     this._hideDetails = this._hideDetails.bind(this);
     this._toggleProp = this._toggleProp.bind(this);
     this._updateComments = this._updateComments.bind(this);
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
 
-    this._isNeedToDestryOnClose = false;
-    this._detaislIsOpened = false;
+    this.detaislIsOpened = false;
   }
 
   setDefaultView() {
     this._hideDetails();
     this._detailsComponent.reset();
-    this._detaislIsOpened = false;
-    this._setOpenedID();
+    this.detaislIsOpened = false;
   }
 
   destroy() {
-    if (this._detaislIsOpened) {
-      this._isNeedToDestryOnClose = true;
-      return;
-    }
-
     this._detailsComponent.removeEvents();
     removeElement(this._cardComponent);
     removeElement(this._detailsComponent);
@@ -45,21 +38,19 @@ export default class FilmController {
     this._onViewChange();
     renderElement(document.body, this._detailsComponent);
     this._setDetailsHandlers();
-    this._detaislIsOpened = true;
-    this._setOpenedID(this.filmData.id);
+    this.detaislIsOpened = true;
 
     document.addEventListener(`keydown`, this._onEscKeyDown);
   }
 
   _hideDetails() {
+    if (!this._checkFilmInRendered(this.filmData.id)) {
+      this.destroy();
+    }
+
     this._detailsComponent.removeEvents();
     removeElement(this._detailsComponent);
-    this._detaislIsOpened = false;
-
-    if (this._isNeedToDestryOnClose) {
-      this.destroy();
-      this._isNeedToDestryOnClose = false;
-    }
+    this.detaislIsOpened = false;
 
     document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
@@ -128,7 +119,7 @@ export default class FilmController {
     if (oldCardComponent) {
       replaceElement(oldCardComponent, this._cardComponent);
 
-      if (this._detaislIsOpened) {
+      if (this.detaislIsOpened) {
         this._setDetailsHandlers();
         replaceElement(oldDetailsComponent, this._detailsComponent);
       }

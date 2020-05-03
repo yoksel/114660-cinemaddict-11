@@ -14,7 +14,7 @@ export default class FilmsListController {
     this._isFilmsMessageShown = false;
     this._openedID = null;
 
-    this._setOpenedID = this._setOpenedID.bind(this);
+    this._checkInRenderedFilms = this._checkInRenderedFilms.bind(this);
   }
 
   setMoreBtnClickHandler(handler) {
@@ -37,17 +37,19 @@ export default class FilmsListController {
     this._filmsListComponent.show();
   }
 
-  _setOpenedID(id = null) {
-    this._openedID = id;
+  _checkInRenderedFilms(id) {
+    return this._films.some((item) => item.id === id);
   }
 
   renderCards(films) {
+    this._films = films;
+
     return films.map((film) => {
       const filmController = new FilmController(
           this._filmsContainerElement,
           this._onDataChange,
           this._onViewChange,
-          this._setOpenedID
+          this._checkInRenderedFilms
       );
 
       filmController.render(film);

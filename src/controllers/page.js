@@ -93,15 +93,22 @@ export default class PageController {
     );
   }
 
-  _removeUpcomingFilmsControllers() {
-    this._upcomingFilmsControllers.forEach((item) => item.destroy());
-    this._upcomingFilmsControllers = [];
+  _removeControllers(prop) {
+    this._openedFilmsControllers = this[prop].filter((item) => item.detaislIsOpened);
+
+    this[prop].forEach((item) => {
+      if (!item.detaislIsOpened) {
+        item.destroy();
+      }
+    });
+
+    this[prop] = this._openedFilmsControllers;
   }
 
   _updateUpcoming(quantity) {
     this._shownQuantity = 0;
     const films = this._getUpcoming(quantity);
-    this._removeUpcomingFilmsControllers();
+    this._removeControllers(`_upcomingFilmsControllers`);
 
     if (films.length === 0) {
       const filterName = FILTERS[this._filmsModel.getFilterType()].name;
@@ -111,18 +118,14 @@ export default class PageController {
     }
 
     this._upcomingListController.hideNoFilmsMessage();
-    this._upcomingFilmsControllers = this._upcomingListController.renderCards(films);
+    const newControls = this._upcomingListController.renderCards(films);
+    this._upcomingFilmsControllers = this._upcomingFilmsControllers.concat(newControls);
     this._allFilmsControllers = this._collectAllFilmsControllers();
-  }
-
-  _removeTopCommentedFilmsControllers() {
-    this._topCommentedFilmsControllers.forEach((item) => item.destroy());
-    this._topCommentedFilmsControllers = [];
   }
 
   _updateTopCommented() {
     const films = this._getTopCommented();
-    this._removeTopCommentedFilmsControllers();
+    this._removeControllers(`_topCommentedFilmsControllers`);
 
     if (films.length === 0) {
       this._topCommentedListController.hide();
@@ -130,7 +133,8 @@ export default class PageController {
     }
 
     this._topCommentedListController.show();
-    this._topCommentedFilmsControllers = this._topCommentedListController.renderCards(films);
+    const newControllers = this._topCommentedListController.renderCards(films);
+    this._topCommentedFilmsControllers = this._topCommentedFilmsControllers.concat(newControllers);
     this._allFilmsControllers = this._collectAllFilmsControllers();
   }
 
@@ -187,7 +191,9 @@ export default class PageController {
     });
 
     if (isNeedToUpdateFiltered) {
-      this._updateUpcoming(this._upcomingFilmsControllers.length);
+      const quantityToShow = this._upcomingFilmsControllers.length - this._openedFilmsControllers.length;
+
+      this._updateUpcoming(quantityToShow);
     }
 
     if (isNeedToUpdateTopCommented) {
