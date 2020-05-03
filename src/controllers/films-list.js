@@ -12,9 +12,10 @@ export default class FilmsListController {
     this._moreBtn = new ShowMoreBtn();
     this._emptyFilmsComponent = new FilmsListComponent({type: `empty`});
     this._isFilmsMessageShown = false;
-    this._openedID = null;
+    this._films = [];
+    this._filmsControllers = [];
 
-    this._checkInRenderedFilms = this._checkInRenderedFilms.bind(this);
+    this._checkIsNeedToDestroyController = this._checkIsNeedToDestroyController.bind(this);
   }
 
   setMoreBtnClickHandler(handler) {
@@ -37,28 +38,48 @@ export default class FilmsListController {
     this._filmsListComponent.show();
   }
 
-  _checkInRenderedFilms(id) {
-    return this._films.some((item) => item.id === id);
+  clearSavedData() {
+    this._films = [];
+    this._filmsControllers = [];
+  }
+
+  _checkIsNeedToDestroyController(filmController) {
+    const isFilmInList = this._films.some((item) => item.id === filmController.filmData.id);
+    // Film doesn't exist in list of currently rendered films, destroy
+    if (!isFilmInList) {
+      return true;
+    }
+
+    const isControllerInRendered = this._filmsControllers.some((item) => item === filmController);
+
+    // Controller is still rendered (films cards were not updated), leave
+    if (isControllerInRendered) {
+      return false;
+    }
+
+    // Films were rerendered, destroy
+    return true;
   }
 
   renderCards(films) {
-    this._films = films;
+    this._films = this._films.concat(films);
 
-    return films.map((film) => {
+    const newControllers = films.map((film) => {
       const filmController = new FilmController(
           this._filmsContainerElement,
           this._onDataChange,
           this._onViewChange,
-          this._checkInRenderedFilms
+          this._checkIsNeedToDestroyController
       );
 
       filmController.render(film);
 
-      if (this._openedID === film.id) {
-        filmController._showDetails();
-      }
       return filmController;
     });
+
+    this._filmsControllers = this._filmsControllers.concat(newControllers);
+
+    return this._filmsControllers;
   }
 
   showNoFilmsMessage(text) {

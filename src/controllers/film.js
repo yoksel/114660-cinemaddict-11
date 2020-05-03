@@ -3,7 +3,7 @@ import DetailsComponent from '../components/details';
 import {renderElement, removeElement, replaceElement} from '../helpers';
 
 export default class FilmController {
-  constructor(container, onDataChange, onViewChange, checkFilmInRendered) {
+  constructor(container, onDataChange, onViewChange, checkIsNeedToDestroyController) {
     this._container = container;
 
     this._cardComponent = null;
@@ -11,7 +11,7 @@ export default class FilmController {
 
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
-    this._checkFilmInRendered = checkFilmInRendered;
+    this._checkIsNeedToDestroyController = checkIsNeedToDestroyController;
     this._showDetails = this._showDetails.bind(this);
     this._hideDetails = this._hideDetails.bind(this);
     this._toggleProp = this._toggleProp.bind(this);
@@ -44,7 +44,9 @@ export default class FilmController {
   }
 
   _hideDetails() {
-    if (!this._checkFilmInRendered(this.filmData.id)) {
+    const isNeedToDestroy = this._checkIsNeedToDestroyController(this);
+
+    if (isNeedToDestroy) {
       this.destroy();
     }
 
