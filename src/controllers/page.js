@@ -94,10 +94,10 @@ export default class PageController {
   }
 
   _removeControllers(prop) {
-    this._openedFilmsControllers = this[prop].filter((item) => item.detaislIsOpened);
+    this._openedFilmsControllers = this[prop].filter((item) => item.detailsIsOpened);
 
     this[prop].forEach((item) => {
-      if (!item.detaislIsOpened) {
+      if (!item.detailsIsOpened) {
         item.destroy();
       }
     });

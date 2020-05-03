@@ -18,13 +18,13 @@ export default class FilmController {
     this._updateComments = this._updateComments.bind(this);
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
 
-    this.detaislIsOpened = false;
+    this.detailsIsOpened = false;
   }
 
   setDefaultView() {
     this._hideDetails();
     this._detailsComponent.reset();
-    this.detaislIsOpened = false;
+    this.detailsIsOpened = false;
   }
 
   destroy() {
@@ -38,7 +38,7 @@ export default class FilmController {
     this._onViewChange();
     renderElement(document.body, this._detailsComponent);
     this._setDetailsHandlers();
-    this.detaislIsOpened = true;
+    this.detailsIsOpened = true;
 
     document.addEventListener(`keydown`, this._onEscKeyDown);
   }
@@ -50,7 +50,7 @@ export default class FilmController {
 
     this._detailsComponent.removeEvents();
     removeElement(this._detailsComponent);
-    this.detaislIsOpened = false;
+    this.detailsIsOpened = false;
 
     document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
@@ -119,7 +119,7 @@ export default class FilmController {
     if (oldCardComponent) {
       replaceElement(oldCardComponent, this._cardComponent);
 
-      if (this.detaislIsOpened) {
+      if (this.detailsIsOpened) {
         this._setDetailsHandlers();
         replaceElement(oldDetailsComponent, this._detailsComponent);
       }
