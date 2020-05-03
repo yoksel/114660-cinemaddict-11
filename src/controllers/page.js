@@ -40,7 +40,7 @@ export default class PageController {
   }
 
   _getTopRated() {
-    let films = getFilmsSortedByProp(this._filmsModel.getFilms(), SortType.RATING);
+    let films = getFilmsSortedByProp(this._filmsModel.getFilmsAll(), SortType.RATING);
     films = films.slice(0, MAX_CARDS_TOP);
 
     return films;
@@ -48,7 +48,7 @@ export default class PageController {
 
   _getTopCommented() {
     let filmsWithComments = this._filmsModel
-      .getFilms()
+      .getFilmsAll()
       .filter((item) => item.comments.length > 0);
 
     if (filmsWithComments.length === 0) {
