@@ -45,7 +45,7 @@ export default class Details extends AbstractSmartComponent {
   }
 
   reset() {
-    if (!this._filmData.selectedEmoji) {
+    if (!this._filmData.selectedEmoji && !this._filmData.commentText) {
       return;
     }
 
