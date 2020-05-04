@@ -32,7 +32,7 @@ export default class Form extends AbstractComponent {
       }
 
       if (this._pressedButtons.enter && this._pressedButtons.ctrl) {
-        if (!textareaElement.value) {
+        if (!textareaElement.value.trim()) {
           return;
         }
 
