@@ -82,7 +82,7 @@ export default class FilmController {
       newComments = comments.filter((comment) => comment.id !== id);
     } else if (id === null) {
       newComments = comments.concat([newData]);
-      this._detailsComponent.setEmoji();
+      this._detailsComponent.resetComment();
     }
 
     const newFilmData = Object.assign(

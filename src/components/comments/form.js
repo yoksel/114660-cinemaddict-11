@@ -1,28 +1,55 @@
 import he from 'he';
-import AbstractComponent from '../abstract-component';
+import AbstractSmartComponent from '../abstract-smart-component';
 import EmojiControls from './emoji-controls';
 import {createElement, renderElement, getRandomID} from '../../helpers';
 
-export default class Form extends AbstractComponent {
-  constructor({selectedEmoji}) {
+const classHighlightRequired = `hightlight-required`;
+
+export default class Form extends AbstractSmartComponent {
+  constructor({selectedEmoji, commentText}) {
     super();
 
+
     this._selectedEmoji = selectedEmoji;
+    this._commentText = commentText || ``;
     this._emojiControls = new EmojiControls({selectedEmoji});
     this._pressedButtons = {};
-
-    this._keyDownHandler = null;
+    this._submitGeneratedHandler = null;
     this._keyUpHandler = () => {
       this._pressedButtons = {};
     };
   }
 
   setEmojiClickHandler(handler) {
-    this._emojiControls.setClickHandler(handler);
+    this._emojiControls.setClickHandler((emoji) => {
+      this._selectedEmoji = emoji;
+      handler(emoji);
+      this.removeEvents();
+      this.rerender();
+    });
+    this._emojiClickHandler = handler;
+  }
+
+  setTextInputHandler(handler) {
+    const textareaElement = this.getElement().querySelector(`.film-details__comment-input`);
+
+    this._textInputGeneratedlHandler = () => {
+      this._commentText = textareaElement.value.trim();
+      handler(this._commentText);
+    };
+
+    textareaElement.addEventListener(`blur`, this._textInputGeneratedlHandler);
+    this._textInputInitialHandler = handler;
+  }
+
+  _recoveryListeners() {
+    this.setTextInputHandler(this._textInputInitialHandler);
+    this.setSubmitHandler(this._submitInitialHandler);
   }
 
   _getSubmitHandler(handler) {
     const textareaElement = this.getElement().querySelector(`.film-details__comment-input`);
+    const emojiLabelElement = this.getElement().querySelector(`.film-details__add-emoji-label`);
 
     return (event) => {
       if (event.key === `Enter`) {
@@ -32,14 +59,26 @@ export default class Form extends AbstractComponent {
       }
 
       if (this._pressedButtons.enter && this._pressedButtons.ctrl) {
-        if (!textareaElement.value.trim()) {
+        const value = textareaElement.value.trim();
+
+        if (!value) {
+          textareaElement.classList.add(classHighlightRequired);
           return;
         }
+
+        textareaElement.classList.remove(classHighlightRequired);
+
+        if (!this._selectedEmoji) {
+          emojiLabelElement.classList.add(classHighlightRequired);
+          return;
+        }
+
+        emojiLabelElement.classList.remove(classHighlightRequired);
 
         handler(null, {
           id: getRandomID(),
           author: `Anonymous`,
-          text: he.encode(textareaElement.value),
+          text: he.encode(value),
           emoji: this._selectedEmoji,
           date: new Date()
         });
@@ -48,14 +87,15 @@ export default class Form extends AbstractComponent {
   }
 
   removeEvents() {
-    document.removeEventListener(`keydown`, this._keyDownHandler);
+    document.removeEventListener(`keydown`, this._submitGeneratedHandler);
     document.removeEventListener(`keyup`, this._keyUpHandler);
   }
 
   setSubmitHandler(handler) {
-    this._keyDownHandler = this._getSubmitHandler(handler);
+    this._submitGeneratedHandler = this._getSubmitHandler(handler);
+    this._submitInitialHandler = handler;
 
-    document.addEventListener(`keydown`, this._keyDownHandler);
+    document.addEventListener(`keydown`, this._submitGeneratedHandler);
     document.addEventListener(`keyup`, this._keyUpHandler);
   }
 
@@ -82,7 +122,7 @@ export default class Form extends AbstractComponent {
         </div>
 
         <label class="film-details__comment-label">
-          <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
+          <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${this._commentText}</textarea>
         </label>
       </div>`
     );
