@@ -3,7 +3,7 @@ import DetailsComponent from '../components/details';
 import {renderElement, removeElement, replaceElement} from '../helpers';
 
 export default class FilmController {
-  constructor(container, onDataChange, onViewChange, checkIsNeedToDestroyController) {
+  constructor(container, onDataChange, onViewChange, checkIsNeedToDestroyController, setOpenedFilmController) {
     this._container = container;
 
     this._cardComponent = null;
@@ -12,6 +12,7 @@ export default class FilmController {
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
     this._checkIsNeedToDestroyController = checkIsNeedToDestroyController;
+    this._setOpenedFilmController = setOpenedFilmController;
     this._showDetails = this._showDetails.bind(this);
     this._hideDetails = this._hideDetails.bind(this);
     this._toggleProp = this._toggleProp.bind(this);
@@ -28,10 +29,14 @@ export default class FilmController {
   }
 
   destroy() {
-    this._detailsComponent.removeEvents();
     removeElement(this._cardComponent);
+    this._detailsComponent.removeEvents();
     removeElement(this._detailsComponent);
     document.removeEventListener(`keydown`, this._onEscKeyDown);
+  }
+
+  removeCard() {
+    removeElement(this._cardComponent);
   }
 
   _showDetails() {
@@ -39,6 +44,7 @@ export default class FilmController {
     renderElement(document.body, this._detailsComponent);
     this._setDetailsHandlers();
     this.detailsIsOpened = true;
+    this._setOpenedFilmController(this);
 
     document.addEventListener(`keydown`, this._onEscKeyDown);
   }
@@ -53,6 +59,7 @@ export default class FilmController {
     this._detailsComponent.removeEvents();
     removeElement(this._detailsComponent);
     this.detailsIsOpened = false;
+    this._setOpenedFilmController(null);
 
     document.removeEventListener(`keydown`, this._onEscKeyDown);
   }

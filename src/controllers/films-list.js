@@ -16,6 +16,7 @@ export default class FilmsListController {
     this._filmsControllers = [];
 
     this._checkIsNeedToDestroyController = this._checkIsNeedToDestroyController.bind(this);
+    this._setOpenedFilmController = this._setOpenedFilmController.bind(this);
   }
 
   setMoreBtnClickHandler(handler) {
@@ -61,15 +62,25 @@ export default class FilmsListController {
     return true;
   }
 
+  _setOpenedFilmController(filmController) {
+    this._openedFilmController = filmController;
+  }
+
   renderCards(films) {
     this._films = this._films.concat(films);
+
+    if (this._openedFilmController) {
+      // Remove card of opened film on rerender
+      this._openedFilmController.removeCard();
+    }
 
     const newControllers = films.map((film) => {
       const filmController = new FilmController(
           this._filmsContainerElement,
           this._onDataChange,
           this._onViewChange,
-          this._checkIsNeedToDestroyController
+          this._checkIsNeedToDestroyController,
+          this._setOpenedFilmController
       );
 
       filmController.render(film);
