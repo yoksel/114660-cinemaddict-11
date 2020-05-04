@@ -3,12 +3,11 @@ import AbstractSmartComponent from '../abstract-smart-component';
 import EmojiControls from './emoji-controls';
 import {createElement, renderElement, getRandomID} from '../../helpers';
 
-const classHighlightRequired = `hightlight-required`;
+const CLASS_HIGHLIGHT_REQUIRED = `hightlight-required`;
 
 export default class Form extends AbstractSmartComponent {
   constructor({selectedEmoji, commentText}) {
     super();
-
 
     this._selectedEmoji = selectedEmoji;
     this._commentText = commentText || ``;
@@ -33,12 +32,12 @@ export default class Form extends AbstractSmartComponent {
   setTextInputHandler(handler) {
     const textareaElement = this.getElement().querySelector(`.film-details__comment-input`);
 
-    this._textInputGeneratedlHandler = () => {
+    const textInputGeneratedHandler = () => {
       this._commentText = textareaElement.value.trim();
       handler(this._commentText);
     };
 
-    textareaElement.addEventListener(`blur`, this._textInputGeneratedlHandler);
+    textareaElement.addEventListener(`blur`, textInputGeneratedHandler);
     this._textInputInitialHandler = handler;
   }
 
@@ -62,18 +61,18 @@ export default class Form extends AbstractSmartComponent {
         const value = textareaElement.value.trim();
 
         if (!value) {
-          textareaElement.classList.add(classHighlightRequired);
+          textareaElement.classList.add(CLASS_HIGHLIGHT_REQUIRED);
           return;
         }
 
-        textareaElement.classList.remove(classHighlightRequired);
+        textareaElement.classList.remove(CLASS_HIGHLIGHT_REQUIRED);
 
         if (!this._selectedEmoji) {
-          emojiLabelElement.classList.add(classHighlightRequired);
+          emojiLabelElement.classList.add(CLASS_HIGHLIGHT_REQUIRED);
           return;
         }
 
-        emojiLabelElement.classList.remove(classHighlightRequired);
+        emojiLabelElement.classList.remove(CLASS_HIGHLIGHT_REQUIRED);
 
         handler(null, {
           id: getRandomID(),
