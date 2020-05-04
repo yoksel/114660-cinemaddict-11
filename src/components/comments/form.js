@@ -32,6 +32,14 @@ export default class Form extends AbstractSmartComponent {
   setTextInputHandler(handler) {
     const textareaElement = this.getElement().querySelector(`.film-details__comment-input`);
 
+    textareaElement.addEventListener(`input`, () => {
+      if (!textareaElement.value) {
+        return;
+      }
+      textareaElement.classList.remove(CLASS_HIGHLIGHT_REQUIRED);
+    });
+
+
     const textInputGeneratedHandler = () => {
       this._commentText = textareaElement.value.trim();
       handler(this._commentText);
@@ -62,6 +70,14 @@ export default class Form extends AbstractSmartComponent {
 
         if (!value) {
           textareaElement.classList.add(CLASS_HIGHLIGHT_REQUIRED);
+          textareaElement.focus();
+        }
+
+        if (!this._selectedEmoji) {
+          emojiLabelElement.classList.add(CLASS_HIGHLIGHT_REQUIRED);
+        }
+
+        if (!value || !this._selectedEmoji) {
           return;
         }
 
