@@ -1,6 +1,7 @@
 import {getRandomID} from '../helpers';
 import {EMOJIS, AGE_RATINGS} from '../constants';
 import {POSTERS, TITLES, SENTENCES, GENRES, NAMES, COUNTRIES} from './constants';
+import {getFullDate} from '../helpers';
 
 const DESC_LENGTH = 140;
 
@@ -36,15 +37,19 @@ const getRandomRating = () => {
   return +rating.toFixed(1);
 };
 
-const getRandomDate = (sizeOffset = `month`) => {
+const getRandomNum = (max) => {
+  return Math.floor(Math.random() * max);
+};
+
+const getRandomDate = (params = {}) => {
+  const {yearsOffset = 30,
+    monthsOffset = 12,
+    daysOffset = 31} = params;
   const now = new Date();
-  const offset = Math.floor(Math.random() * 30);
 
-  now.setDate(now.getDate() - offset);
-
-  if (sizeOffset === `years`) {
-    now.setFullYear(now.getFullYear() - offset);
-  }
+  now.setDate(now.getDate() - getRandomNum(daysOffset));
+  now.setMonth(now.getMonth() - getRandomNum(monthsOffset));
+  now.setFullYear(now.getFullYear() - getRandomNum(yearsOffset));
 
   return now;
 };
@@ -57,7 +62,7 @@ const getRandomComments = () => {
     const id = getRandomID();
     const author = getRandomItem(NAMES);
     const text = getRandomItem(SENTENCES);
-    const date = getRandomDate();
+    const date = getRandomDate({yearsOffset: 5});
     const emoji = getRandomItem(EMOJIS);
 
     list.push({
@@ -98,6 +103,11 @@ const getRandomList = (list, min, max) => {
 
 const getCardsData = (quantity) => {
   const data = [];
+  const watchedRandomParams = {
+    yearsOffset: 2,
+    monthsOffset: 3,
+    daysOffset: 3
+  };
 
   for (let i = 0; i < quantity; i++) {
     const id = getRandomID();
@@ -107,13 +117,14 @@ const getCardsData = (quantity) => {
     const desc = getDesc();
     const shortDesc = getShortDesc(desc);
     const genres = getRandomList(GENRES, 1, 3);
-    const releaseDate = getRandomDate(`years`);
+    const releaseDate = getRandomDate();
     const runtime = getRandomDuration();
     const rating = getRandomRating();
     const comments = getRandomComments();
     const isInWatchList = Math.random() > 0.5;
     const isWatched = Math.random() > 0.5;
     const isFavorite = Math.random() > 0.5;
+    const watchedDate = isWatched ? getRandomDate(watchedRandomParams) : null;
     const ageRating = getRandomItem(Object.keys(AGE_RATINGS));
     const country = getRandomItem(COUNTRIES);
     const director = getRandomItem(NAMES);
@@ -136,10 +147,11 @@ const getCardsData = (quantity) => {
       country,
       director,
       writers,
-      isInWatchList,
       actors,
+      isInWatchList,
       isWatched,
-      isFavorite
+      isFavorite,
+      watchedDate
     });
   }
 
