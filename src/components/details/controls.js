@@ -13,8 +13,12 @@ export default class Controls extends AbstractComponent {
   }
 
   setClickHandler(handler) {
-    const clickHandler = getHandlerWithProp(`.film-details__control-input`, handler);
-    this.getElement().addEventListener(`click`, clickHandler);
+    this._clickHandler = getHandlerWithProp(`.film-details__control-input`, handler);
+    this.getElement().addEventListener(`click`, this._clickHandler);
+  }
+
+  removeEvents() {
+    this.getElement().removeEventListener(`click`, this._clickHandler);
   }
 
   _getDetailControl({id, key, text, isActive}) {

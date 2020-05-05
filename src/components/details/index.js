@@ -42,6 +42,7 @@ export default class Details extends AbstractSmartComponent {
 
   removeEvents() {
     this._comments.removeEvents();
+    this._controls.removeEvents();
   }
 
   reset() {
