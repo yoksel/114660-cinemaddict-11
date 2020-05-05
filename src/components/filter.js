@@ -16,10 +16,26 @@ export default class Filter extends AbstractComponent {
     this._currentFilter = currentFilter || this._defaultFilter;
   }
 
-  setClickHandler(handler) {
-    this._clickHandler = getHandlerWithProp(`.${classes.default}`, handler);
+  setFilterSwitchHandler(handler) {
+    const control = this.getElement().querySelector(`.main-navigation__items`);
+    const clickHandlerWithProp = getHandlerWithProp(`.${classes.default}`, handler);
 
-    this.getElement().addEventListener(`click`, this._clickHandler);
+    control.addEventListener(`click`, clickHandlerWithProp);
+    this._filterSwitchHandler = handler;
+  }
+
+  setFilterItemClickHandler(handler) {
+    const control = this.getElement().querySelector(`.main-navigation__items`);
+
+    control.addEventListener(`click`, handler);
+    this._filterItemClickHandler = handler;
+  }
+
+  setStatsClickHandler(handler) {
+    const control = this.getElement().querySelector(`.main-navigation__additional`);
+    control.addEventListener(`click`, handler);
+
+    this._statsClickHandler = handler;
   }
 
   _getItems() {

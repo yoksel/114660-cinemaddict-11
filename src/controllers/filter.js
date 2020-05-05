@@ -16,6 +16,16 @@ export default class FilterController {
     this._filmsModel.addFilterChangeHandler(this._onFilterChange);
   }
 
+  setStatsClickHandler(handler) {
+    this._filterComponent.setStatsClickHandler(handler);
+    this._statsClickHandler = handler;
+  }
+
+  setFilterItemClickHandler(handler) {
+    this._filterComponent.setFilterItemClickHandler(handler);
+    this._filterItemClickHandler = handler;
+  }
+
   _setFilterType(filterType) {
     if (this._currentFilter === filterType) {
       return;
@@ -25,8 +35,14 @@ export default class FilterController {
     this._currentFilter = filterType;
   }
 
+  _recoveryListeners() {
+    this.setFilterItemClickHandler(this._filterItemClickHandler);
+    this.setStatsClickHandler(this._statsClickHandler);
+  }
+
   _onDataChange() {
     this.render();
+    this._recoveryListeners();
   }
 
   _onFilterChange() {
@@ -38,13 +54,14 @@ export default class FilterController {
 
     this._currentFilter = newFilter;
     this.render();
+    this._recoveryListeners();
   }
 
   render() {
     const oldFilterComponent = this._filterComponent;
     this._filterComponent = new Filter(this._filmsModel.getFilmsAll(), this._currentFilter);
 
-    this._filterComponent.setClickHandler(this._setFilterType);
+    this._filterComponent.setFilterSwitchHandler(this._setFilterType);
 
     if (oldFilterComponent) {
       replaceElement(oldFilterComponent, this._filterComponent);
