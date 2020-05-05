@@ -1,5 +1,5 @@
 import AbstractComponent from '../abstract-component';
-import {getPlurals, getListAsStr, getFullDate, getRuntime} from '../../helpers';
+import {getPlurals, getListAsStr, getFullDate, getDuration} from '../../helpers';
 
 export default class Table extends AbstractComponent {
   constructor({
@@ -50,7 +50,7 @@ export default class Table extends AbstractComponent {
       },
       {
         name: `Runtime`,
-        value: getRuntime(this._runtime)
+        value: getDuration(this._runtime)
       },
       {
         name: `Country`,
