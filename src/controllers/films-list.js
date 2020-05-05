@@ -12,6 +12,11 @@ export default class FilmsListController {
     this._moreBtn = new ShowMoreBtn();
     this._emptyFilmsComponent = new FilmsListComponent({type: `empty`});
     this._isFilmsMessageShown = false;
+    this._films = [];
+    this._filmsControllers = [];
+
+    this._checkIsNeedToDestroyController = this._checkIsNeedToDestroyController.bind(this);
+    this._setOpenedFilmController = this._setOpenedFilmController.bind(this);
   }
 
   setMoreBtnClickHandler(handler) {
@@ -26,30 +31,78 @@ export default class FilmsListController {
     this._moreBtn.show();
   }
 
+  hide() {
+    this._filmsListComponent.hide();
+  }
+
+  show() {
+    this._filmsListComponent.show();
+  }
+
+  clearSavedData() {
+    this._films = [];
+    this._filmsControllers = [];
+  }
+
+  _checkIsNeedToDestroyController(filmController) {
+    const isFilmInList = this._films.some((item) => item.id === filmController.filmData.id);
+    // Film doesn't exist in list of currently rendered films, destroy
+    if (!isFilmInList) {
+      return true;
+    }
+
+    const isControllerInRendered = this._filmsControllers.some((item) => item === filmController);
+
+    // Controller is still rendered (films cards were not updated), leave
+    if (isControllerInRendered) {
+      return false;
+    }
+
+    // Films were rerendered, destroy
+    return true;
+  }
+
+  _setOpenedFilmController(filmController) {
+    this._openedFilmController = filmController;
+  }
+
   renderCards(films) {
-    return films.map((film) => {
+    this._films = this._films.concat(films);
+
+    if (this._openedFilmController) {
+      // Remove card of opened film on rerender
+      this._openedFilmController.removeCard();
+    }
+
+    const newControllers = films.map((film) => {
       const filmController = new FilmController(
           this._filmsContainerElement,
           this._onDataChange,
-          this._onViewChange
+          this._onViewChange,
+          this._checkIsNeedToDestroyController,
+          this._setOpenedFilmController
       );
+
       filmController.render(film);
+
       return filmController;
     });
-  }
 
-  getFilmsContainerElement() {
-    return this._filmsListComponent.getFilmsContainerElement();
+    this._filmsControllers = this._filmsControllers.concat(newControllers);
+
+    return this._filmsControllers;
   }
 
   showNoFilmsMessage(text) {
+    this._emptyFilmsComponent.setTitle(text);
+    this._isFilmsMessageShown = true;
+
     if (!this._filmsListComponent) {
+      renderElement(this._container, this._emptyFilmsComponent);
       return;
     }
 
-    this._emptyFilmsComponent.setTitle(text);
     replaceElement(this._filmsListComponent, this._emptyFilmsComponent);
-    this._isFilmsMessageShown = true;
   }
 
   hideNoFilmsMessage() {
@@ -63,10 +116,14 @@ export default class FilmsListController {
 
   render(films) {
     this._filmsListComponent = new FilmsListComponent(this._props);
-    this._filmsContainerElement = this.getFilmsContainerElement();
+    this._filmsContainerElement = this._filmsListComponent.getFilmsContainerElement();
 
     renderElement(this._filmsListComponent.getElement(), this._moreBtn);
     renderElement(this._container, this._filmsListComponent);
+
+    if (films.length === 0) {
+      this.hide();
+    }
 
     return this.renderCards(films);
   }

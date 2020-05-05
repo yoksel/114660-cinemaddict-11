@@ -5,6 +5,14 @@ export default class AbstractSmartComponent extends AbstractComponent {
     throw new Error(`Override _recoveryListeners() method in your component`);
   }
 
+  hide() {
+    this.getElement().hidden = true;
+  }
+
+  show() {
+    this.getElement().hidden = false;
+  }
+
   rerender() {
     const oldElement = this.getElement();
     this.removeElement();

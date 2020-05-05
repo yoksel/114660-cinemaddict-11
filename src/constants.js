@@ -28,23 +28,36 @@ const AGE_RATINGS = {
   '18+': `No One 17 & Under Admitted`,
 };
 
+const FilterType = {
+  ALL: `all`,
+  WATCHLIST: `watchlist`,
+  HISTORY: `history`,
+  FAVORITES: `favorites`,
+};
+
 const FILTERS = {
-  all: {
-    id: `all`,
+  [FilterType.ALL]: {
     name: `All movies`
   },
-  isInWatchList: {
-    id: `watchlist`,
+  [FilterType.WATCHLIST]: {
+    propName: `isInWatchList`,
     name: `Watchlist`
   },
-  isWatched: {
-    id: `history`,
+  [FilterType.HISTORY]: {
+    propName: `isWatched`,
     name: `History`
   },
-  isFavorite: {
-    id: `favorites`,
+  [FilterType.FAVORITES]: {
+    propName: `isFavorite`,
     name: `Favorites`
   },
+};
+
+const SortType = {
+  DEFAULT: `default`,
+  DATE: `date`,
+  RATING: `raiting`,
+  COMMENTS: `comments`
 };
 
 const MAX_CARDS_TOP = 2;
@@ -55,7 +68,9 @@ export {
   EMOJIS,
   USER_STATUSES,
   AGE_RATINGS,
+  FilterType,
   FILTERS,
+  SortType,
   MAX_CARDS_TOP,
   MAX_CARDS_SHOW,
   MAX_CARDS_LOAD,

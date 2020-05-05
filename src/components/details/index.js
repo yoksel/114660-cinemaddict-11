@@ -21,7 +21,8 @@ export default class Details extends AbstractSmartComponent {
     this._comments = new Comments(filmData);
     this._controls = new Controls(filmData);
 
-    this._setEmoji = this._setEmoji.bind(this);
+    this.setEmoji = this.setEmoji.bind(this);
+    this.setText = this.setText.bind(this);
 
     this._addEvents();
   }
@@ -34,34 +35,56 @@ export default class Details extends AbstractSmartComponent {
     this._controls.setClickHandler(handler);
   }
 
+  setCommentsActionsHandler(handler) {
+    this._comments.setActionsHandler(handler);
+    this._commentsActionsHandler = handler;
+  }
+
+  removeEvents() {
+    this._comments.removeEvents();
+    this._controls.removeEvents();
+  }
+
   reset() {
-    if (!this._filmData.selectedEmoji) {
+    if (!this._filmData.selectedEmoji && !this._filmData.commentText) {
       return;
     }
 
-    this._filmData = Object.assign(
-        this._filmData,
-        {selectedEmoji: null}
-    );
+    this.resetComment();
 
+    this.removeEvents();
     this._comments = new Comments(this._filmData);
 
     this.rerender();
   }
 
-  _setEmoji(emoji) {
+  resetComment() {
+    this._filmData = Object.assign(
+        this._filmData,
+        {
+          selectedEmoji: null,
+          commentText: ``
+        }
+    );
+  }
+
+  setEmoji(emoji = ``) {
     this._filmData = Object.assign(
         this._filmData,
         {selectedEmoji: emoji}
     );
+  }
 
-    this._comments = new Comments(this._filmData);
-
-    this.rerender();
+  setText(text = ``) {
+    this._filmData = Object.assign(
+        this._filmData,
+        {commentText: text}
+    );
   }
 
   _addEvents() {
-    this._comments.setEmojiClickHandler(this._setEmoji);
+    this._comments.setEmojiClickHandler(this.setEmoji);
+    this._comments.setTextInputHandler(this.setText);
   }
 
   _recoveryListeners() {

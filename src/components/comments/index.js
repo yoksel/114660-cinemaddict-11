@@ -4,16 +4,29 @@ import Form from './form';
 import {createElement, renderElement} from '../../helpers';
 
 export default class Comments extends AbstractComponent {
-  constructor({selectedEmoji, comments}) {
+  constructor({selectedEmoji, commentText, comments}) {
     super();
 
     this._comments = comments;
     this._commentsList = new CommentsList(comments);
-    this._form = new Form({selectedEmoji});
+    this._form = new Form({selectedEmoji, commentText});
   }
 
   setEmojiClickHandler(handler) {
     this._form.setEmojiClickHandler(handler);
+  }
+
+  setTextInputHandler(handler) {
+    this._form.setTextInputHandler(handler);
+  }
+
+  setActionsHandler(handler) {
+    this._commentsList.setDeleteClickHandler(handler);
+    this._form.setSubmitHandler(handler);
+  }
+
+  removeEvents() {
+    this._form.removeEvents();
   }
 
   _createElement() {
