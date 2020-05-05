@@ -1,7 +1,6 @@
 import {getRandomID} from '../helpers';
 import {EMOJIS, AGE_RATINGS} from '../constants';
 import {POSTERS, TITLES, SENTENCES, GENRES, NAMES, COUNTRIES} from './constants';
-import {getFullDate} from '../helpers';
 
 const DESC_LENGTH = 140;
 

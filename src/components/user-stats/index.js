@@ -47,7 +47,7 @@ export default class UserStats extends AbstractSmartComponent {
 
     statisticCtx.height = BAR_HEIGHT * labels.length;
 
-    const myChart = new Chart(statisticCtx, {
+    this._chart = new Chart(statisticCtx, {
       plugins: [ChartDataLabels],
       type: `horizontalBar`,
       data: {
