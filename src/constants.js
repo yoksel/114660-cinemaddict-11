@@ -60,6 +60,14 @@ const SortType = {
   COMMENTS: `comments`
 };
 
+const StatsFilter = {
+  ALL_TIME: `all-time`,
+  TODAY: `today`,
+  WEEK: `week`,
+  MONTH: `month`,
+  YEAR: `year`,
+};
+
 const MAX_CARDS_TOP = 2;
 const MAX_CARDS_SHOW = 5;
 const MAX_CARDS_LOAD = 5;
@@ -71,6 +79,7 @@ export {
   FilterType,
   FILTERS,
   SortType,
+  StatsFilter,
   MAX_CARDS_TOP,
   MAX_CARDS_SHOW,
   MAX_CARDS_LOAD,
