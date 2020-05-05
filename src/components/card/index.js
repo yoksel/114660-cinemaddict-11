@@ -1,6 +1,6 @@
 import AbstractComponent from '../abstract-component';
 import Controls from './controls';
-import {getRuntime, createElement, renderElement, getPlurals} from '../../helpers';
+import {getDuration, createElement, renderElement, getPlurals} from '../../helpers';
 
 export default class Card extends AbstractComponent {
   constructor(filmData) {
@@ -21,7 +21,7 @@ export default class Card extends AbstractComponent {
     this._shortDesc = shortDesc;
     this._genre = genres[0];
     this._year = releaseDate.getFullYear();
-    this._runtime = getRuntime(runtime);
+    this._runtime = getDuration(runtime);
     this._rating = rating;
     this._commentsCount = comments.length;
 
