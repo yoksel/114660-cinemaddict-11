@@ -1,4 +1,9 @@
-import {USER_STATUSES, StatsFilter} from '../constants';
+import {USER_STATUSES, StatsFilter, FilterType} from '../constants';
+import {getFilmsByFilter} from './getFilmsByFilter';
+
+export const getWatched = (films) => {
+  return getFilmsByFilter(films, FilterType.HISTORY);
+};
 
 export const getTotalDuration = (watchedFilms) => {
   const totalTimeMins = watchedFilms.reduce((prev, {runtime}) => {

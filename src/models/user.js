@@ -1,5 +1,4 @@
-import {getFilmsByFilter, getUserStatus} from '../helpers';
-import {FilterType} from '../constants';
+import {getWatched, getUserStatus} from '../helpers';
 
 export default class User {
   constructor(filmsModel) {
@@ -21,7 +20,7 @@ export default class User {
   }
 
   _setUserStatus() {
-    const watched = getFilmsByFilter(this._filmsModel.getFilms(), FilterType.HISTORY);
+    const watched = getWatched(this._filmsModel.getFilms());
     const status = getUserStatus(watched.length);
     this._user.status = status;
   }
