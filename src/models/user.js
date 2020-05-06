@@ -21,8 +21,7 @@ export default class User {
 
   _setUserStatus() {
     const watched = getWatched(this._filmsModel.getFilms());
-    const status = getUserStatus(watched.length);
-    this._user.status = status;
+    this._user.status = getUserStatus(watched.length);
   }
 
   _onDataChange() {
