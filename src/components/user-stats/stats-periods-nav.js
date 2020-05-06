@@ -2,7 +2,30 @@ import AbstractComponent from '../abstract-component';
 import {getHandlerWithValue} from '../../helpers';
 import {StatsFilter} from '../../constants';
 
-export default class Filter extends AbstractComponent {
+const ITEMS_DATA = [
+  {
+    value: StatsFilter.ALL_TIME,
+    text: `All time`
+  },
+  {
+    value: StatsFilter.TODAY,
+    text: `Today`
+  },
+  {
+    value: StatsFilter.WEEK,
+    text: `Week`
+  },
+  {
+    value: StatsFilter.MONTH,
+    text: `Month`
+  },
+  {
+    value: StatsFilter.YEAR,
+    text: `Year`
+  },
+];
+
+export default class StatsPeriodsNav extends AbstractComponent {
   constructor(currentFilter) {
     super();
 
@@ -15,30 +38,7 @@ export default class Filter extends AbstractComponent {
   }
 
   _getFilterItems() {
-    const itemsData = [
-      {
-        value: StatsFilter.ALL_TIME,
-        text: `All time`
-      },
-      {
-        value: StatsFilter.TODAY,
-        text: `Today`
-      },
-      {
-        value: StatsFilter.WEEK,
-        text: `Week`
-      },
-      {
-        value: StatsFilter.MONTH,
-        text: `Month`
-      },
-      {
-        value: StatsFilter.YEAR,
-        text: `Year`
-      },
-    ];
-
-    return itemsData.reduce((prev, {value, text}) => {
+    return ITEMS_DATA.reduce((prev, {value, text}) => {
       const checkedAttr = value === this._currentFilter ? `checked` : ``;
 
       return (
