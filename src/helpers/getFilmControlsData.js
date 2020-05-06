@@ -1,19 +1,19 @@
 import {FilterType, FILTERS} from '../constants';
 
 const controlsData = {
-  watchlist: {
+  [FilterType.WATCHLIST]: {
     key: FILTERS[FilterType.WATCHLIST].propName,
     getVariants(value) {
       return value ? `Already in watchlist` : `Add to watchlist`;
     }
   },
-  watched: {
+  [FilterType.HISTORY]: {
     key: FILTERS[FilterType.HISTORY].propName,
     getVariants(value) {
       return value ? `Already watched` : `Mark as watched`;
     }
   },
-  favorite: {
+  [FilterType.FAVORITES]: {
     key: FILTERS[FilterType.FAVORITES].propName,
     getVariants(value) {
       return value ? `Already in favorites` : `Add to favorites`;

@@ -31,8 +31,8 @@ const AGE_RATINGS = {
 const FilterType = {
   ALL: `all`,
   WATCHLIST: `watchlist`,
-  HISTORY: `history`,
-  FAVORITES: `favorites`,
+  HISTORY: `watched`,
+  FAVORITES: `favorite`,
 };
 
 const FILTERS = {
