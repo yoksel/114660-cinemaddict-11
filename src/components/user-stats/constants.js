@@ -22,8 +22,7 @@ export const CHART_OPTIONS = {
       gridLines: {
         display: false,
         drawBorder: false
-      },
-      barThickness: 24
+      }
     }],
     xAxes: [{
       ticks: {

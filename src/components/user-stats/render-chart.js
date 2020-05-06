@@ -29,7 +29,8 @@ export const renderChart = (container, watchedByGenre) => {
         data,
         backgroundColor: `#ffe800`,
         hoverBackgroundColor: `#ffe800`,
-        anchor: `start`
+        anchor: `start`,
+        barThickness: 24
       }]
     },
     options: CHART_OPTIONS
