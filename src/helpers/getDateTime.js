@@ -13,7 +13,21 @@ const getFullDate = (date) => {
     return ``;
   }
 
-  return moment(date).format(`D MMMM YYYY`);
+  return moment(date).format(`DD MMMM YYYY`);
+};
+
+const getDuration = (minutes) => {
+  const duration = moment.duration(minutes, `minutes`);
+  let hours = duration.hours();
+  let mins = duration.minutes();
+
+  hours = hours > 0 ? `${hours}h` : ``;
+  mins = mins > 0 ? `${mins}m` : ``;
+
+  if (hours && mins) {
+    hours += ` `;
+  }
+  return hours + mins;
 };
 
 const getRelativeDate = (date) => {
@@ -27,5 +41,6 @@ const getRelativeDate = (date) => {
 export {
   getDate,
   getFullDate,
-  getRelativeDate
+  getRelativeDate,
+  getDuration
 };
