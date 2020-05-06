@@ -65,20 +65,27 @@ export default class FilmController {
     document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 
-  _toggleProp(prop) {
+  _setWatchedDate(prop, newFilmData) {
     const watchedPropName = FILTERS[FilterType.HISTORY].propName;
+    const isDateNeeded = prop === watchedPropName
+      && newFilmData[prop]
+      && !newFilmData.watchedDate;
+
+    if (isDateNeeded) {
+      // Film was marked as watched but it has no date
+      newFilmData.watchedDate = new Date();
+    }
+  }
+
+  _toggleProp(prop) {
     const newFilmData = Object.assign(
         {},
         this.filmData,
         {[prop]: !this.filmData[prop]}
     );
 
-    if (prop === watchedPropName && newFilmData[prop]) {
-      if (!newFilmData.watchedDate) {
-        // Film was marked as watched but has no date
-        newFilmData.watchedDate = new Date();
-      }
-    }
+    this._setWatchedDate(prop, newFilmData);
+
     this._onDataChange(this.filmData, newFilmData);
   }
 
