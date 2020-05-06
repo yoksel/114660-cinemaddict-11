@@ -4,6 +4,18 @@ import {POSTERS, TITLES, SENTENCES, GENRES, NAMES, COUNTRIES} from './constants'
 
 const DESC_LENGTH = 140;
 
+const WATCHED_RANDOM_DATE_PARAMS = {
+  yearsOffset: 2,
+  monthsOffset: 3,
+  daysOffset: 3
+};
+
+const RANDOM_COMMENTS_DATE_PARAMS = {yearsOffset: 5};
+
+const DEFAULT_YEARS_OFFSET = 30;
+const DEFAULT_MONTHS_OFFSET = 12;
+const DEFAULT_DAYS_OFFSET = 31;
+
 const getRandomItem = (list) => {
   return list[Math.floor(Math.random() * list.length)];
 };
@@ -41,9 +53,9 @@ const getRandomNum = (max) => {
 };
 
 const getRandomDate = (params = {}) => {
-  const {yearsOffset = 30,
-    monthsOffset = 12,
-    daysOffset = 31} = params;
+  const {yearsOffset = DEFAULT_YEARS_OFFSET,
+    monthsOffset = DEFAULT_MONTHS_OFFSET,
+    daysOffset = DEFAULT_DAYS_OFFSET} = params;
   const now = new Date();
 
   now.setDate(now.getDate() - getRandomNum(daysOffset));
@@ -61,7 +73,7 @@ const getRandomComments = () => {
     const id = getRandomID();
     const author = getRandomItem(NAMES);
     const text = getRandomItem(SENTENCES);
-    const date = getRandomDate({yearsOffset: 5});
+    const date = getRandomDate(RANDOM_COMMENTS_DATE_PARAMS);
     const emoji = getRandomItem(EMOJIS);
 
     list.push({
@@ -102,11 +114,6 @@ const getRandomList = (list, min, max) => {
 
 const getCardsData = (quantity) => {
   const data = [];
-  const watchedRandomParams = {
-    yearsOffset: 2,
-    monthsOffset: 3,
-    daysOffset: 3
-  };
 
   for (let i = 0; i < quantity; i++) {
     const id = getRandomID();
@@ -123,7 +130,7 @@ const getCardsData = (quantity) => {
     const isInWatchList = Math.random() > 0.5;
     const isWatched = Math.random() > 0.5;
     const isFavorite = Math.random() > 0.5;
-    const watchedDate = isWatched ? getRandomDate(watchedRandomParams) : null;
+    const watchedDate = isWatched ? getRandomDate(WATCHED_RANDOM_DATE_PARAMS) : null;
     const ageRating = getRandomItem(Object.keys(AGE_RATINGS));
     const country = getRandomItem(COUNTRIES);
     const director = getRandomItem(NAMES);
