@@ -1,3 +1,5 @@
+export const BAR_HEIGHT = 50;
+
 export const CHART_OPTIONS = {
   plugins: {
     datalabels: {

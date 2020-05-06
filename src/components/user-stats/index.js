@@ -1,10 +1,8 @@
-import Chart from "chart.js";
-import ChartDataLabels from "chartjs-plugin-datalabels";
 import AbstractSmartComponent from '../abstract-smart-component';
-import StatisticsList from './statistics-list';
-import Filter from './filter';
+import StatsList from './stats-list';
+import StatsPeriodsNav from './stats-periods-nav';
 import {createElement, renderElement} from "../../helpers";
-import {CHART_OPTIONS} from "./constants";
+import {renderChart} from './render-chart';
 
 export default class UserStats extends AbstractSmartComponent {
   constructor({userData, currentFilter}) {
@@ -16,8 +14,8 @@ export default class UserStats extends AbstractSmartComponent {
     this._avatar = avatar;
     this._watchedByGenre = watchedByGenre;
 
-    this._statisticsList = new StatisticsList(userData);
-    this._filter = new Filter(this._currentFilter);
+    this._statsList = new StatsList(userData);
+    this._statsPeriodsNav = new StatsPeriodsNav(this._currentFilter);
   }
 
   _getRank() {
@@ -36,54 +34,16 @@ export default class UserStats extends AbstractSmartComponent {
   }
 
   setFilterClickHandler(handler) {
-    this._filter.setClickHandler(handler);
-  }
-
-  _initChart(element) {
-    const BAR_HEIGHT = 50;
-    const statisticCtx = element.querySelector(`.statistic__chart`);
-    const labels = Object.keys(this._watchedByGenre);
-    const data = Object.values(this._watchedByGenre);
-
-    statisticCtx.height = BAR_HEIGHT * labels.length;
-
-    this._chart = new Chart(statisticCtx, {
-      plugins: [ChartDataLabels],
-      type: `horizontalBar`,
-      data: {
-        labels,
-        datasets: [{
-          data,
-          backgroundColor: `#ffe800`,
-          hoverBackgroundColor: `#ffe800`,
-          anchor: `start`
-        }]
-      },
-      options: CHART_OPTIONS
-    });
-  }
-
-  _getChart() {
-    if (Object.values(this._watchedByGenre).length === 0) {
-      return null;
-    }
-
-    const markup = `<div class="statistic__chart-wrap">
-      <canvas class="statistic__chart" width="1000"></canvas>
-    </div>`;
-
-    const element = createElement(markup);
-    this._initChart(element);
-
-    return element;
+    this._statsPeriodsNav.setClickHandler(handler);
   }
 
   _createElement() {
     const element = createElement(this._getTmpl());
 
-    renderElement(element, this._filter);
-    renderElement(element, this._statisticsList);
-    renderElement(element, this._getChart());
+    renderElement(element, this._statsPeriodsNav);
+    renderElement(element, this._statsList);
+
+    renderChart(element, this._watchedByGenre);
 
     return element;
   }
