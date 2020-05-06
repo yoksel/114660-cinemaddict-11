@@ -61,15 +61,10 @@ export const getWatchedByPeriod = (watchedFilms, periodName) => {
       date.setDate(date.getDate() - 1);
       break;
     default:
-      date = null;
+      return watchedFilms;
   }
 
-  if (date) {
-    const films = watchedFilms.filter((item) => item.watchedDate > date);
-    return films;
-  }
-
-  return watchedFilms;
+  return watchedFilms.filter((item) => item.watchedDate > date);
 };
 
 export const getUserStatus = (watchedQuantity) => {
