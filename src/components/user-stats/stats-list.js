@@ -1,6 +1,6 @@
 import AbstractComponent from '../abstract-component';
 
-export default class StatisticsList extends AbstractComponent {
+export default class StatsList extends AbstractComponent {
   constructor({watchedQuantity, watchedDuration, topGenre}) {
     super();
 
