@@ -1,9 +1,7 @@
 import FilmsListController from './films-list';
-import {FilterType, FILTERS} from '../constants';
-
 import {createElement, renderElement, getFilmsSortedByProp} from '../helpers';
 
-import {MAX_CARDS_TOP, MAX_CARDS_SHOW, MAX_CARDS_LOAD, SortType} from '../constants';
+import {MAX_CARDS_TOP, MAX_CARDS_SHOW, MAX_CARDS_LOAD, SortType, FilterType, FILTERS} from '../constants';
 
 export default class PageController {
   constructor(container, filmsModel) {
