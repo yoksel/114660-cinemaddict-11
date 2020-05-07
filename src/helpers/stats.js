@@ -1,5 +1,6 @@
 import {USER_STATUSES, StatsFilter, FilterType} from '../constants';
 import {getFilmsByFilter} from './getFilmsByFilter';
+import moment from 'moment';
 
 export const getWatched = (films) => {
   return getFilmsByFilter(films, FilterType.HISTORY);
@@ -7,11 +8,12 @@ export const getWatched = (films) => {
 
 export const getTotalDuration = (watchedFilms) => {
   const totalTimeMins = watchedFilms.reduce((prev, {runtime}) => {
-    return prev + runtime.hours * 60 + runtime.mins;
+    return prev + runtime;
   }, 0);
 
-  let mins = totalTimeMins % 60;
-  const hours = (totalTimeMins - mins) / 60;
+  const duration = moment.duration(totalTimeMins, `minutes`);
+  let hours = duration.hours();
+  let mins = duration.minutes();
 
   if (mins > 0 && mins < 10) {
     mins = `0${mins}`;
