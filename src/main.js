@@ -17,13 +17,11 @@ import {TOTAL_FILMS} from './mocks/constants';
 import {getCardsData} from './mocks/cards';
 import {getUserData} from './mocks/user';
 
-const userData = getUserData();
-
 const filmsModel = new FilmsModel();
 filmsModel.setFilms(getCardsData(TOTAL_FILMS));
 
 const userModel = new UserModel(filmsModel);
-userModel.setUser(userData);
+userModel.setUser(getUserData());
 
 const siteHeaderElem = document.querySelector(`.header`);
 const siteMainElem = document.querySelector(`.main`);
