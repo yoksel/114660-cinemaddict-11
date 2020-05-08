@@ -22,7 +22,6 @@ export default class Profile {
 
     if (oldProfileComponent) {
       replaceElement(oldProfileComponent, this._profileComponent);
-
     } else {
       renderElement(this._container, this._profileComponent);
     }
