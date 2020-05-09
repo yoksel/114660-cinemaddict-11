@@ -19,7 +19,7 @@ export default class Card extends AbstractComponent {
     this._poster = poster;
     this._title = title;
     this._shortDesc = shortDesc;
-    this._genre = genres[0];
+    this._genre = genres[0] || ``;
     this._year = releaseDate.getFullYear();
     this._runtime = getDuration(runtime);
     this._rating = rating;

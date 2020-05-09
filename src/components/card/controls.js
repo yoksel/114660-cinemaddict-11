@@ -1,5 +1,5 @@
 import AbstractComponent from '../abstract-component';
-import {getClass, getFilmControlsData, getHandlerWithProp} from '../../helpers';
+import {getClass, getFilmControlsData, getHandlerWithProp, getHandlerToggleClass, createElement} from '../../helpers';
 
 export default class Controls extends AbstractComponent {
   constructor({isInWatchList, isWatched, isFavorite}) {
@@ -35,6 +35,14 @@ export default class Controls extends AbstractComponent {
         data-prop="${key}"
       >${text}</button>`
     );
+  }
+
+  _createElement() {
+    const element = createElement(this._getTmpl());
+
+    element.addEventListener(`click`, getHandlerToggleClass(`.film-card__controls-item`, `state-waitng`));
+
+    return element;
   }
 
   _getTmpl() {
