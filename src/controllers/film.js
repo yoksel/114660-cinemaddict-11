@@ -1,6 +1,7 @@
 import CardComponent from '../components/card';
 import DetailsComponent from '../components/details';
 import {renderElement, removeElement, replaceElement} from '../helpers';
+import {FilterType, FILTERS} from '../constants';
 
 export default class FilmController {
   constructor(container, onDataChange, onViewChange, checkIsNeedToDestroyController, setOpenedFilmController) {
@@ -64,12 +65,27 @@ export default class FilmController {
     document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 
+  _setWatchedDate(prop, newFilmData) {
+    const watchedPropName = FILTERS[FilterType.HISTORY].propName;
+    const isDateNeeded = prop === watchedPropName
+      && newFilmData[prop]
+      && !newFilmData.watchedDate;
+
+    if (isDateNeeded) {
+      // Film was marked as watched but it has no date
+      newFilmData.watchedDate = new Date();
+    }
+  }
+
   _toggleProp(prop) {
     const newFilmData = Object.assign(
         {},
         this.filmData,
         {[prop]: !this.filmData[prop]}
     );
+
+    this._setWatchedDate(prop, newFilmData);
+
     this._onDataChange(this.filmData, newFilmData);
   }
 

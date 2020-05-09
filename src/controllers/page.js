@@ -1,9 +1,7 @@
 import FilmsListController from './films-list';
-import {FilterType, FILTERS} from '../constants';
-
 import {createElement, renderElement, getFilmsSortedByProp} from '../helpers';
 
-import {MAX_CARDS_TOP, MAX_CARDS_SHOW, MAX_CARDS_LOAD, SortType} from '../constants';
+import {MAX_CARDS_TOP, MAX_CARDS_SHOW, MAX_CARDS_LOAD, SortType, FilterType, FILTERS} from '../constants';
 
 export default class PageController {
   constructor(container, filmsModel) {
@@ -205,12 +203,20 @@ export default class PageController {
     this._allFilmsControllers.forEach((item) => item.setDefaultView());
   }
 
+  hide() {
+    this._filmsSection.hidden = true;
+  }
+
+  show() {
+    this._filmsSection.hidden = false;
+  }
+
   render() {
     const filmsQuantity = this._filmsModel.getFilmsQuantity();
-    const filmsSection = createElement(`<section class="films"></section>`);
-    this._initFilmsControllers(filmsSection);
+    this._filmsSection = createElement(`<section class="films"></section>`);
+    this._initFilmsControllers(this._filmsSection);
 
-    renderElement(this._container, filmsSection);
+    renderElement(this._container, this._filmsSection);
 
     if (filmsQuantity === 0) {
       this._upcomingListController.showNoFilmsMessage(`There are no movies in our database`);

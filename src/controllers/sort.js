@@ -14,6 +14,14 @@ export default class SortController {
     this._filmsModel.addSortChangeHandler(this._onSortChange);
   }
 
+  hide() {
+    this._sortComponent.hide();
+  }
+
+  show() {
+    this._sortComponent.show();
+  }
+
   _setSortType(sortType) {
     if (this._currentSort === sortType) {
       return;
