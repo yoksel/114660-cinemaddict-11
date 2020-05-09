@@ -26,6 +26,10 @@ export default class FilterController {
     this._filterItemClickHandler = handler;
   }
 
+  setActiveHighlight(section) {
+    this._filterComponent.setActiveHighlight(section);
+  }
+
   _setFilterType(filterType) {
     if (this._currentFilter === filterType) {
       return;

@@ -33,20 +33,35 @@ const sortController = new SortController(siteMainElem, filmsModel);
 const pageController = new PageController(siteMainElem, filmsModel);
 const filmsTotal = new FilmsTotal(filmsModel.getFilmsQuantity());
 const userStatsContoller = new UserStatsController(siteMainElem, filmsModel, userModel);
+let userStatsIsHidden = true;
 
 const switchToFilms = () => {
+  if (userStatsIsHidden) {
+    return;
+  }
+
   sortController.show();
   pageController.show();
   userStatsContoller.hide();
+
+  filterController.setActiveHighlight(`filters`);
+  userStatsIsHidden = true;
 };
 
 const switchToStats = () => {
+  if (!userStatsIsHidden) {
+    return;
+  }
+
   filmsModel.setFilterType(FilterType.ALL);
   filmsModel.setSortType(SortType.DEFAULT);
 
   sortController.hide();
   pageController.hide();
   userStatsContoller.show();
+
+  filterController.setActiveHighlight(`stats`);
+  userStatsIsHidden = false;
 };
 
 profileController.render();
