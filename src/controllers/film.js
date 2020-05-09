@@ -2,6 +2,7 @@ import CardComponent from '../components/card';
 import DetailsComponent from '../components/details';
 import {renderElement, removeElement, replaceElement} from '../helpers';
 import {FilterType, FILTERS} from '../constants';
+import FilmModel from "../models/film.js";
 
 export default class FilmController {
   constructor(container, onDataChange, onViewChange, checkIsNeedToDestroyController, setOpenedFilmController) {
@@ -78,12 +79,8 @@ export default class FilmController {
   }
 
   _toggleProp(prop) {
-    const newFilmData = Object.assign(
-        {},
-        this.filmData,
-        {[prop]: !this.filmData[prop]}
-    );
-
+    const newFilmData = FilmModel.clone(this.filmData);
+    newFilmData[prop] = !newFilmData[prop];
     this._setWatchedDate(prop, newFilmData);
 
     this._onDataChange(this.filmData, newFilmData);
@@ -97,15 +94,13 @@ export default class FilmController {
       // deletion
       newComments = comments.filter((comment) => comment.id !== id);
     } else if (id === null) {
+      // new comment
       newComments = comments.concat([newData]);
       this._detailsComponent.resetComment();
     }
 
-    const newFilmData = Object.assign(
-        {},
-        this.filmData,
-        {comments: newComments}
-    );
+    const newFilmData = FilmModel.clone(this.filmData);
+    newFilmData[comments] = newComments;
 
     this._onDataChange(this.filmData, newFilmData);
   }
