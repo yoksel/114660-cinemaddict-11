@@ -8,6 +8,7 @@ export default class User {
     this._onDataChange = this._onDataChange.bind(this);
 
     this._filmsModel.addDataChangeHandler(this._onDataChange);
+    this._filmsModel.addDataAddHandler(this._onDataChange);
   }
 
   setUser(user) {
