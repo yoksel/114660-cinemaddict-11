@@ -11,5 +11,6 @@ export {getFilmsByFilter} from './getFilmsByFilter';
 export {sortByRating, sortByDate, sortByComments, getFilmsSortedByProp} from './sort';
 export {getHandlerWithProp} from './getHandlerWithProp';
 export {getHandlerWithValue} from './getHandlerWithValue';
+export {getHandlerToggleClass} from './getHandlerToggleClass';
 export {getRandomID} from './getRandomID';
 export {getWatched, getTotalDuration, getWatchedByGenre, getUserStatus, getWatchedByPeriod} from './stats';
