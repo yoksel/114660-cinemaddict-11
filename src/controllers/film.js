@@ -5,7 +5,7 @@ import {FilterType, FILTERS} from '../constants';
 import FilmModel from "../models/film.js";
 
 export default class FilmController {
-  constructor(container, onDataChange, onViewChange, checkIsNeedToDestroyController, setOpenedFilmController) {
+  constructor(container, onDataChange, onViewChange, onDetailsClose) {
     this._container = container;
 
     this._cardComponent = null;
@@ -13,8 +13,7 @@ export default class FilmController {
 
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
-    this._checkIsNeedToDestroyController = checkIsNeedToDestroyController;
-    this._setOpenedFilmController = setOpenedFilmController;
+    this._onDetailsClose = onDetailsClose;
     this._showDetails = this._showDetails.bind(this);
     this._hideDetails = this._hideDetails.bind(this);
     this._toggleProp = this._toggleProp.bind(this);
@@ -25,6 +24,10 @@ export default class FilmController {
   }
 
   setDefaultView() {
+    if (!this.detailsIsOpened) {
+      return;
+    }
+
     this._hideDetails();
     this._detailsComponent.reset();
     this.detailsIsOpened = false;
@@ -37,31 +40,23 @@ export default class FilmController {
     document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 
-  removeCard() {
-    removeElement(this._cardComponent);
-  }
-
   _showDetails() {
     this._onViewChange();
     renderElement(document.body, this._detailsComponent);
     this._setDetailsHandlers();
     this.detailsIsOpened = true;
-    this._setOpenedFilmController(this);
 
     document.addEventListener(`keydown`, this._onEscKeyDown);
   }
 
   _hideDetails() {
-    const isNeedToDestroy = this._checkIsNeedToDestroyController(this);
-
-    if (isNeedToDestroy) {
-      this.destroy();
+    if (this._onDetailsClose) {
+      this._onDetailsClose();
     }
 
     this._detailsComponent.removeEvents();
     removeElement(this._detailsComponent);
     this.detailsIsOpened = false;
-    this._setOpenedFilmController(null);
 
     document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
