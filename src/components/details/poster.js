@@ -5,7 +5,7 @@ export default class Poster extends AbstractComponent {
     super();
 
     this._poster = poster;
-    this._ageRating = ageRating ? `${ageRating}+` : ``;
+    this._ageRating = ageRating !== undefined ? `${ageRating}+` : ``;
   }
 
   _getTmpl() {
