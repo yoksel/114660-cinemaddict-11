@@ -140,7 +140,6 @@ export default class PageController {
   _updateTopCommented() {
     const films = this._getTopCommented();
     this._removeControllers(`_topCommentedFilmsControllers`);
-    this._topCommentedListController.clearSavedData();
 
     if (films.length === 0) {
       this._topCommentedListController.hide();
