@@ -13,14 +13,6 @@ const getShortDesc = (desc) => {
   return `${desc}&hellip;`;
 };
 
-const getDesc = (desc) => {
-  if (desc.length < 3) {
-    return ``;
-  }
-
-  return desc;
-};
-
 export default class Film {
   constructor(data) {
     const filmInfo = data.film_info;
@@ -30,7 +22,7 @@ export default class Film {
     this.poster = filmInfo.poster;
     this.title = filmInfo.title;
     this.origTitle = filmInfo.alternative_title;
-    this.desc = getDesc(filmInfo.description);
+    this.desc = filmInfo.description;
     this.shortDesc = getShortDesc(this.desc);
     this.genres = filmInfo.genre;
     this.releaseDate = new Date(filmInfo.release.date);
