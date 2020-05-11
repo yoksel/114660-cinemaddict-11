@@ -3,11 +3,13 @@ import Film from './models/film';
 const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict`;
 
 const checkStatus = (response) => {
-  if (response.status >= 200 && response.status < 300) {
+  if (response.ok) {
     return response;
+  } else if (response.status === 404) {
+    throw new Error(`${response.status}: ${response.statusText}`);
   }
 
-  return null;
+  throw new Error(`${response.status}: ${response.statusText}`);
 };
 
 export default class API {
@@ -18,25 +20,20 @@ export default class API {
   _getCommentsPromise(movieItem) {
     return new Promise((resolve, reject) => {
       this._load({url: `comments/${movieItem.id}`})
-        .then((response) => {
-          if (!checkStatus) {
-            reject();
-          }
-
-          return response;
-        })
         .then((response) => response.json())
         .then((commentsJson) => {
           movieItem[`comments_data`] = commentsJson;
 
           resolve(movieItem);
+        })
+        .catch((error) => {
+          reject(error);
         });
     });
   }
 
   getFilms() {
     return this._load({url: `movies`})
-      .then(checkStatus)
       .then((response) => response.json())
       .then((moviesJson) => {
         const commentsPromises = moviesJson.reduce((prev, movieItem) => {
@@ -60,7 +57,6 @@ export default class API {
       method: `PUT`,
       body: JSON.stringify(filmData.toRaw()),
     })
-      .then(checkStatus)
       .then((response) => response.json())
       .then((movieJson) => this._getCommentsPromise(movieJson))
       .then(Film.parseFilm);

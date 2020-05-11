@@ -89,6 +89,9 @@ api.getFilms()
 
     const filmsTotal = new FilmsTotal(filmsModel.getFilmsQuantity());
     renderElement(filmsTotalElem, filmsTotal);
+  })
+  .catch(() => {
+    pageController.render({state: `empty`});
   });
 
 
