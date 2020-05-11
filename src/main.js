@@ -11,7 +11,7 @@ import FilmsTotal from './components/films-total';
 
 import {renderElement} from './helpers';
 
-import {FilterType, SortType, AppStates} from './constants';
+import {FilterType, SortType, AppState} from './constants';
 
 import {getUserData} from './mocks/user';
 
@@ -69,7 +69,7 @@ const switchToStats = () => {
 profileController.render();
 filterController.render();
 sortController.render();
-pageController.render({state: AppStates.LOADING});
+pageController.render({state: AppState.LOADING});
 
 api.getFilms()
   .then((response) => {
@@ -91,7 +91,7 @@ api.getFilms()
     renderElement(filmsTotalElem, filmsTotal);
   })
   .catch(() => {
-    pageController.render({state: AppStates.EMPTY});
+    pageController.render({state: AppState.EMPTY});
   });
 
 

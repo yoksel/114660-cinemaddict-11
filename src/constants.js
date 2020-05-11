@@ -68,7 +68,7 @@ const StatsFilter = {
   YEAR: `year`,
 };
 
-const AppStates = {
+const AppState = {
   LOADING: `loading`,
   EMPTY: `empty`
 };
@@ -85,7 +85,7 @@ export {
   FILTERS,
   SortType,
   StatsFilter,
-  AppStates,
+  AppState,
   MAX_CARDS_TOP,
   MAX_CARDS_SHOW,
   MAX_CARDS_LOAD,
