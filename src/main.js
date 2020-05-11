@@ -13,8 +13,6 @@ import {renderElement} from './helpers';
 
 import {FilterType, SortType, AppState} from './constants';
 
-import {getUserData} from './mocks/user';
-
 import API from './api';
 
 const AUTHORIZATION = `Basic ia7sdasda8s7d9a8s9`;
@@ -24,7 +22,6 @@ const api = new API(AUTHORIZATION);
 const filmsModel = new FilmsModel();
 
 const userModel = new UserModel(filmsModel);
-userModel.setUser(getUserData());
 
 const siteHeaderElem = document.querySelector(`.header`);
 const siteMainElem = document.querySelector(`.main`);
