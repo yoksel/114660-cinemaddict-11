@@ -12,6 +12,8 @@ export default class FilmController {
     this._detailsComponent = null;
 
     this._onDataChange = onDataChange;
+    // Temporary hack before adding comment handlers to api
+    this._onCommentsChange = () => {};
     this._onViewChange = onViewChange;
     this._onDetailsClose = onDetailsClose;
     this._showDetails = this._showDetails.bind(this);
@@ -95,9 +97,9 @@ export default class FilmController {
     }
 
     const newFilmData = FilmModel.clone(this.filmData);
-    newFilmData[comments] = newComments;
+    newFilmData.comments = newComments;
 
-    this._onDataChange(this.filmData, newFilmData);
+    this._onCommentsChange(this.filmData, newFilmData);
   }
 
   _onEscKeyDown(event) {
