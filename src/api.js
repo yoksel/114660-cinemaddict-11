@@ -5,8 +5,6 @@ const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict`;
 const checkStatus = (response) => {
   if (response.ok) {
     return response;
-  } else if (response.status === 404) {
-    throw new Error(`${response.status}: ${response.statusText}`);
   }
 
   throw new Error(`${response.status}: ${response.statusText}`);
