@@ -1,6 +1,6 @@
 import FilmsListController from './films-list';
 import PageComponent from '../components/page';
-import {createElement, renderElement, replaceElement, getFilmsSortedByProp} from '../helpers';
+import {renderElement, replaceElement, getFilmsSortedByProp} from '../helpers';
 import {MAX_CARDS_TOP, MAX_CARDS_SHOW, MAX_CARDS_LOAD, SortType, FilterType, FILTERS} from '../constants';
 
 export default class PageController {
@@ -249,7 +249,6 @@ export default class PageController {
     const {state} = params;
     const oldPageComponent = this._pageComponent;
     this._pageComponent = new PageComponent();
-    this._filmsSection = createElement(`<section class="films"></section>`);
     this._initFilmsControllers(this._pageComponent.getElement());
     const filmsQuantity = this._filmsModel.getFilmsQuantity();
 
