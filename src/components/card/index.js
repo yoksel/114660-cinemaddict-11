@@ -63,7 +63,7 @@ export default class Card extends AbstractComponent {
         </p>
 
         <img
-          src="./images/posters/${this._poster}"
+          src="./${this._poster}"
           alt="The poster of the film '${this._title}'"
           class="film-card__poster">
 

@@ -27,7 +27,7 @@ export default class Film {
     const userDetails = data.user_details;
 
     this.id = data.id;
-    this.poster = filmInfo.poster.replace(`images/posters/`, ``);
+    this.poster = filmInfo.poster;
     this.title = filmInfo.title;
     this.origTitle = filmInfo.alternative_title;
     this.desc = getDesc(filmInfo.description);
@@ -54,36 +54,42 @@ export default class Film {
       return [];
     }
 
-    return comments.map((comment) => {
+    return comments.map(({
+      id,
+      author,
+      comment: text,
+      emotion: emoji,
+      date
+    }) => {
       return {
-        id: comment.id,
-        author: comment.author,
-        text: comment.comment,
-        emoji: comment.emotion,
-        date: new Date(comment.date)
+        id,
+        author,
+        text,
+        emoji,
+        date: new Date(date)
       };
     });
   }
 
   toRaw() {
     return {
-      "id": this.id,
+      'id': this.id,
       'film_info': {
-        "poster": `images/posters/${this.poster}`,
-        "title": this.title,
-        "alternative_title": this.origTitle,
-        "description": this.desc,
-        "genre": this.genres,
-        "release": {
+        'poster': this.poster,
+        'title': this.title,
+        'alternative_title': this.origTitle,
+        'description': this.desc,
+        'genre': this.genres,
+        'release': {
           'date': this.releaseDate.toISOString(),
           'release_country': this.country
         },
-        "runtime": this.runtime,
-        "actors": this.actors,
+        'runtime': this.runtime,
+        'actors': this.actors,
         'total_rating': this.rating,
         'age_rating': this.ageRating,
-        "director": this.director,
-        "writers": this.writers
+        'director': this.director,
+        'writers': this.writers
       },
       'user_details': {
         'watchlist': this.isInWatchList,
@@ -91,8 +97,8 @@ export default class Film {
         'watching_date': this.watchedDate.toISOString(),
         'favorite': this.isFavorite
       },
-      "comments": this.comments,
-      "comments_data": this.commentsData
+      'comments': this.comments,
+      'comments_data': this.commentsData
     };
   }
 
