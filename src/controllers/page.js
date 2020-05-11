@@ -1,7 +1,7 @@
 import FilmsListController from './films-list';
 import PageComponent from '../components/page';
 import {renderElement, replaceElement, getFilmsSortedByProp} from '../helpers';
-import {MAX_CARDS_TOP, MAX_CARDS_SHOW, MAX_CARDS_LOAD, SortType, FilterType, FILTERS} from '../constants';
+import {MAX_CARDS_TOP, MAX_CARDS_SHOW, MAX_CARDS_LOAD, SortType, FilterType, FILTERS, AppStates} from '../constants';
 
 export default class PageController {
   constructor(container, filmsModel, api) {
@@ -252,9 +252,9 @@ export default class PageController {
     this._initFilmsControllers(this._pageComponent.getElement());
     const filmsQuantity = this._filmsModel.getFilmsQuantity();
 
-    if (state === `loading`) {
+    if (state === AppStates.LOADING) {
       this._upcomingListController.showNoFilmsMessage(`Loading...`);
-    } else if (state === `empty` || filmsQuantity === 0) {
+    } else if (state === AppStates.EMPTY || filmsQuantity === 0) {
       this._upcomingListController.showNoFilmsMessage(`There are no movies in our database`);
     } else {
 

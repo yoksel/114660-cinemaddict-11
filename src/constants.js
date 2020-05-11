@@ -68,6 +68,11 @@ const StatsFilter = {
   YEAR: `year`,
 };
 
+const AppStates = {
+  LOADING: `loading`,
+  EMPTY: `empty`
+};
+
 const MAX_CARDS_TOP = 2;
 const MAX_CARDS_SHOW = 5;
 const MAX_CARDS_LOAD = 5;
@@ -80,6 +85,7 @@ export {
   FILTERS,
   SortType,
   StatsFilter,
+  AppStates,
   MAX_CARDS_TOP,
   MAX_CARDS_SHOW,
   MAX_CARDS_LOAD,
