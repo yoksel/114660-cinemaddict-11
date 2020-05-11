@@ -20,6 +20,8 @@ export default class PageController {
     this._loadMoreUpcoming = this._loadMoreUpcoming.bind(this);
     this._onUpcomingDetailsClose = this._onUpcomingDetailsClose.bind(this);
     this._onTopCommentedDetailsClose = this._onTopCommentedDetailsClose.bind(this);
+    this._updateUpcoming = this._updateUpcoming.bind(this);
+    this._updateTopCommented = this._updateTopCommented.bind(this);
 
     this._filmsModel.addFilterChangeHandler(this._onFilterChange);
     this._filmsModel.addSortChangeHandler(this._onSortChange);
@@ -189,6 +191,14 @@ export default class PageController {
     return openedControllers.length;
   }
 
+  _updateListIfItHasNoOpened(controlsList, updatingFunc, quantity) {
+    const openedControllersQuantity = this._countOpenedControllers(controlsList);
+
+    if (openedControllersQuantity === 0) {
+      updatingFunc(quantity);
+    }
+  }
+
   _updatePageOnSuccess(oldData, newData) {
     this._isNeedToUpdateFiltered = this._checkIsNeedToUpdateFiltered(oldData, newData);
     this._isNeedToUpdateTopCommented = oldData.comments.length !== newData.comments.length;
@@ -204,19 +214,18 @@ export default class PageController {
     });
 
     if (this._isNeedToUpdateFiltered) {
-      const openedControllersQuantity = this._countOpenedControllers(this._upcomingFilmsControllers);
-
-      if (openedControllersQuantity === 0) {
-        this._updateUpcoming(this._shownQuantity);
-      }
+      this._updateListIfItHasNoOpened(
+        this._upcomingFilmsControllers,
+        this._updateUpcoming,
+        this._shownQuantity
+      );
     }
 
     if (this._isNeedToUpdateTopCommented) {
-      const openedControllersQuantity = this._countOpenedControllers(this._topCommentedFilmsControllers);
-
-      if (openedControllersQuantity === 0) {
-        this._updateTopCommented();
-      }
+      this._updateListIfItHasNoOpened(
+        this._topCommentedFilmsControllers,
+        this._updateTopCommented
+      );
     }
   }
 
