@@ -215,16 +215,16 @@ export default class PageController {
 
     if (this._isNeedToUpdateFiltered) {
       this._updateListIfItHasNoOpened(
-        this._upcomingFilmsControllers,
-        this._updateUpcoming,
-        this._shownQuantity
+          this._upcomingFilmsControllers,
+          this._updateUpcoming,
+          this._shownQuantity
       );
     }
 
     if (this._isNeedToUpdateTopCommented) {
       this._updateListIfItHasNoOpened(
-        this._topCommentedFilmsControllers,
-        this._updateTopCommented
+          this._topCommentedFilmsControllers,
+          this._updateTopCommented
       );
     }
   }
