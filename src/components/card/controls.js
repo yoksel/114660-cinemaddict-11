@@ -1,23 +1,20 @@
-import AbstractComponent from '../abstract-component';
-import {getClass, getFilmControlsData, getHandlerWithProp, getHandlerToggleClass, createElement} from '../../helpers';
+import FilmControls from '../film-controls';
+import {getClass} from '../../helpers';
 
-export default class Controls extends AbstractComponent {
-  constructor({isInWatchList, isWatched, isFavorite}) {
-    super();
+export default class Controls extends FilmControls {
+  constructor(params) {
+    super(params);
 
-    this._controlsData = getFilmControlsData({
-      isInWatchList,
-      isWatched,
-      isFavorite,
-    });
+    this._tag = {
+      open: `<form class="film-card__controls">`,
+      close: `</form>`
+    };
+
+    this._itemClassName = `.film-card__controls-item`;
+    this._inputClassName = this._itemClassName;
   }
 
-  setClickHandler(handler) {
-    const clickHandler = getHandlerWithProp(`.film-card__controls-item`, handler);
-    this.getElement().addEventListener(`click`, clickHandler);
-  }
-
-  _getCardControl({id, key, text, isActive}) {
+  _getControl({id, key, text, isActive}) {
     const mods = [id];
 
     if (isActive) {
@@ -34,25 +31,6 @@ export default class Controls extends AbstractComponent {
         class="${className}"
         data-prop="${key}"
       >${text}</button>`
-    );
-  }
-
-  _createElement() {
-    const element = createElement(this._getTmpl());
-
-    element.addEventListener(`click`, getHandlerToggleClass(`.film-card__controls-item`, `state-waitng`));
-
-    return element;
-  }
-
-  _getTmpl() {
-    const controlsMarkup = this._controlsData
-      .reduce((prev, control) => prev + this._getCardControl(control), ``);
-
-    return (
-      `<form class="film-card__controls">
-        ${controlsMarkup}
-      </form>`
     );
   }
 }

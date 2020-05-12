@@ -87,8 +87,10 @@ api.getFilms()
     const filmsTotal = new FilmsTotal(filmsModel.getFilmsQuantity());
     renderElement(filmsTotalElem, filmsTotal);
   })
-  .catch(() => {
+  .catch((error) => {
     pageController.render({state: AppState.EMPTY});
+    // eslint-disable-next-line no-console
+    console.error(error);
   });
 
 
