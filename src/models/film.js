@@ -94,6 +94,15 @@ export default class Film {
     };
   }
 
+  commentToRaw(commentData) {
+    return {
+      author: commentData.author,
+      comment: commentData.text,
+      emotion: commentData.emoji,
+      date: commentData.date.toISOString()
+    };
+  }
+
   static parseFilm(data) {
     return new Film(data);
   }
