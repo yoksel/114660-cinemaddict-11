@@ -20,14 +20,6 @@ const USER_STATUSES = [
   },
 ];
 
-const AGE_RATINGS = {
-  '0+': `General audiences`,
-  '6+': `Parental guidance`,
-  '12+': `Parents strongly cautioned`,
-  '16+': `Restricted`,
-  '18+': `No One 17 & Under Admitted`,
-};
-
 const FilterType = {
   ALL: `all`,
   WATCHLIST: `watchlist`,
@@ -80,7 +72,6 @@ const MAX_CARDS_LOAD = 5;
 export {
   EMOJIS,
   USER_STATUSES,
-  AGE_RATINGS,
   FilterType,
   FILTERS,
   SortType,
