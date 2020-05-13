@@ -4,8 +4,9 @@ import ShowMoreBtn from '../components/show-more-btn';
 import {renderElement, replaceElement} from '../helpers';
 
 export default class FilmsListController {
-  constructor(container, onDataChange, onViewChange, onDetailsClose, props) {
+  constructor({container, api, onDataChange, onViewChange, onDetailsClose, props}) {
     this._container = container;
+    this._api = api;
     this._props = props;
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
@@ -37,12 +38,13 @@ export default class FilmsListController {
 
   renderCards(films) {
     const newControllers = films.map((film) => {
-      const filmController = new FilmController(
-          this._filmsContainerElement,
-          this._onDataChange,
-          this._onViewChange,
-          this._onDetailsClose
-      );
+      const filmController = new FilmController({
+        container: this._filmsContainerElement,
+        api: this._api,
+        onDataChange: this._onDataChange,
+        onViewChange: this._onViewChange,
+        onDetailsClose: this._onDetailsClose,
+      });
 
       filmController.render(film);
 

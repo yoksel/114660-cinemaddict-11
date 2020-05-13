@@ -5,15 +5,17 @@ import {FilterType, FILTERS} from '../constants';
 import FilmModel from "../models/film.js";
 
 export default class FilmController {
-  constructor(container, onDataChange, onViewChange, onDetailsClose) {
+  constructor({container, api, onDataChange, onViewChange, onDetailsClose}) {
     this._container = container;
+    this._api = api;
 
     this._cardComponent = null;
     this._detailsComponent = null;
 
+    this._selectedEmoji = null;
+    this._commentText = ``;
+
     this._onDataChange = onDataChange;
-    // Temporary hack before adding comment handlers to api
-    this._onCommentsChange = () => {};
     this._onViewChange = onViewChange;
     this._onDetailsClose = onDetailsClose;
     this._showDetails = this._showDetails.bind(this);
@@ -21,6 +23,11 @@ export default class FilmController {
     this._toggleProp = this._toggleProp.bind(this);
     this._updateComments = this._updateComments.bind(this);
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
+    this._getEmoji = this._getEmoji.bind(this);
+    this._setEmoji = this._setEmoji.bind(this);
+    this._getText = this._getText.bind(this);
+    this._setText = this._setText.bind(this);
+    this._resetComment = this._resetComment.bind(this);
 
     this.detailsIsOpened = false;
   }
@@ -31,7 +38,6 @@ export default class FilmController {
     }
 
     this._hideDetails();
-    this._detailsComponent.reset();
     this.detailsIsOpened = false;
   }
 
@@ -56,6 +62,7 @@ export default class FilmController {
       this._onDetailsClose();
     }
 
+    this._resetComment();
     this._detailsComponent.removeEvents();
     removeElement(this._detailsComponent);
     this.detailsIsOpened = false;
@@ -83,23 +90,57 @@ export default class FilmController {
     this._onDataChange(this.filmData, newFilmData);
   }
 
+  _setEmoji(emoji = ``) {
+    this._selectedEmoji = emoji;
+  }
+
+  _getEmoji() {
+    return this._selectedEmoji;
+  }
+
+  _setText(text = ``) {
+    this._commentText = text;
+  }
+
+  _getText() {
+    return this._commentText;
+  }
+
+  _resetComment() {
+    this._selectedEmoji = null;
+    this._commentText = ``;
+
+    this._detailsComponent.resetComment();
+  }
+
   _updateComments(id, newData) {
     const comments = this.filmData.comments;
-    let newComments = [];
-
     if (newData === null) {
-      // deletion
-      newComments = comments.filter((comment) => comment.id !== id);
+      // delete comment
+      this._api.deleteComment(id)
+        .then(() => {
+          const newComments = comments.filter((commentId) => commentId !== id);
+
+          const newFilmData = FilmModel.clone(this.filmData);
+          newFilmData[comments] = newComments;
+
+          this._onDataChange(this.filmData, newFilmData);
+        })
+        .catch(() => {
+          this._detailsComponent.highlightCommentOnError(id);
+        });
+
     } else if (id === null) {
-      // new comment
-      newComments = comments.concat([newData]);
-      this._detailsComponent.resetComment();
+      // add comment
+      this._api.addComment(this.filmData, newData)
+        .then((taskModel) => {
+          this._resetComment();
+          this._onDataChange(this.filmData, taskModel);
+        })
+        .catch(() => {
+          this._detailsComponent.highlightFormOnError();
+        });
     }
-
-    const newFilmData = FilmModel.clone(this.filmData);
-    newFilmData.comments = newComments;
-
-    this._onCommentsChange(this.filmData, newFilmData);
   }
 
   _onEscKeyDown(event) {
@@ -128,8 +169,15 @@ export default class FilmController {
     if (this._detailsComponent) {
       this._detailsComponent.removeEvents();
     }
-    this._cardComponent = new CardComponent(filmData);
-    this._detailsComponent = new DetailsComponent(filmData);
+    this._cardComponent = new CardComponent(this.filmData);
+    this._detailsComponent = new DetailsComponent({
+      filmData: this.filmData,
+      setEmoji: this._setEmoji,
+      getEmoji: this._getEmoji,
+      setText: this._setText,
+      getText: this._getText,
+      resetComment: this._resetComment
+    });
 
     this._setCardHandlers();
 

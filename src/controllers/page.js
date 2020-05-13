@@ -79,30 +79,32 @@ export default class PageController {
   }
 
   _initFilmsControllers(element) {
-    this._upcomingListController = new FilmsListController(
-        element,
-        this._onDataChange,
-        this._onViewChange,
-        this._onUpcomingDetailsClose,
-        {type: `upcoming`, title: `All movies. Upcoming`}
-    );
+    this._upcomingListController = new FilmsListController({
+      container: element,
+      api: this._api,
+      onDataChange: this._onDataChange,
+      onViewChange: this._onViewChange,
+      onDetailsClose: this._onUpcomingDetailsClose,
+      props: {type: `upcoming`, title: `All movies. Upcoming`}
+    });
     this._upcomingListController.setMoreBtnClickHandler(this._loadMoreUpcoming);
 
-    this._topRatedListController = new FilmsListController(
-        element,
-        this._onDataChange,
-        this._onViewChange,
-        null,
-        {type: `extra`, title: `Top rated`}
-    );
+    this._topRatedListController = new FilmsListController({
+      container: element,
+      api: this._api,
+      onDataChange: this._onDataChange,
+      onViewChange: this._onViewChange,
+      props: {type: `extra`, title: `Top rated`}
+    });
 
-    this._topCommentedListController = new FilmsListController(
-        element,
-        this._onDataChange,
-        this._onViewChange,
-        this._onTopCommentedDetailsClose,
-        {type: `extra`, title: `Top commented`}
-    );
+    this._topCommentedListController = new FilmsListController({
+      container: element,
+      api: this._api,
+      onDataChange: this._onDataChange,
+      onViewChange: this._onViewChange,
+      onDetailsClose: this._onTopCommentedDetailsClose,
+      props: {type: `extra`, title: `Top commented`}
+    });
   }
 
   _collectAllFilmsControllers() {
