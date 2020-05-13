@@ -909,6 +909,10 @@ button {
 .film-details__comment-delete:hover {
   opacity: 0.7;
 }
+.film-details__comment-delete:disabled {
+  opacity: 0.5;
+  text-decoration: none;
+}
 .film-details__comment-input {
   width: 100%;
   height: 50px;
