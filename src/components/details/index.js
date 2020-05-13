@@ -9,22 +9,22 @@ import Comments from '../comments';
 import {createElement, renderElement} from '../../helpers';
 
 export default class Details extends AbstractSmartComponent {
-  constructor(filmData) {
+  constructor(params) {
     super();
 
+    this._params = params;
+    const {filmData, getEmoji, getText, resetComment} = params;
     this._filmData = filmData;
+    this._resetComment = resetComment;
+    this._getEmoji = getEmoji;
+    this._getText = getText;
     this._closeBtn = new CloseBtn();
     this._poster = new Poster(filmData);
     this._desc = new Desc(filmData);
     this._head = new Head(filmData);
     this._table = new Table(filmData);
-    this._comments = new Comments(filmData);
+    this._comments = new Comments(this._params);
     this._controls = new Controls(filmData);
-
-    this.setEmoji = this.setEmoji.bind(this);
-    this.setText = this.setText.bind(this);
-
-    this._addEvents();
   }
 
   setCloseBtnClickHandler(handler) {
@@ -45,50 +45,26 @@ export default class Details extends AbstractSmartComponent {
     this._controls.removeEvents();
   }
 
-  reset() {
-    if (!this._filmData.selectedEmoji && !this._filmData.commentText) {
-      return;
-    }
-
-    this.resetComment();
-
+  resetComment() {
     this.removeEvents();
-    this._comments = new Comments(this._filmData);
+    this._comments = new Comments(this._params);
 
     this.rerender();
   }
 
-  resetComment() {
-    this._filmData = Object.assign(
-        this._filmData,
-        {
-          selectedEmoji: null,
-          commentText: ``
-        }
-    );
+  shakeComment() {
+    this._comments.shakeComment();
   }
 
-  setEmoji(emoji = ``) {
-    this._filmData = Object.assign(
-        this._filmData,
-        {selectedEmoji: emoji}
-    );
+  highlightCommentOnError(id) {
+    this._comments.highlightCommentOnError(id);
   }
 
-  setText(text = ``) {
-    this._filmData = Object.assign(
-        this._filmData,
-        {commentText: text}
-    );
-  }
-
-  _addEvents() {
-    this._comments.setEmojiClickHandler(this.setEmoji);
-    this._comments.setTextInputHandler(this.setText);
+  highlightFormOnError() {
+    this._comments.highlightFormOnError();
   }
 
   _recoveryListeners() {
-    this._addEvents();
   }
 
   _getInfo() {
