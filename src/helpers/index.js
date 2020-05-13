@@ -13,3 +13,4 @@ export {getHandlerWithProp} from './getHandlerWithProp';
 export {getHandlerWithValue} from './getHandlerWithValue';
 export {getHandlerToggleClass} from './getHandlerToggleClass';
 export {getWatched, getTotalDuration, getWatchedByGenre, getUserStatus, getWatchedByPeriod} from './stats';
+export {shake} from './shake';
