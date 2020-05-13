@@ -18,7 +18,7 @@ export const getHandlerWithProp = (selector, handler) => {
       return;
     }
 
-    const { prop } = control.dataset;
+    const {prop} = control.dataset;
 
     if (!prop) {
       return;
