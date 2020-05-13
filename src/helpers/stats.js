@@ -1,5 +1,5 @@
 import {USER_STATUSES, StatsFilter, FilterType} from '../constants';
-import {getFilmsByFilter} from './getFilmsByFilter';
+import {getFilmsByFilter} from './get-films-by-filter';
 import moment from 'moment';
 
 export const getWatched = (films) => {

@@ -1,3 +1,23 @@
+const templateElem = document.createElement(`template`);
+
+export const createElement = (str) => {
+  templateElem.innerHTML = str;
+  return templateElem.content.firstElementChild;
+};
+
+export const removeElement = (component) => {
+  component.getElement().remove();
+  component.removeElement();
+};
+
+export const replaceElement = (oldComponent, newComponent) => {
+  if (!oldComponent && !newComponent) {
+    return;
+  }
+
+  oldComponent.getElement().replaceWith(newComponent.getElement());
+};
+
 const handleComponent = (target, component) => {
   if (!component) {
     return;
