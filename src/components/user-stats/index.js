@@ -25,7 +25,7 @@ export default class UserStats extends AbstractSmartComponent {
 
         <img
           class="statistic__img"
-          src="images/${this._avatar}"
+          src="${this._avatar}"
           alt="Avatar"
           width="35" height="35">
         <span class="statistic__rank-label">${this._status}</span>

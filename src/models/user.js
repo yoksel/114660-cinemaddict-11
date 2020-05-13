@@ -4,15 +4,17 @@ export default class User {
   constructor(filmsModel) {
     this._user = null;
     this._filmsModel = filmsModel;
+    this._user = {
+      avatar: `./images/bitmap@2x.png`
+    };
+
+    this._setUserStatus();
 
     this._onDataChange = this._onDataChange.bind(this);
 
     this._filmsModel.addDataChangeHandler(this._onDataChange);
-  }
+    this._filmsModel.addDataAddHandler(this._onDataChange);
 
-  setUser(user) {
-    this._user = Object.assign({}, user);
-    this._setUserStatus();
   }
 
   getUser() {

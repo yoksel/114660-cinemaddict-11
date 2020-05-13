@@ -2,18 +2,20 @@ import CardComponent from '../components/card';
 import DetailsComponent from '../components/details';
 import {renderElement, removeElement, replaceElement} from '../helpers';
 import {FilterType, FILTERS} from '../constants';
+import FilmModel from "../models/film.js";
 
 export default class FilmController {
-  constructor(container, onDataChange, onViewChange, checkIsNeedToDestroyController, setOpenedFilmController) {
+  constructor(container, onDataChange, onViewChange, onDetailsClose) {
     this._container = container;
 
     this._cardComponent = null;
     this._detailsComponent = null;
 
     this._onDataChange = onDataChange;
+    // Temporary hack before adding comment handlers to api
+    this._onCommentsChange = () => {};
     this._onViewChange = onViewChange;
-    this._checkIsNeedToDestroyController = checkIsNeedToDestroyController;
-    this._setOpenedFilmController = setOpenedFilmController;
+    this._onDetailsClose = onDetailsClose;
     this._showDetails = this._showDetails.bind(this);
     this._hideDetails = this._hideDetails.bind(this);
     this._toggleProp = this._toggleProp.bind(this);
@@ -24,6 +26,10 @@ export default class FilmController {
   }
 
   setDefaultView() {
+    if (!this.detailsIsOpened) {
+      return;
+    }
+
     this._hideDetails();
     this._detailsComponent.reset();
     this.detailsIsOpened = false;
@@ -36,31 +42,23 @@ export default class FilmController {
     document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 
-  removeCard() {
-    removeElement(this._cardComponent);
-  }
-
   _showDetails() {
     this._onViewChange();
     renderElement(document.body, this._detailsComponent);
     this._setDetailsHandlers();
     this.detailsIsOpened = true;
-    this._setOpenedFilmController(this);
 
     document.addEventListener(`keydown`, this._onEscKeyDown);
   }
 
   _hideDetails() {
-    const isNeedToDestroy = this._checkIsNeedToDestroyController(this);
-
-    if (isNeedToDestroy) {
-      this.destroy();
+    if (this._onDetailsClose) {
+      this._onDetailsClose();
     }
 
     this._detailsComponent.removeEvents();
     removeElement(this._detailsComponent);
     this.detailsIsOpened = false;
-    this._setOpenedFilmController(null);
 
     document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
@@ -78,12 +76,8 @@ export default class FilmController {
   }
 
   _toggleProp(prop) {
-    const newFilmData = Object.assign(
-        {},
-        this.filmData,
-        {[prop]: !this.filmData[prop]}
-    );
-
+    const newFilmData = FilmModel.clone(this.filmData);
+    newFilmData[prop] = !newFilmData[prop];
     this._setWatchedDate(prop, newFilmData);
 
     this._onDataChange(this.filmData, newFilmData);
@@ -97,17 +91,15 @@ export default class FilmController {
       // deletion
       newComments = comments.filter((comment) => comment.id !== id);
     } else if (id === null) {
+      // new comment
       newComments = comments.concat([newData]);
       this._detailsComponent.resetComment();
     }
 
-    const newFilmData = Object.assign(
-        {},
-        this.filmData,
-        {comments: newComments}
-    );
+    const newFilmData = FilmModel.clone(this.filmData);
+    newFilmData.comments = newComments;
 
-    this._onDataChange(this.filmData, newFilmData);
+    this._onCommentsChange(this.filmData, newFilmData);
   }
 
   _onEscKeyDown(event) {

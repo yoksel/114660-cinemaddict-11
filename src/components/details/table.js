@@ -64,6 +64,10 @@ export default class Table extends AbstractComponent {
 
     const rowsMarkup = dataList
       .reduce((prev, {name, value}) => {
+        if (!value) {
+          return prev;
+        }
+
         return (
           `${prev}<tr class="film-details__row">
             <td class="film-details__term">${name}</td>

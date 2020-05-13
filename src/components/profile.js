@@ -15,7 +15,7 @@ export default class Profile extends AbstractComponent {
 
         <img
           class="profile__avatar"
-          src="images/${this._avatar}"
+          src="${this._avatar}"
           alt="Avatar"
           width="35" height="35">
       </section>`

@@ -11,17 +11,17 @@ import FilmsTotal from './components/films-total';
 
 import {renderElement} from './helpers';
 
-import {FilterType, SortType} from './constants';
+import {FilterType, SortType, AppState} from './constants';
 
-import {TOTAL_FILMS} from './mocks/constants';
-import {getCardsData} from './mocks/cards';
-import {getUserData} from './mocks/user';
+import API from './api';
+
+const AUTHORIZATION = `Basic ia7sdasda8s7d9a8s9`;
+
+const api = new API(AUTHORIZATION);
 
 const filmsModel = new FilmsModel();
-filmsModel.setFilms(getCardsData(TOTAL_FILMS));
 
 const userModel = new UserModel(filmsModel);
-userModel.setUser(getUserData());
 
 const siteHeaderElem = document.querySelector(`.header`);
 const siteMainElem = document.querySelector(`.main`);
@@ -30,8 +30,7 @@ const filmsTotalElem = document.querySelector(`.footer__statistics`);
 const profileController = new ProfileController(siteHeaderElem, filmsModel, userModel);
 const filterController = new FilterController(siteMainElem, filmsModel);
 const sortController = new SortController(siteMainElem, filmsModel);
-const pageController = new PageController(siteMainElem, filmsModel);
-const filmsTotal = new FilmsTotal(filmsModel.getFilmsQuantity());
+const pageController = new PageController(siteMainElem, filmsModel, api);
 const userStatsContoller = new UserStatsController(siteMainElem, filmsModel, userModel);
 let userStatsIsHidden = true;
 
@@ -67,11 +66,31 @@ const switchToStats = () => {
 profileController.render();
 filterController.render();
 sortController.render();
-pageController.render();
-userStatsContoller.render();
-userStatsContoller.hide();
+pageController.render({state: AppState.LOADING});
 
-filterController.setStatsClickHandler(switchToStats);
-filterController.setFilterItemClickHandler(switchToFilms);
+api.getFilms()
+  .then((response) => {
+    filmsModel.setFilms(response);
 
-renderElement(filmsTotalElem, filmsTotal);
+    profileController.render();
+
+    filterController.render();
+    filterController.setStatsClickHandler(switchToStats);
+    filterController.setFilterItemClickHandler(switchToFilms);
+
+    sortController.render();
+    pageController.render();
+
+    userStatsContoller.render();
+    userStatsContoller.hide();
+
+    const filmsTotal = new FilmsTotal(filmsModel.getFilmsQuantity());
+    renderElement(filmsTotalElem, filmsTotal);
+  })
+  .catch((error) => {
+    pageController.render({state: AppState.EMPTY});
+    // eslint-disable-next-line no-console
+    console.error(error);
+  });
+
+

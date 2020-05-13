@@ -1,27 +1,19 @@
-import AbstractComponent from '../abstract-component';
-import {getFilmControlsData, getHandlerWithProp} from '../../helpers';
+import FilmControls from '../film-controls';
 
-export default class Controls extends AbstractComponent {
-  constructor({isInWatchList, isWatched, isFavorite}) {
-    super();
+export default class Controls extends FilmControls {
+  constructor(params) {
+    super(params);
 
-    this._controlsData = getFilmControlsData({
-      isInWatchList,
-      isWatched,
-      isFavorite,
-    });
+    this._tag = {
+      open: `<section class="film-details__controls">`,
+      close: `</section>`
+    };
+
+    this._itemClassName = `.film-details__control-label`;
+    this._inputClassName = `.film-details__control-input`;
   }
 
-  setClickHandler(handler) {
-    this._clickHandler = getHandlerWithProp(`.film-details__control-input`, handler);
-    this.getElement().addEventListener(`click`, this._clickHandler);
-  }
-
-  removeEvents() {
-    this.getElement().removeEventListener(`click`, this._clickHandler);
-  }
-
-  _getDetailControl({id, key, text, isActive}) {
+  _getControl({id, key, text, isActive}) {
     const checkedAttr = isActive ? `checked` : ``;
 
     return (
@@ -37,19 +29,6 @@ export default class Controls extends AbstractComponent {
         for="${id}"
         class="film-details__control-label film-details__control-label--${id}"
       >${text}</label>`
-    );
-  }
-
-  _getTmpl() {
-    const controlsMarkup = this._controlsData
-      .reduce((prev, item) => {
-        return prev + this._getDetailControl(item);
-      }, ``);
-
-    return (
-      `<section class="film-details__controls">
-        ${controlsMarkup}
-      </section>`
     );
   }
 }

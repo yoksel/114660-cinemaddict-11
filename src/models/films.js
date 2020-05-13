@@ -7,6 +7,7 @@ export default class Films {
     this._activeFilterType = FilterType.ALL;
     this._activeSortType = SortType.DEFAULT;
     this._dataChangeHandlers = [];
+    this._dataAddHandlers = [];
     this._filterChangeHandlers = [];
     this._sortChangeHandlers = [];
   }
@@ -28,6 +29,7 @@ export default class Films {
 
   setFilms(films) {
     this._films = films;
+    this._callHandlers(this._dataAddHandlers);
   }
 
   setFilterType(filterType) {
@@ -46,6 +48,10 @@ export default class Films {
 
   getSortType() {
     return this._activeSortType;
+  }
+
+  addDataAddHandler(handler) {
+    this._dataAddHandlers.push(handler);
   }
 
   addDataChangeHandler(handler) {

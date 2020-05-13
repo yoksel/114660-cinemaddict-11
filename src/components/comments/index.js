@@ -4,11 +4,11 @@ import Form from './form';
 import {createElement, renderElement} from '../../helpers';
 
 export default class Comments extends AbstractComponent {
-  constructor({selectedEmoji, commentText, comments}) {
+  constructor({selectedEmoji, commentText, commentsData}) {
     super();
 
-    this._comments = comments;
-    this._commentsList = new CommentsList(comments);
+    this._commentsData = commentsData;
+    this._commentsList = new CommentsList(commentsData);
     this._form = new Form({selectedEmoji, commentText});
   }
 
@@ -48,7 +48,7 @@ export default class Comments extends AbstractComponent {
           <h3 class="film-details__comments-title">
             Comments
             <span class="film-details__comments-count">
-              ${this._comments.length}
+              ${this._commentsData.length}
             </span>
           </h3>
         </section>

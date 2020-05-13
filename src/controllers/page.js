@@ -1,12 +1,13 @@
 import FilmsListController from './films-list';
-import {createElement, renderElement, getFilmsSortedByProp} from '../helpers';
-
-import {MAX_CARDS_TOP, MAX_CARDS_SHOW, MAX_CARDS_LOAD, SortType, FilterType, FILTERS} from '../constants';
+import PageComponent from '../components/page';
+import {renderElement, replaceElement, getFilmsSortedByProp} from '../helpers';
+import {MAX_CARDS_TOP, MAX_CARDS_SHOW, MAX_CARDS_LOAD, SortType, FilterType, FILTERS, AppState} from '../constants';
 
 export default class PageController {
-  constructor(container, filmsModel) {
+  constructor(container, filmsModel, api) {
     this._container = container;
     this._filmsModel = filmsModel;
+    this._api = api;
     this._upcomingFilmsControllers = [];
     this._topRatedFilmsControllers = [];
     this._topCommentedFilmsControllers = [];
@@ -17,6 +18,10 @@ export default class PageController {
     this._onFilterChange = this._onFilterChange.bind(this);
     this._onSortChange = this._onSortChange.bind(this);
     this._loadMoreUpcoming = this._loadMoreUpcoming.bind(this);
+    this._onUpcomingDetailsClose = this._onUpcomingDetailsClose.bind(this);
+    this._onTopCommentedDetailsClose = this._onTopCommentedDetailsClose.bind(this);
+    this._updateUpcoming = this._updateUpcoming.bind(this);
+    this._updateTopCommented = this._updateTopCommented.bind(this);
 
     this._filmsModel.addFilterChangeHandler(this._onFilterChange);
     this._filmsModel.addSortChangeHandler(this._onSortChange);
@@ -59,11 +64,26 @@ export default class PageController {
     return films;
   }
 
+  _onUpcomingDetailsClose() {
+    if (this._isNeedToUpdateFiltered) {
+      this._updateUpcoming(this._shownQuantity);
+      this._isNeedToUpdateFiltered = false;
+    }
+  }
+
+  _onTopCommentedDetailsClose() {
+    if (this._isNeedToUpdateTopCommented) {
+      this._updateTopCommented();
+      this._isNeedToUpdateTopCommented = false;
+    }
+  }
+
   _initFilmsControllers(element) {
     this._upcomingListController = new FilmsListController(
         element,
         this._onDataChange,
         this._onViewChange,
+        this._onUpcomingDetailsClose,
         {type: `upcoming`, title: `All movies. Upcoming`}
     );
     this._upcomingListController.setMoreBtnClickHandler(this._loadMoreUpcoming);
@@ -72,6 +92,7 @@ export default class PageController {
         element,
         this._onDataChange,
         this._onViewChange,
+        null,
         {type: `extra`, title: `Top rated`}
     );
 
@@ -79,6 +100,7 @@ export default class PageController {
         element,
         this._onDataChange,
         this._onViewChange,
+        this._onTopCommentedDetailsClose,
         {type: `extra`, title: `Top commented`}
     );
   }
@@ -92,22 +114,17 @@ export default class PageController {
   }
 
   _removeControllers(prop) {
-    const openedFilmsControllers = this[prop].filter((item) => item.detailsIsOpened);
-
     this[prop].forEach((item) => {
-      if (!item.detailsIsOpened) {
-        item.destroy();
-      }
+      item.destroy();
     });
 
-    this[prop] = openedFilmsControllers;
+    this[prop] = [];
   }
 
   _updateUpcoming(quantity) {
     this._shownQuantity = 0;
     const films = this._getUpcoming(quantity);
     this._removeControllers(`_upcomingFilmsControllers`);
-    this._upcomingListController.clearSavedData();
 
     if (films.length === 0) {
       const filterName = FILTERS[this._filmsModel.getFilterType()].name;
@@ -125,7 +142,6 @@ export default class PageController {
   _updateTopCommented() {
     const films = this._getTopCommented();
     this._removeControllers(`_topCommentedFilmsControllers`);
-    this._topCommentedListController.clearSavedData();
 
     if (films.length === 0) {
       this._topCommentedListController.hide();
@@ -166,19 +182,26 @@ export default class PageController {
 
     const filterPropName = FILTERS[currentFilter].propName;
     const isNeedToUpdateFiltered = oldData[filterPropName] !== newData[filterPropName];
-    this._isNeedToHideUpdatedCard = isNeedToUpdateFiltered && newData[filterPropName] === false;
     return isNeedToUpdateFiltered;
   }
 
-  _onDataChange(oldData, newData) {
-    const isSuccess = this._filmsModel.updateFilm(oldData.id, newData);
+  _countOpenedControllers(controllers) {
+    const openedControllers = controllers.filter((item) => item.detailsIsOpened);
 
-    if (!isSuccess) {
-      return;
+    return openedControllers.length;
+  }
+
+  _updateListIfItHasNoOpened(controlsList, updatingFunc, quantity) {
+    const openedControllersQuantity = this._countOpenedControllers(controlsList);
+
+    if (openedControllersQuantity === 0) {
+      updatingFunc(quantity);
     }
+  }
 
-    const isNeedToUpdateFiltered = this._checkIsNeedToUpdateFiltered(oldData, newData);
-    const isNeedToUpdateTopCommented = oldData.comments.length !== newData.comments.length;
+  _updatePageOnSuccess(oldData, newData) {
+    this._isNeedToUpdateFiltered = this._checkIsNeedToUpdateFiltered(oldData, newData);
+    this._isNeedToUpdateTopCommented = oldData.comments.length !== newData.comments.length;
     const filmsControllersToUpdate = this._allFilmsControllers.filter((item) => item.filmData.id === oldData.id);
 
     if (filmsControllersToUpdate.length === 0) {
@@ -190,13 +213,33 @@ export default class PageController {
       item.render(newData);
     });
 
-    if (isNeedToUpdateFiltered) {
-      this._updateUpcoming(this._shownQuantity);
+    if (this._isNeedToUpdateFiltered) {
+      this._updateListIfItHasNoOpened(
+          this._upcomingFilmsControllers,
+          this._updateUpcoming,
+          this._shownQuantity
+      );
     }
 
-    if (isNeedToUpdateTopCommented) {
-      this._updateTopCommented();
+    if (this._isNeedToUpdateTopCommented) {
+      this._updateListIfItHasNoOpened(
+          this._topCommentedFilmsControllers,
+          this._updateTopCommented
+      );
     }
+  }
+
+  _onDataChange(oldData, newData) {
+    this._api.updateFilm(oldData.id, newData)
+      .then((taskModel) => {
+        const isSuccess = this._filmsModel.updateFilm(oldData.id, taskModel);
+
+        if (!isSuccess) {
+          return;
+        }
+
+        this._updatePageOnSuccess(oldData, taskModel);
+      });
   }
 
   _onViewChange() {
@@ -204,34 +247,42 @@ export default class PageController {
   }
 
   hide() {
-    this._filmsSection.hidden = true;
+    this._pageComponent.hide();
   }
 
   show() {
-    this._filmsSection.hidden = false;
+    this._pageComponent.show();
   }
 
-  render() {
+  render(params = {}) {
+    const {state} = params;
+    const oldPageComponent = this._pageComponent;
+    this._pageComponent = new PageComponent();
+    this._initFilmsControllers(this._pageComponent.getElement());
     const filmsQuantity = this._filmsModel.getFilmsQuantity();
-    this._filmsSection = createElement(`<section class="films"></section>`);
-    this._initFilmsControllers(this._filmsSection);
 
-    renderElement(this._container, this._filmsSection);
-
-    if (filmsQuantity === 0) {
+    if (state === AppState.LOADING) {
+      this._upcomingListController.showNoFilmsMessage(`Loading...`);
+    } else if (state === AppState.EMPTY || filmsQuantity === 0) {
       this._upcomingListController.showNoFilmsMessage(`There are no movies in our database`);
-      return;
+    } else {
+
+      this._upcomingFilmsControllers = this._upcomingListController.render(this._getUpcoming(MAX_CARDS_SHOW));
+
+      if (filmsQuantity > MAX_CARDS_SHOW) {
+        this._upcomingListController.showMoreBtn();
+      }
+
+      this._topRatedFilmsControllers = this._topRatedListController.render(this._getTopRated());
+      this._topCommentedFilmsControllers = this._topCommentedListController.render(this._getTopCommented());
+
+      this._allFilmsControllers = this._collectAllFilmsControllers();
     }
 
-    this._upcomingFilmsControllers = this._upcomingListController.render(this._getUpcoming(MAX_CARDS_SHOW));
-
-    if (filmsQuantity > MAX_CARDS_SHOW) {
-      this._upcomingListController.showMoreBtn();
+    if (oldPageComponent) {
+      replaceElement(oldPageComponent, this._pageComponent);
+    } else {
+      renderElement(this._container, this._pageComponent);
     }
-
-    this._topRatedFilmsControllers = this._topRatedListController.render(this._getTopRated());
-    this._topCommentedFilmsControllers = this._topCommentedListController.render(this._getTopCommented());
-
-    this._allFilmsControllers = this._collectAllFilmsControllers();
   }
 }
