@@ -183,8 +183,7 @@ export default class PageController {
     }
 
     const filterPropName = FILTERS[currentFilter].propName;
-    const isNeedToUpdateFiltered = oldData[filterPropName] !== newData[filterPropName];
-    return isNeedToUpdateFiltered;
+    return oldData[filterPropName] !== newData[filterPropName];
   }
 
   _countOpenedControllers(controllers) {
