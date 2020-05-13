@@ -12,7 +12,7 @@ export const getTotalDuration = (watchedFilms) => {
   }, 0);
 
   const duration = moment.duration(totalTimeMins, `minutes`);
-  let hours = duration.hours();
+  const hours = duration.hours();
   let mins = duration.minutes();
 
   if (mins > 0 && mins < 10) {
@@ -52,7 +52,7 @@ export const getWatchedByPeriod = (watchedFilms, periodName) => {
     return watchedFilms;
   }
 
-  let date = new Date();
+  const date = new Date();
 
   switch (periodName) {
     case StatsFilter.YEAR:
