@@ -65,6 +65,11 @@ const AppState = {
   EMPTY: `empty`
 };
 
+const ClassName = {
+  REQUIRED: `required`,
+  SHAKE: `shake`
+};
+
 const MAX_CARDS_TOP = 2;
 const MAX_CARDS_SHOW = 5;
 const MAX_CARDS_LOAD = 5;
@@ -77,6 +82,7 @@ export {
   SortType,
   StatsFilter,
   AppState,
+  ClassName,
   MAX_CARDS_TOP,
   MAX_CARDS_SHOW,
   MAX_CARDS_LOAD,
