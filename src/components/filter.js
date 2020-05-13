@@ -20,38 +20,38 @@ export default class Filter extends AbstractComponent {
   }
 
   setFilterSwitchHandler(handler) {
-    const control = this.getElement().querySelector(`.${classes.items}`);
+    const controlElement = this.getElement().querySelector(`.${classes.items}`);
     const clickHandlerWithProp = getHandlerWithProp(`.${classes.item}`, handler);
 
-    control.addEventListener(`click`, clickHandlerWithProp);
+    controlElement.addEventListener(`click`, clickHandlerWithProp);
     this._filterSwitchHandler = handler;
   }
 
   setFilterItemClickHandler(handler) {
-    const control = this.getElement().querySelector(`.${classes.items}`);
+    const controlElement = this.getElement().querySelector(`.${classes.items}`);
 
-    control.addEventListener(`click`, handler);
+    controlElement.addEventListener(`click`, handler);
     this._filterItemClickHandler = handler;
   }
 
   setStatsClickHandler(handler) {
-    const control = this.getElement().querySelector(`.main-navigation__additional`);
-    control.addEventListener(`click`, handler);
+    const controlElement = this.getElement().querySelector(`.main-navigation__additional`);
+    controlElement.addEventListener(`click`, handler);
 
     this._statsClickHandler = handler;
   }
 
   setActiveHighlight(section) {
     const filterItemsClassName = `${classes.item}--${this._currentFilter}`;
-    const filterItem = this.getElement().querySelector(`.${filterItemsClassName}`);
-    const navAdditional = this.getElement().querySelector(`.${classes.additional}`);
+    const filterItemElement = this.getElement().querySelector(`.${filterItemsClassName}`);
+    const navAdditionalElement = this.getElement().querySelector(`.${classes.additional}`);
 
     if (section === `filters`) {
-      filterItem.classList.add(classes.itemActive);
-      navAdditional.classList.remove(classes.additionalActive);
+      filterItemElement.classList.add(classes.itemActive);
+      navAdditionalElement.classList.remove(classes.additionalActive);
     } else {
-      filterItem.classList.remove(classes.itemActive);
-      navAdditional.classList.add(classes.additionalActive);
+      filterItemElement.classList.remove(classes.itemActive);
+      navAdditionalElement.classList.add(classes.additionalActive);
     }
   }
 

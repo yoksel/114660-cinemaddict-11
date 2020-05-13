@@ -157,7 +157,7 @@ export default class FilmController {
   }
 
   _setDetailsHandlers() {
-    this._detailsComponent.setCloseBtnClickHandler(this._hideDetails);
+    this._detailsComponent.setCloseButtonClickHandler(this._hideDetails);
     this._detailsComponent.setControlsClickHandler(this._toggleProp);
     this._detailsComponent.setCommentsActionsHandler(this._updateComments);
   }

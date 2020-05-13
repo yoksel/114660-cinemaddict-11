@@ -34,9 +34,9 @@ export default class PageController {
     this._shownQuantity = nextQuantity;
 
     if (this._shownQuantity >= films.length) {
-      this._upcomingListController.hideMoreBtn();
+      this._upcomingListController.hideMoreButton();
     } else {
-      this._upcomingListController.showMoreBtn();
+      this._upcomingListController.showMoreButton();
     }
 
     return cuttedFilms;
@@ -87,7 +87,7 @@ export default class PageController {
       onDetailsClose: this._onUpcomingDetailsClose,
       props: {type: `upcoming`, title: `All movies. Upcoming`}
     });
-    this._upcomingListController.setMoreBtnClickHandler(this._loadMoreUpcoming);
+    this._upcomingListController.setMoreButtonClickHandler(this._loadMoreUpcoming);
 
     this._topRatedListController = new FilmsListController({
       container: element,
@@ -171,7 +171,7 @@ export default class PageController {
     this._allFilmsControllers = this._collectAllFilmsControllers();
 
     if (this._shownQuantity >= this._filmsModel.getFilmsQuantity()) {
-      this._upcomingListController.hideMoreBtn();
+      this._upcomingListController.hideMoreButton();
     }
   }
 
@@ -272,7 +272,7 @@ export default class PageController {
       this._upcomingFilmsControllers = this._upcomingListController.render(this._getUpcoming(MAX_CARDS_SHOW));
 
       if (filmsQuantity > MAX_CARDS_SHOW) {
-        this._upcomingListController.showMoreBtn();
+        this._upcomingListController.showMoreButton();
       }
 
       this._topRatedFilmsControllers = this._topRatedListController.render(this._getTopRated());

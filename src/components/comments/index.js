@@ -40,9 +40,9 @@ export default class Comments extends AbstractComponent {
 
   _createElement() {
     const element = createElement(this._getTmpl());
-    const wrapper = element.querySelector(`.film-details__comments-wrap`);
+    const wrapperElement = element.querySelector(`.film-details__comments-wrap`);
 
-    renderElement(wrapper, [
+    renderElement(wrapperElement, [
       this._commentsList,
       this._form
     ]);

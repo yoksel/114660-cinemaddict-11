@@ -26,10 +26,10 @@ export default class CommentsList extends AbstractComponent {
   }
 
   setDeleteClickHandler(handler) {
-    const deleteBtns = this.getElement().querySelectorAll(`.film-details__comment-delete`);
+    const deleteButtonElements = this.getElement().querySelectorAll(`.film-details__comment-delete`);
     const deleteClickHandler = this._createDeleteClickHandler(handler);
 
-    deleteBtns.forEach((item) => {
+    deleteButtonElements.forEach((item) => {
       item.addEventListener(`click`, deleteClickHandler);
       item.addEventListener(`click`, () => {
         item.disabled = true;

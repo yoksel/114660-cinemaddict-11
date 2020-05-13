@@ -23,15 +23,15 @@ const filmsModel = new FilmsModel();
 
 const userModel = new UserModel(filmsModel);
 
-const siteHeaderElem = document.querySelector(`.header`);
-const siteMainElem = document.querySelector(`.main`);
-const filmsTotalElem = document.querySelector(`.footer__statistics`);
+const siteHeaderElement = document.querySelector(`.header`);
+const siteMainElement = document.querySelector(`.main`);
+const filmsTotalElement = document.querySelector(`.footer__statistics`);
 
-const profileController = new ProfileController(siteHeaderElem, filmsModel, userModel);
-const filterController = new FilterController(siteMainElem, filmsModel);
-const sortController = new SortController(siteMainElem, filmsModel);
-const pageController = new PageController(siteMainElem, filmsModel, api);
-const userStatsContoller = new UserStatsController(siteMainElem, filmsModel, userModel);
+const profileController = new ProfileController(siteHeaderElement, filmsModel, userModel);
+const filterController = new FilterController(siteMainElement, filmsModel);
+const sortController = new SortController(siteMainElement, filmsModel);
+const pageController = new PageController(siteMainElement, filmsModel, api);
+const userStatsContoller = new UserStatsController(siteMainElement, filmsModel, userModel);
 let userStatsIsHidden = true;
 
 const switchToFilms = () => {
@@ -85,7 +85,7 @@ api.getFilms()
     userStatsContoller.hide();
 
     const filmsTotal = new FilmsTotal(filmsModel.getFilmsQuantity());
-    renderElement(filmsTotalElem, filmsTotal);
+    renderElement(filmsTotalElement, filmsTotal);
   })
   .catch((error) => {
     pageController.render({state: AppState.EMPTY});

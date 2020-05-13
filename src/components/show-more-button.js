@@ -1,6 +1,6 @@
 import AbstractComponent from './abstract-component';
 
-export default class showMoreBtn extends AbstractComponent {
+export default class showMoreButton extends AbstractComponent {
   _getTmpl() {
     return (
       `<button class="films-list__show-more" hidden>Show more</button>`

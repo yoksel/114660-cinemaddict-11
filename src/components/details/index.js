@@ -1,5 +1,5 @@
 import AbstractSmartComponent from '../abstract-smart-component';
-import CloseBtn from './close-btn';
+import CloseButton from './close-button';
 import Poster from './poster';
 import Desc from './desc';
 import Head from './head';
@@ -18,7 +18,7 @@ export default class Details extends AbstractSmartComponent {
     this._resetComment = resetComment;
     this._getEmoji = getEmoji;
     this._getText = getText;
-    this._closeBtn = new CloseBtn();
+    this._closeButton = new CloseButton();
     this._poster = new Poster(filmData);
     this._desc = new Desc(filmData);
     this._head = new Head(filmData);
@@ -27,8 +27,8 @@ export default class Details extends AbstractSmartComponent {
     this._controls = new Controls(filmData);
   }
 
-  setCloseBtnClickHandler(handler) {
-    this._closeBtn.setClickHandler(handler);
+  setCloseButtonClickHandler(handler) {
+    this._closeButton.setClickHandler(handler);
   }
 
   setControlsClickHandler(handler) {
@@ -93,7 +93,7 @@ export default class Details extends AbstractSmartComponent {
     const element = createElement(`<div class="form-details__top-container"></div>`);
 
     renderElement(element, [
-      this._closeBtn,
+      this._closeButton,
       this._getInfoContainer(),
       this._controls
     ]);
