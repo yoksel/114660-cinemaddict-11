@@ -1,5 +1,6 @@
-import AbstractComponent from './abstract-component';
-import {getFilmControlsData, getHandlerWithProp, getHandlerToggleClass, createElement} from '../helpers';
+import AbstractComponent from '../abstract-component';
+import { getFilmControlsData } from './get-film-controls-data';
+import { getHandlerWithProp, getHandlerToggleClass, createElement } from '../../helpers';
 
 export default class Controls extends AbstractComponent {
   constructor(params) {

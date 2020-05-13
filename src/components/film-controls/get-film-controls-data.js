@@ -1,4 +1,4 @@
-import {FilterType, FILTERS} from '../constants';
+import { FilterType, FILTERS } from '../../constants';
 
 const controlsData = {
   [FilterType.WATCHLIST]: {
