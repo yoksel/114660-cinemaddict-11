@@ -14,11 +14,11 @@ const getShortDesc = (desc) => {
 };
 
 export default class Film {
-  constructor(data) {
-    const filmInfo = data.film_info;
-    const userDetails = data.user_details;
+  constructor(filmData) {
+    const filmInfo = filmData.film_info;
+    const userDetails = filmData.user_details;
 
-    this.id = data.id;
+    this.id = filmData.id;
     this.poster = filmInfo.poster;
     this.title = filmInfo.title;
     this.origTitle = filmInfo.alternative_title;
@@ -37,8 +37,8 @@ export default class Film {
     this.isWatched = userDetails.already_watched;
     this.isFavorite = userDetails.favorite;
     this.watchedDate = new Date(userDetails.watching_date);
-    this.comments = data.comments;
-    this.commentsData = this._convertComments(data.comments_data);
+    this.comments = filmData.comments;
+    this.commentsData = this._convertComments(filmData.comments_data);
   }
 
   _convertComments(comments) {
@@ -103,15 +103,15 @@ export default class Film {
     };
   }
 
-  static parseFilm(data) {
-    return new Film(data);
+  static parseFilm(filmData) {
+    return new Film(filmData);
   }
 
-  static parseFilms(data) {
-    return data.map(Film.parseFilm);
+  static parseFilms(filmData) {
+    return filmData.map(Film.parseFilm);
   }
 
-  static clone(data) {
-    return new Film(data.toRaw());
+  static clone(filmData) {
+    return new Film(filmData.toRaw());
   }
 }
