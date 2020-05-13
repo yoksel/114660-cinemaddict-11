@@ -1,4 +1,5 @@
 import AbstractComponent from '../abstract-component';
+import {getPlurals} from '../../helpers';
 
 export default class StatsList extends AbstractComponent {
   constructor({watchedQuantity, watchedDuration, topGenre}) {
@@ -25,7 +26,7 @@ export default class StatsList extends AbstractComponent {
         values: [
           {
             value: this._watchedQuantity,
-            desc: `movies`
+            desc: getPlurals(this._watchedQuantity, [`movie`, `movies`])
           }
         ]
       },
