@@ -1,5 +1,10 @@
 import FilmControls from '../film-controls';
 
+const CLASS_NAMES = {
+  input: `film-details__control-input`,
+  label: `film-details__control-label`
+};
+
 export default class Controls extends FilmControls {
   constructor(params) {
     super(params);
@@ -9,8 +14,8 @@ export default class Controls extends FilmControls {
       close: `</section>`
     };
 
-    this._itemClassName = `.film-details__control-label`;
-    this._inputClassName = `.film-details__control-input`;
+    this._itemClassName = `.${CLASS_NAMES.label}`;
+    this._inputClassName = `.${CLASS_NAMES.input}`;
   }
 
   _getControl({id, key, text, isActive}) {
@@ -19,7 +24,7 @@ export default class Controls extends FilmControls {
     return (
       `<input
         type="checkbox"
-        class="film-details__control-input visually-hidden"
+        class="${CLASS_NAMES.input} visually-hidden"
         id="${id}"
         name="${id}"
         data-prop="${key}"
@@ -27,7 +32,7 @@ export default class Controls extends FilmControls {
       >
       <label
         for="${id}"
-        class="film-details__control-label film-details__control-label--${id}"
+        class="${CLASS_NAMES.label} ${CLASS_NAMES.label}--${id}"
       >${text}</label>`
     );
   }
