@@ -37,13 +37,15 @@ export default class UserStats extends AbstractSmartComponent {
     this._statsPeriodsNav.setClickHandler(handler);
   }
 
+  renderChart() {
+    renderChart(this.getElement(), this._watchedByGenre);
+  }
+
   _createElement() {
     const element = createElement(this._getTmpl());
 
     renderElement(element, this._statsPeriodsNav);
     renderElement(element, this._statsList);
-
-    renderChart(element, this._watchedByGenre);
 
     return element;
   }
