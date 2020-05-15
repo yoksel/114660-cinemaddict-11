@@ -70,7 +70,6 @@ export default class API {
       method: `POST`,
       body: JSON.stringify(filmData.commentToRaw(commentData)),
     })
-      .then(checkStatus)
       .then((response) => response.json())
       .then(({movie: filmJson}) => this._getCommentsPromise(filmJson))
       .then(Film.parseFilm);
