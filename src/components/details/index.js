@@ -52,10 +52,6 @@ export default class Details extends AbstractSmartComponent {
     this.rerender();
   }
 
-  shakeComment() {
-    this._comments.shakeComment();
-  }
-
   highlightCommentOnError(id) {
     this._comments.highlightCommentOnError(id);
   }
