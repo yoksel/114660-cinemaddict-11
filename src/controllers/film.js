@@ -190,8 +190,7 @@ export default class FilmController {
       setEmoji: this._setEmoji,
       getEmoji: this._getEmoji,
       setText: this._setText,
-      getText: this._getText,
-      resetComment: this._resetComment
+      getText: this._getText
     });
 
     this._setCardHandlers();
