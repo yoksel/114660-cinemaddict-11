@@ -16,7 +16,6 @@ export default class FilmController {
     this._selectedEmoji = null;
     this._commentText = ``;
 
-    this._updateFilm = this._updateFilm.bind(this);
     this._onDataChangeSuccess = onDataChangeSuccess;
     this._onViewChange = onViewChange;
     this._onDetailsClose = onDetailsClose;
@@ -89,7 +88,8 @@ export default class FilmController {
     newFilmData[prop] = !newFilmData[prop];
     this._setWatchedDate(prop, newFilmData);
 
-    this._updateFilm(this.filmData, newFilmData);
+    this._api.updateFilm(this.filmData.id, newFilmData)
+      .then((filmModel) => this._updateFilmInModel(this.filmData, filmModel));
   }
 
   _setEmoji(emoji = ``) {
@@ -123,11 +123,6 @@ export default class FilmController {
     }
 
     this._onDataChangeSuccess(oldFilmData, newFilmData);
-  }
-
-  _updateFilm(oldFilmData, newFilmData) {
-    this._api.updateFilm(oldFilmData.id, newFilmData)
-      .then((filmModel) => this._updateFilmInModel(oldFilmData, filmModel));
   }
 
   _updateComments(id, newCommentData) {
