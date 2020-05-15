@@ -122,7 +122,7 @@ export default class FilmController {
           const newComments = comments.filter((commentId) => commentId !== id);
 
           const newFilmData = FilmModel.clone(this.filmData);
-          newFilmData[comments] = newComments;
+          newFilmData.comments = newComments;
 
           this._onDataChange(this.filmData, newFilmData);
         })
