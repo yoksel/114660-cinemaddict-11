@@ -12,8 +12,8 @@ export default class Details extends AbstractSmartComponent {
   constructor(params) {
     super();
 
-    this._params = params;
     const {filmData, getEmoji, getText, resetComment} = params;
+    this._params = params;
     this._filmData = filmData;
     this._resetComment = resetComment;
     this._getEmoji = getEmoji;
