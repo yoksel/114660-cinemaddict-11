@@ -9,6 +9,7 @@ import Comments from '../comments';
 import {createElement, renderElement} from '../../helpers';
 
 export default class Details extends AbstractSmartComponent {
+  // params = {filmData, setEmoji, getEmoji, setText, getText}
   constructor(params) {
     super();
 

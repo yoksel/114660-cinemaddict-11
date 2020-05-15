@@ -4,6 +4,7 @@ import Form from './form';
 import {createElement, renderElement} from '../../helpers';
 
 export default class Comments extends AbstractComponent {
+  // params = {filmData, setEmoji, getEmoji, setText, getText}
   constructor(params) {
     super();
 
