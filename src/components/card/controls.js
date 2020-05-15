@@ -2,8 +2,8 @@ import FilmControls from '../film-controls';
 import {getClass} from '../../helpers';
 
 export default class Controls extends FilmControls {
-  constructor(params) {
-    super(params);
+  constructor({isInWatchList, isWatched, isFavorite}) {
+    super({isInWatchList, isWatched, isFavorite});
 
     this._tag = {
       open: `<form class="film-card__controls">`,

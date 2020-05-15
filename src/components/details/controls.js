@@ -1,8 +1,8 @@
 import FilmControls from '../film-controls';
 
 export default class Controls extends FilmControls {
-  constructor(params) {
-    super(params);
+  constructor({isInWatchList, isWatched, isFavorite}) {
+    super({isInWatchList, isWatched, isFavorite});
 
     this._tag = {
       open: `<section class="film-details__controls">`,

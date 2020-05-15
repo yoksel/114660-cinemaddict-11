@@ -3,10 +3,8 @@ import {getFilmControlsData} from './get-film-controls-data';
 import {getHandlerWithProp, getHandlerToggleClass, createElement} from '../../helpers';
 
 export default class Controls extends AbstractComponent {
-  constructor(params) {
+  constructor({isInWatchList, isWatched, isFavorite}) {
     super();
-
-    const {isInWatchList, isWatched, isFavorite} = params;
 
     this._controlsData = getFilmControlsData({
       isInWatchList,
