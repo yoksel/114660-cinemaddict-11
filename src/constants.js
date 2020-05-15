@@ -20,14 +20,6 @@ const USER_STATUSES = [
   },
 ];
 
-const AGE_RATINGS = {
-  '0+': `General audiences`,
-  '6+': `Parental guidance`,
-  '12+': `Parents strongly cautioned`,
-  '16+': `Restricted`,
-  '18+': `No One 17 & Under Admitted`,
-};
-
 const FilterType = {
   ALL: `all`,
   WATCHLIST: `watchlist`,
@@ -73,6 +65,11 @@ const AppState = {
   EMPTY: `empty`
 };
 
+const ClassName = {
+  REQUIRED: `required`,
+  SHAKE: `shake`
+};
+
 const MAX_CARDS_TOP = 2;
 const MAX_CARDS_SHOW = 5;
 const MAX_CARDS_LOAD = 5;
@@ -80,12 +77,12 @@ const MAX_CARDS_LOAD = 5;
 export {
   EMOJIS,
   USER_STATUSES,
-  AGE_RATINGS,
   FilterType,
   FILTERS,
   SortType,
   StatsFilter,
   AppState,
+  ClassName,
   MAX_CARDS_TOP,
   MAX_CARDS_SHOW,
   MAX_CARDS_LOAD,

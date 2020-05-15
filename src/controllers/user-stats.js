@@ -65,5 +65,9 @@ export default class UserStatsController {
     } else {
       renderElement(this._container, this._userStatsComponent);
     }
+
+    // Chart must be rendered after UserStats component
+    // will be rendered to page otherwise it crashes app in FF
+    this._userStatsComponent.renderChart();
   }
 }

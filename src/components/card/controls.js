@@ -2,15 +2,15 @@ import FilmControls from '../film-controls';
 import {getClass} from '../../helpers';
 
 export default class Controls extends FilmControls {
-  constructor(params) {
-    super(params);
+  constructor({isInWatchList, isWatched, isFavorite}) {
+    super({isInWatchList, isWatched, isFavorite});
 
     this._tag = {
       open: `<form class="film-card__controls">`,
       close: `</form>`
     };
 
-    this._itemClassName = `.film-card__controls-item`;
+    this._itemClassName = `film-card__controls-item`;
     this._inputClassName = this._itemClassName;
   }
 
@@ -22,13 +22,14 @@ export default class Controls extends FilmControls {
     }
 
     const className = getClass({
-      base: `film-card__controls-item`,
+      base: this._itemClassName,
       mods
     });
 
     return (
       `<button
         class="${className}"
+        type="button"
         data-prop="${key}"
       >${text}</button>`
     );

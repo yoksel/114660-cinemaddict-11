@@ -1,4 +1,4 @@
-import {FilterType, FILTERS} from '../constants';
+import {FilterType, FILTERS} from '../../constants';
 
 const controlsData = {
   [FilterType.WATCHLIST]: {
@@ -21,11 +21,11 @@ const controlsData = {
   },
 };
 
-export const getFilmControlsData = (data) => {
+export const getFilmControlsData = (filmProps) => {
   return Object.entries(controlsData)
     .map(([id, controlData]) => {
       const {key, getVariants} = controlData;
-      const isActive = data[key];
+      const isActive = filmProps[key];
       const text = getVariants(isActive);
 
       return {

@@ -1,5 +1,10 @@
 import AbstractComponent from '../abstract-component';
-import {createElement, renderElement, getRelativeDate} from '../../helpers';
+import {createElement, renderElement, getRelativeDate, shake} from '../../helpers';
+
+const ButtonText = {
+  DEFAULT: `Delete`,
+  WAITING: `Deleting...`
+};
 
 export default class CommentsList extends AbstractComponent {
   constructor(comments) {
@@ -21,10 +26,26 @@ export default class CommentsList extends AbstractComponent {
   }
 
   setDeleteClickHandler(handler) {
-    const deleteBtns = this.getElement().querySelectorAll(`.film-details__comment-delete`);
+    const deleteButtonElements = this.getElement().querySelectorAll(`.film-details__comment-delete`);
     const deleteClickHandler = this._createDeleteClickHandler(handler);
 
-    deleteBtns.forEach(((item) => item.addEventListener(`click`, deleteClickHandler)));
+    deleteButtonElements.forEach((item) => {
+      item.addEventListener(`click`, (event) => {
+        deleteClickHandler(event);
+        item.disabled = true;
+        item.innerHTML = ButtonText.WAITING;
+      });
+    });
+  }
+
+  highlightOnError(id) {
+    const commentElement = document.getElementById(id);
+    const deleteButtonElement = commentElement.querySelector(`.film-details__comment-delete`);
+
+    shake(commentElement);
+
+    deleteButtonElement.innerHTML = ButtonText.DEFAULT;
+    deleteButtonElement.disabled = false;
   }
 
   _getEmojiMarkup(emoji) {
@@ -56,7 +77,7 @@ export default class CommentsList extends AbstractComponent {
             ${getRelativeDate(date)}
           </span>
 
-          <button class="film-details__comment-delete" type="button">Delete</button>
+          <button class="film-details__comment-delete" type="button">${ButtonText.DEFAULT}</button>
         </p>
       </div>
     </li>`;

@@ -1,6 +1,6 @@
 import AbstractComponent from '../abstract-component';
 
-export default class CloseBtn extends AbstractComponent {
+export default class CloseButton extends AbstractComponent {
   _getTmpl() {
     return (
       `<div class="film-details__close">

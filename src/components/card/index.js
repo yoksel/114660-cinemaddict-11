@@ -31,10 +31,10 @@ export default class Card extends AbstractComponent {
 
   setCardClickHandler(handler) {
     const element = this.getElement();
-    const poster = element.querySelector(`.film-card__poster`);
-    const title = element.querySelector(`.film-card__title`);
-    const comments = element.querySelector(`.film-card__comments`);
-    const controlsList = [poster, title, comments];
+    const posterElement = element.querySelector(`.film-card__poster`);
+    const titleElement = element.querySelector(`.film-card__title`);
+    const commentsElement = element.querySelector(`.film-card__comments`);
+    const controlsList = [posterElement, titleElement, commentsElement];
 
     for (const control of controlsList) {
       control.addEventListener(`click`, handler);

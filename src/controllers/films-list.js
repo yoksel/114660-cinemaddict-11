@@ -1,30 +1,32 @@
 import FilmController from './film';
 import FilmsListComponent from '../components/films-list';
-import ShowMoreBtn from '../components/show-more-btn';
+import ShowMoreButton from '../components/show-more-button';
 import {renderElement, replaceElement} from '../helpers';
 
 export default class FilmsListController {
-  constructor(container, onDataChange, onViewChange, onDetailsClose, props) {
+  constructor({container, api, filmsModel, onDataChangeSuccess, onViewChange, onDetailsClose, props}) {
     this._container = container;
+    this._api = api;
+    this._filmsModel = filmsModel;
     this._props = props;
-    this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
     this._onDetailsClose = onDetailsClose;
-    this._moreBtn = new ShowMoreBtn();
+    this._onDataChangeSuccess = onDataChangeSuccess;
+    this._moreButton = new ShowMoreButton();
     this._emptyFilmsComponent = new FilmsListComponent({type: `empty`});
     this._isFilmsMessageShown = false;
   }
 
-  setMoreBtnClickHandler(handler) {
-    this._moreBtn.setClickHandler(handler);
+  setMoreButtonClickHandler(handler) {
+    this._moreButton.setClickHandler(handler);
   }
 
-  hideMoreBtn() {
-    this._moreBtn.hide();
+  hideMoreButton() {
+    this._moreButton.hide();
   }
 
-  showMoreBtn() {
-    this._moreBtn.show();
+  showMoreButton() {
+    this._moreButton.show();
   }
 
   hide() {
@@ -37,12 +39,14 @@ export default class FilmsListController {
 
   renderCards(films) {
     const newControllers = films.map((film) => {
-      const filmController = new FilmController(
-          this._filmsContainerElement,
-          this._onDataChange,
-          this._onViewChange,
-          this._onDetailsClose
-      );
+      const filmController = new FilmController({
+        container: this._filmsContainerElement,
+        api: this._api,
+        filmsModel: this._filmsModel,
+        onDataChangeSuccess: this._onDataChangeSuccess,
+        onViewChange: this._onViewChange,
+        onDetailsClose: this._onDetailsClose,
+      });
 
       filmController.render(film);
 
@@ -77,7 +81,7 @@ export default class FilmsListController {
     this._filmsListComponent = new FilmsListComponent(this._props);
     this._filmsContainerElement = this._filmsListComponent.getFilmsContainerElement();
 
-    renderElement(this._filmsListComponent.getElement(), this._moreBtn);
+    renderElement(this._filmsListComponent.getElement(), this._moreButton);
     renderElement(this._container, this._filmsListComponent);
 
     if (films.length === 0) {

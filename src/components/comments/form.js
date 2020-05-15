@@ -1,22 +1,25 @@
 import he from 'he';
 import AbstractSmartComponent from '../abstract-smart-component';
 import EmojiControls from './emoji-controls';
-import {createElement, renderElement, getRandomID} from '../../helpers';
-
-const CLASS_HIGHLIGHT_REQUIRED = `hightlight-required`;
+import {createElement, renderElement, shake} from '../../helpers';
+import {ClassName} from '../../constants';
 
 export default class Form extends AbstractSmartComponent {
-  constructor({selectedEmoji, commentText}) {
+  constructor({setEmoji, getEmoji, setText, getText}) {
     super();
 
-    this._selectedEmoji = selectedEmoji;
-    this._commentText = commentText || ``;
-    this._emojiControls = new EmojiControls({selectedEmoji});
+    this._selectedEmoji = getEmoji();
+    this._commentText = getText() || ``;
+    this._emojiControls = new EmojiControls({selectedEmoji: getEmoji()});
     this._pressedButtons = {};
+    this._isCommentSending = false;
     this._submitGeneratedHandler = null;
     this._keyUpHandler = () => {
       this._pressedButtons = {};
     };
+
+    this.setTextInputHandler(setText);
+    this.setEmojiClickHandler(setEmoji);
   }
 
   setEmojiClickHandler(handler) {
@@ -36,9 +39,8 @@ export default class Form extends AbstractSmartComponent {
       if (!textareaElement.value) {
         return;
       }
-      textareaElement.classList.remove(CLASS_HIGHLIGHT_REQUIRED);
+      textareaElement.classList.remove(ClassName.REQUIRED);
     });
-
 
     const textInputGeneratedHandler = () => {
       this._commentText = textareaElement.value.trim();
@@ -47,6 +49,17 @@ export default class Form extends AbstractSmartComponent {
 
     textareaElement.addEventListener(`blur`, textInputGeneratedHandler);
     this._textInputInitialHandler = handler;
+  }
+
+  highlightOnError() {
+    const formElement = this.getElement();
+    const textareaElement = this.getElement().querySelector(`.film-details__comment-input`);
+
+    shake(formElement);
+    textareaElement.classList.add(ClassName.REQUIRED);
+    textareaElement.focus();
+    textareaElement.disabled = false;
+    this._isCommentSending = false;
   }
 
   _recoveryListeners() {
@@ -59,6 +72,9 @@ export default class Form extends AbstractSmartComponent {
     const emojiLabelElement = this.getElement().querySelector(`.film-details__add-emoji-label`);
 
     return (event) => {
+      if (this._isCommentSending) {
+        return;
+      }
       if (event.key === `Enter`) {
         this._pressedButtons.enter = true;
       } else if (event.key === `Control` || event.key === `Meta`) {
@@ -69,34 +85,36 @@ export default class Form extends AbstractSmartComponent {
         const value = textareaElement.value.trim();
 
         if (!value) {
-          textareaElement.classList.add(CLASS_HIGHLIGHT_REQUIRED);
+          textareaElement.classList.add(ClassName.REQUIRED);
           textareaElement.focus();
         }
 
         if (!this._selectedEmoji) {
-          emojiLabelElement.classList.add(CLASS_HIGHLIGHT_REQUIRED);
+          emojiLabelElement.classList.add(ClassName.REQUIRED);
         }
 
         if (!value || !this._selectedEmoji) {
           return;
         }
 
-        textareaElement.classList.remove(CLASS_HIGHLIGHT_REQUIRED);
+        textareaElement.classList.remove(ClassName.REQUIRED);
 
         if (!this._selectedEmoji) {
-          emojiLabelElement.classList.add(CLASS_HIGHLIGHT_REQUIRED);
+          emojiLabelElement.classList.add(ClassName.REQUIRED);
           return;
         }
 
-        emojiLabelElement.classList.remove(CLASS_HIGHLIGHT_REQUIRED);
+        emojiLabelElement.classList.remove(ClassName.REQUIRED);
+
+        textareaElement.disabled = true;
 
         handler(null, {
-          id: getRandomID(),
-          author: `Anonymous`,
           text: he.encode(value),
           emoji: this._selectedEmoji,
           date: new Date()
         });
+
+        this._isCommentSending = true;
       }
     };
   }
@@ -121,7 +139,7 @@ export default class Form extends AbstractSmartComponent {
     return element;
   }
 
-  _getEmoji() {
+  _getEmojiElement() {
     if (!this._selectedEmoji) {
       return ``;
     }
@@ -133,7 +151,7 @@ export default class Form extends AbstractSmartComponent {
     return (
       `<div class="film-details__new-comment">
         <div for="add-emoji" class="film-details__add-emoji-label">
-          ${this._getEmoji()}
+          ${this._getEmojiElement()}
         </div>
 
         <label class="film-details__comment-label">

@@ -1,5 +1,5 @@
 import AbstractSmartComponent from '../abstract-smart-component';
-import CloseBtn from './close-btn';
+import CloseButton from './close-button';
 import Poster from './poster';
 import Desc from './desc';
 import Head from './head';
@@ -9,26 +9,24 @@ import Comments from '../comments';
 import {createElement, renderElement} from '../../helpers';
 
 export default class Details extends AbstractSmartComponent {
-  constructor(filmData) {
+  // params = {filmData, setEmoji, getEmoji, setText, getText}
+  constructor(params) {
     super();
 
+    const {filmData} = params;
+    this._params = params;
     this._filmData = filmData;
-    this._closeBtn = new CloseBtn();
+    this._closeButton = new CloseButton();
     this._poster = new Poster(filmData);
     this._desc = new Desc(filmData);
     this._head = new Head(filmData);
     this._table = new Table(filmData);
-    this._comments = new Comments(filmData);
+    this._comments = new Comments(this._params);
     this._controls = new Controls(filmData);
-
-    this.setEmoji = this.setEmoji.bind(this);
-    this.setText = this.setText.bind(this);
-
-    this._addEvents();
   }
 
-  setCloseBtnClickHandler(handler) {
-    this._closeBtn.setClickHandler(handler);
+  setCloseButtonClickHandler(handler) {
+    this._closeButton.setClickHandler(handler);
   }
 
   setControlsClickHandler(handler) {
@@ -45,50 +43,22 @@ export default class Details extends AbstractSmartComponent {
     this._controls.removeEvents();
   }
 
-  reset() {
-    if (!this._filmData.selectedEmoji && !this._filmData.commentText) {
-      return;
-    }
-
-    this.resetComment();
-
+  resetComment() {
     this.removeEvents();
-    this._comments = new Comments(this._filmData);
+    this._comments = new Comments(this._params);
 
     this.rerender();
   }
 
-  resetComment() {
-    this._filmData = Object.assign(
-        this._filmData,
-        {
-          selectedEmoji: null,
-          commentText: ``
-        }
-    );
+  highlightCommentOnError(id) {
+    this._comments.highlightCommentOnError(id);
   }
 
-  setEmoji(emoji = ``) {
-    this._filmData = Object.assign(
-        this._filmData,
-        {selectedEmoji: emoji}
-    );
-  }
-
-  setText(text = ``) {
-    this._filmData = Object.assign(
-        this._filmData,
-        {commentText: text}
-    );
-  }
-
-  _addEvents() {
-    this._comments.setEmojiClickHandler(this.setEmoji);
-    this._comments.setTextInputHandler(this.setText);
+  highlightFormOnError() {
+    this._comments.highlightFormOnError();
   }
 
   _recoveryListeners() {
-    this._addEvents();
   }
 
   _getInfo() {
@@ -117,7 +87,7 @@ export default class Details extends AbstractSmartComponent {
     const element = createElement(`<div class="form-details__top-container"></div>`);
 
     renderElement(element, [
-      this._closeBtn,
+      this._closeButton,
       this._getInfoContainer(),
       this._controls
     ]);

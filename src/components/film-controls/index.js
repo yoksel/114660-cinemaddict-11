@@ -1,11 +1,10 @@
-import AbstractComponent from './abstract-component';
-import {getFilmControlsData, getHandlerWithProp, getHandlerToggleClass, createElement} from '../helpers';
+import AbstractComponent from '../abstract-component';
+import {getFilmControlsData} from './get-film-controls-data';
+import {getHandlerWithProp, getHandlerToggleClass, createElement} from '../../helpers';
 
 export default class Controls extends AbstractComponent {
-  constructor(params) {
+  constructor({isInWatchList, isWatched, isFavorite}) {
     super();
-
-    const {isInWatchList, isWatched, isFavorite} = params;
 
     this._controlsData = getFilmControlsData({
       isInWatchList,
@@ -19,7 +18,7 @@ export default class Controls extends AbstractComponent {
   }
 
   setClickHandler(handler) {
-    this._clickHandler = getHandlerWithProp(this._inputClassName, handler);
+    this._clickHandler = getHandlerWithProp(`.${this._inputClassName}`, handler);
     this.getElement().addEventListener(`click`, this._clickHandler);
   }
 
@@ -34,7 +33,7 @@ export default class Controls extends AbstractComponent {
   _createElement() {
     const element = createElement(this._getTmpl());
 
-    element.addEventListener(`click`, getHandlerToggleClass(this._itemClassName, `state-waitng`));
+    element.addEventListener(`click`, getHandlerToggleClass(`.${this._itemClassName}`, `state-waitng`));
 
     return element;
   }

@@ -15,14 +15,14 @@ export default class API {
     this._authorization = authorization;
   }
 
-  _getCommentsPromise(movieItem) {
+  _getCommentsPromise(filmJson) {
     return new Promise((resolve, reject) => {
-      this._load({url: `comments/${movieItem.id}`})
+      this._load({url: `comments/${filmJson.id}`})
         .then((response) => response.json())
         .then((commentsJson) => {
-          movieItem[`comments_data`] = commentsJson;
+          filmJson[`comments_data`] = commentsJson;
 
-          resolve(movieItem);
+          resolve(filmJson);
         })
         .catch((error) => {
           reject(error);
@@ -33,9 +33,9 @@ export default class API {
   getFilms() {
     return this._load({url: `movies`})
       .then((response) => response.json())
-      .then((moviesJson) => {
-        const commentsPromises = moviesJson.reduce((prev, movieItem) => {
-          const commentPromise = this._getCommentsPromise(movieItem);
+      .then((filmsJson) => {
+        const commentsPromises = filmsJson.reduce((prev, filmItem) => {
+          const commentPromise = this._getCommentsPromise(filmItem);
           prev.push(commentPromise);
           return prev;
         }, []);
@@ -45,19 +45,41 @@ export default class API {
       .then(Film.parseFilms);
   }
 
-  updateFilm(id, filmData) {
+  updateFilm(filmId, filmData) {
     const headers = new Headers();
     headers.append(`Content-Type`, `application/json`);
 
     return this._load({
-      url: `movies/${id}`,
+      url: `movies/${filmId}`,
       headers,
       method: `PUT`,
       body: JSON.stringify(filmData.toRaw()),
     })
       .then((response) => response.json())
-      .then((movieJson) => this._getCommentsPromise(movieJson))
+      .then((filmJson) => this._getCommentsPromise(filmJson))
       .then(Film.parseFilm);
+  }
+
+  addComment(filmData, commentData) {
+    const headers = new Headers();
+    headers.append(`Content-Type`, `application/json`);
+
+    return this._load({
+      url: `comments/${filmData.id}`,
+      headers,
+      method: `POST`,
+      body: JSON.stringify(filmData.commentToRaw(commentData)),
+    })
+      .then((response) => response.json())
+      .then(({movie: filmJson}) => this._getCommentsPromise(filmJson))
+      .then(Film.parseFilm);
+  }
+
+  deleteComment(commentId) {
+    return this._load({
+      url: `comments/${commentId}`,
+      method: `DELETE`,
+    });
   }
 
   _load({url, method = `GET`, body = null, headers = new Headers()}) {

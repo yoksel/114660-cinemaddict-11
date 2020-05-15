@@ -45,7 +45,7 @@ html {
   overflow: hidden;
 }
 
-.hightlight-required {
+.required {
   box-shadow:
     0 0 10px red,
     0 0 0 1px red inset;
@@ -72,6 +72,32 @@ html {
   100% {
     filter: sepia(1) saturate(15) hue-rotate(360deg);
     opacity: 1;
+  }
+}
+
+.shake {
+  animation: shake 0.6s;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px);
   }
 }
 
@@ -882,6 +908,10 @@ button {
 }
 .film-details__comment-delete:hover {
   opacity: 0.7;
+}
+.film-details__comment-delete:disabled {
+  opacity: 0.5;
+  text-decoration: none;
 }
 .film-details__comment-input {
   width: 100%;

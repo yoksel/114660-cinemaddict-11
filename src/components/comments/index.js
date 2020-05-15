@@ -4,12 +4,14 @@ import Form from './form';
 import {createElement, renderElement} from '../../helpers';
 
 export default class Comments extends AbstractComponent {
-  constructor({selectedEmoji, commentText, commentsData}) {
+  // params = {filmData, setEmoji, getEmoji, setText, getText}
+  constructor(params) {
     super();
 
+    const {commentsData} = params.filmData;
     this._commentsData = commentsData;
     this._commentsList = new CommentsList(commentsData);
-    this._form = new Form({selectedEmoji, commentText});
+    this._form = new Form(params);
   }
 
   setEmojiClickHandler(handler) {
@@ -29,11 +31,19 @@ export default class Comments extends AbstractComponent {
     this._form.removeEvents();
   }
 
+  highlightFormOnError() {
+    this._form.highlightOnError();
+  }
+
+  highlightCommentOnError(id) {
+    this._commentsList.highlightOnError(id);
+  }
+
   _createElement() {
     const element = createElement(this._getTmpl());
-    const wrapper = element.querySelector(`.film-details__comments-wrap`);
+    const wrapperElement = element.querySelector(`.film-details__comments-wrap`);
 
-    renderElement(wrapper, [
+    renderElement(wrapperElement, [
       this._commentsList,
       this._form
     ]);

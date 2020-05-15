@@ -5,15 +5,18 @@ import {FilterType, FILTERS} from '../constants';
 import FilmModel from "../models/film.js";
 
 export default class FilmController {
-  constructor(container, onDataChange, onViewChange, onDetailsClose) {
+  constructor({container, api, filmsModel, onDataChangeSuccess, onViewChange, onDetailsClose}) {
     this._container = container;
+    this._api = api;
+    this._filmsModel = filmsModel;
 
     this._cardComponent = null;
     this._detailsComponent = null;
 
-    this._onDataChange = onDataChange;
-    // Temporary hack before adding comment handlers to api
-    this._onCommentsChange = () => {};
+    this._selectedEmoji = null;
+    this._commentText = ``;
+
+    this._onDataChangeSuccess = onDataChangeSuccess;
     this._onViewChange = onViewChange;
     this._onDetailsClose = onDetailsClose;
     this._showDetails = this._showDetails.bind(this);
@@ -21,6 +24,11 @@ export default class FilmController {
     this._toggleProp = this._toggleProp.bind(this);
     this._updateComments = this._updateComments.bind(this);
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
+    this._getEmoji = this._getEmoji.bind(this);
+    this._setEmoji = this._setEmoji.bind(this);
+    this._getText = this._getText.bind(this);
+    this._setText = this._setText.bind(this);
+    this._resetComment = this._resetComment.bind(this);
 
     this.detailsIsOpened = false;
   }
@@ -31,7 +39,6 @@ export default class FilmController {
     }
 
     this._hideDetails();
-    this._detailsComponent.reset();
     this.detailsIsOpened = false;
   }
 
@@ -56,6 +63,7 @@ export default class FilmController {
       this._onDetailsClose();
     }
 
+    this._resetComment();
     this._detailsComponent.removeEvents();
     removeElement(this._detailsComponent);
     this.detailsIsOpened = false;
@@ -80,26 +88,74 @@ export default class FilmController {
     newFilmData[prop] = !newFilmData[prop];
     this._setWatchedDate(prop, newFilmData);
 
-    this._onDataChange(this.filmData, newFilmData);
+    this._api.updateFilm(this.filmData.id, newFilmData)
+      .then((filmModel) => this._updateFilmInModel(this.filmData, filmModel));
   }
 
-  _updateComments(id, newData) {
-    const comments = this.filmData.comments;
-    let newComments = [];
+  _setEmoji(emoji = ``) {
+    this._selectedEmoji = emoji;
+  }
 
-    if (newData === null) {
-      // deletion
-      newComments = comments.filter((comment) => comment.id !== id);
-    } else if (id === null) {
-      // new comment
-      newComments = comments.concat([newData]);
-      this._detailsComponent.resetComment();
+  _getEmoji() {
+    return this._selectedEmoji;
+  }
+
+  _setText(text = ``) {
+    this._commentText = text;
+  }
+
+  _getText() {
+    return this._commentText;
+  }
+
+  _resetComment() {
+    this._selectedEmoji = null;
+    this._commentText = ``;
+
+    this._detailsComponent.resetComment();
+  }
+
+  _updateFilmInModel(oldFilmData, newFilmData) {
+    const isSuccess = this._filmsModel.updateFilm(oldFilmData.id, newFilmData);
+
+    if (!isSuccess) {
+      return;
     }
 
-    const newFilmData = FilmModel.clone(this.filmData);
-    newFilmData.comments = newComments;
+    this._onDataChangeSuccess(oldFilmData, newFilmData);
+  }
 
-    this._onCommentsChange(this.filmData, newFilmData);
+  _updateComments(id, newCommentData) {
+    const {comments, commentsData} = this.filmData;
+
+    if (newCommentData === null) {
+      // delete comment
+      this._api.deleteComment(id)
+        .then(() => {
+          const newComments = comments.filter((commentId) => commentId !== id);
+          const newCommentsData = commentsData.filter((comment) => comment.id !== id);
+
+          const newFilmData = FilmModel.clone(this.filmData);
+          newFilmData.comments = newComments;
+          newFilmData.commentsData = newCommentsData;
+
+          this._updateFilmInModel(this.filmData, newFilmData);
+        })
+        .catch(() => {
+          this._detailsComponent.highlightCommentOnError(id);
+        });
+
+    } else if (id === null) {
+      // add comment
+      this._api.addComment(this.filmData, newCommentData)
+        .then((filmModel) => {
+          this._resetComment();
+          this._updateFilmInModel(this.filmData, filmModel);
+        })
+        .catch(() => {
+          this._detailsComponent.highlightFormOnError();
+        });
+    }
   }
 
   _onEscKeyDown(event) {
@@ -116,7 +172,7 @@ export default class FilmController {
   }
 
   _setDetailsHandlers() {
-    this._detailsComponent.setCloseBtnClickHandler(this._hideDetails);
+    this._detailsComponent.setCloseButtonClickHandler(this._hideDetails);
     this._detailsComponent.setControlsClickHandler(this._toggleProp);
     this._detailsComponent.setCommentsActionsHandler(this._updateComments);
   }
@@ -128,8 +184,14 @@ export default class FilmController {
     if (this._detailsComponent) {
       this._detailsComponent.removeEvents();
     }
-    this._cardComponent = new CardComponent(filmData);
-    this._detailsComponent = new DetailsComponent(filmData);
+    this._cardComponent = new CardComponent(this.filmData);
+    this._detailsComponent = new DetailsComponent({
+      filmData: this.filmData,
+      setEmoji: this._setEmoji,
+      getEmoji: this._getEmoji,
+      setText: this._setText,
+      getText: this._getText
+    });
 
     this._setCardHandlers();
 
