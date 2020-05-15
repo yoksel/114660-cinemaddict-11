@@ -115,25 +115,25 @@ export default class FilmController {
     this._detailsComponent.resetComment();
   }
 
-  _updateFilmInModel(oldData, taskModel) {
-    const isSuccess = this._filmsModel.updateFilm(oldData.id, taskModel);
+  _updateFilmInModel(oldFilmData, newFilmData) {
+    const isSuccess = this._filmsModel.updateFilm(oldFilmData.id, newFilmData);
 
     if (!isSuccess) {
       return;
     }
 
-    this._onDataChangeSuccess(oldData, taskModel);
+    this._onDataChangeSuccess(oldFilmData, newFilmData);
   }
 
-  _updateFilm(oldData, newData) {
-    this._api.updateFilm(oldData.id, newData)
-      .then((taskModel) => this._updateFilmInModel(oldData, taskModel));
+  _updateFilm(oldFilmData, newFilmData) {
+    this._api.updateFilm(oldFilmData.id, newFilmData)
+      .then((filmModel) => this._updateFilmInModel(oldFilmData, filmModel));
   }
 
-  _updateComments(id, newData) {
+  _updateComments(id, newCommentData) {
     const {comments, commentsData} = this.filmData;
 
-    if (newData === null) {
+    if (newCommentData === null) {
       // delete comment
       this._api.deleteComment(id)
         .then(() => {
@@ -152,10 +152,10 @@ export default class FilmController {
 
     } else if (id === null) {
       // add comment
-      this._api.addComment(this.filmData, newData)
-        .then((taskModel) => {
+      this._api.addComment(this.filmData, newCommentData)
+        .then((filmModel) => {
           this._resetComment();
-          this._updateFilmInModel(this.filmData, taskModel);
+          this._updateFilmInModel(this.filmData, filmModel);
         })
         .catch(() => {
           this._detailsComponent.highlightFormOnError();
