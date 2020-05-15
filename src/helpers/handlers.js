@@ -1,6 +1,10 @@
+const getControl = (event, selector) => {
+  return event.target.closest(selector);
+};
+
 export const getHandlerToggleClass = (selector, className) => {
   return (event) => {
-    const control = event.target.closest(selector);
+    const control = getControl(event, selector);
 
     if (!control) {
       return;
@@ -12,7 +16,7 @@ export const getHandlerToggleClass = (selector, className) => {
 
 export const getHandlerWithProp = (selector, handler) => {
   return (event) => {
-    const control = event.target.closest(selector);
+    const control = getControl(event, selector);
 
     if (!control) {
       return;
@@ -30,7 +34,7 @@ export const getHandlerWithProp = (selector, handler) => {
 
 export const getHandlerWithValue = (selector, handler) => {
   return (event) => {
-    const control = event.target.closest(selector);
+    const control = getControl(event, selector);
 
     if (!control) {
       return;
