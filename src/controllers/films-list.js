@@ -7,7 +7,7 @@ export default class FilmsListController {
   constructor({container, api, filmsModel, onDataChangeSuccess, onViewChange, onDetailsClose, props}) {
     this._container = container;
     this._api = api;
-    this._filmsModel = filmsModel,
+    this._filmsModel = filmsModel;
     this._props = props;
     this._onViewChange = onViewChange;
     this._onDetailsClose = onDetailsClose;
