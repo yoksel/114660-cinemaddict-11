@@ -20,7 +20,7 @@ export default class Controls extends AbstractComponent {
   }
 
   setClickHandler(handler) {
-    this._clickHandler = getHandlerWithProp(this._inputClassName, handler);
+    this._clickHandler = getHandlerWithProp(`.${this._inputClassName}`, handler);
     this.getElement().addEventListener(`click`, this._clickHandler);
   }
 
@@ -35,7 +35,7 @@ export default class Controls extends AbstractComponent {
   _createElement() {
     const element = createElement(this._getTmpl());
 
-    element.addEventListener(`click`, getHandlerToggleClass(this._itemClassName, `state-waitng`));
+    element.addEventListener(`click`, getHandlerToggleClass(`.${this._itemClassName}`, `state-waitng`));
 
     return element;
   }
