@@ -13,13 +13,13 @@ export default class PageController {
     this._topCommentedFilmsControllers = [];
     this._shownQuantity = 0;
 
-    this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
     this._onFilterChange = this._onFilterChange.bind(this);
     this._onSortChange = this._onSortChange.bind(this);
     this._loadMoreUpcoming = this._loadMoreUpcoming.bind(this);
     this._onUpcomingDetailsClose = this._onUpcomingDetailsClose.bind(this);
     this._onTopCommentedDetailsClose = this._onTopCommentedDetailsClose.bind(this);
+    this._updatePageOnSuccess = this._updatePageOnSuccess.bind(this);
     this._updateUpcoming = this._updateUpcoming.bind(this);
     this._updateTopCommented = this._updateTopCommented.bind(this);
 
@@ -82,7 +82,8 @@ export default class PageController {
     this._upcomingListController = new FilmsListController({
       container: element,
       api: this._api,
-      onDataChange: this._onDataChange,
+      filmsModel: this._filmsModel,
+      onDataChangeSuccess: this._updatePageOnSuccess,
       onViewChange: this._onViewChange,
       onDetailsClose: this._onUpcomingDetailsClose,
       props: {type: `upcoming`, title: `All movies. Upcoming`}
@@ -92,7 +93,8 @@ export default class PageController {
     this._topRatedListController = new FilmsListController({
       container: element,
       api: this._api,
-      onDataChange: this._onDataChange,
+      filmsModel: this._filmsModel,
+      onDataChangeSuccess: this._updatePageOnSuccess,
       onViewChange: this._onViewChange,
       props: {type: `extra`, title: `Top rated`}
     });
@@ -100,7 +102,8 @@ export default class PageController {
     this._topCommentedListController = new FilmsListController({
       container: element,
       api: this._api,
-      onDataChange: this._onDataChange,
+      filmsModel: this._filmsModel,
+      onDataChangeSuccess: this._updatePageOnSuccess,
       onViewChange: this._onViewChange,
       onDetailsClose: this._onTopCommentedDetailsClose,
       props: {type: `extra`, title: `Top commented`}
@@ -228,19 +231,6 @@ export default class PageController {
           this._updateTopCommented
       );
     }
-  }
-
-  _onDataChange(oldData, newData) {
-    this._api.updateFilm(oldData.id, newData)
-      .then((taskModel) => {
-        const isSuccess = this._filmsModel.updateFilm(oldData.id, taskModel);
-
-        if (!isSuccess) {
-          return;
-        }
-
-        this._updatePageOnSuccess(oldData, taskModel);
-      });
   }
 
   _onViewChange() {

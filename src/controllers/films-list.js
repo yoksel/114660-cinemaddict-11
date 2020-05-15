@@ -4,13 +4,14 @@ import ShowMoreButton from '../components/show-more-button';
 import {renderElement, replaceElement} from '../helpers';
 
 export default class FilmsListController {
-  constructor({container, api, onDataChange, onViewChange, onDetailsClose, props}) {
+  constructor({container, api, filmsModel, onDataChangeSuccess, onViewChange, onDetailsClose, props}) {
     this._container = container;
     this._api = api;
+    this._filmsModel = filmsModel,
     this._props = props;
-    this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
     this._onDetailsClose = onDetailsClose;
+    this._onDataChangeSuccess = onDataChangeSuccess;
     this._moreButton = new ShowMoreButton();
     this._emptyFilmsComponent = new FilmsListComponent({type: `empty`});
     this._isFilmsMessageShown = false;
@@ -41,7 +42,8 @@ export default class FilmsListController {
       const filmController = new FilmController({
         container: this._filmsContainerElement,
         api: this._api,
-        onDataChange: this._onDataChange,
+        filmsModel: this._filmsModel,
+        onDataChangeSuccess: this._onDataChangeSuccess,
         onViewChange: this._onViewChange,
         onDetailsClose: this._onDetailsClose,
       });

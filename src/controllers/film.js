@@ -5,9 +5,10 @@ import {FilterType, FILTERS} from '../constants';
 import FilmModel from "../models/film.js";
 
 export default class FilmController {
-  constructor({container, api, onDataChange, onViewChange, onDetailsClose}) {
+  constructor({container, api, filmsModel, onDataChangeSuccess, onViewChange, onDetailsClose}) {
     this._container = container;
     this._api = api;
+    this._filmsModel = filmsModel;
 
     this._cardComponent = null;
     this._detailsComponent = null;
@@ -15,7 +16,8 @@ export default class FilmController {
     this._selectedEmoji = null;
     this._commentText = ``;
 
-    this._onDataChange = onDataChange;
+    this._updateFilm = this._updateFilm.bind(this);
+    this._onDataChangeSuccess = onDataChangeSuccess;
     this._onViewChange = onViewChange;
     this._onDetailsClose = onDetailsClose;
     this._showDetails = this._showDetails.bind(this);
@@ -87,7 +89,7 @@ export default class FilmController {
     newFilmData[prop] = !newFilmData[prop];
     this._setWatchedDate(prop, newFilmData);
 
-    this._onDataChange(this.filmData, newFilmData);
+    this._updateFilm(this.filmData, newFilmData);
   }
 
   _setEmoji(emoji = ``) {
@@ -113,6 +115,21 @@ export default class FilmController {
     this._detailsComponent.resetComment();
   }
 
+  _updateFilmInModel(oldData, taskModel) {
+    const isSuccess = this._filmsModel.updateFilm(oldData.id, taskModel);
+
+    if (!isSuccess) {
+      return;
+    }
+
+    this._onDataChangeSuccess(oldData, taskModel);
+  }
+
+  _updateFilm(oldData, newData) {
+    this._api.updateFilm(oldData.id, newData)
+      .then((taskModel) => this._updateFilmInModel(oldData, taskModel));
+  }
+
   _updateComments(id, newData) {
     const comments = this.filmData.comments;
     if (newData === null) {
@@ -124,7 +141,7 @@ export default class FilmController {
           const newFilmData = FilmModel.clone(this.filmData);
           newFilmData.comments = newComments;
 
-          this._onDataChange(this.filmData, newFilmData);
+          this._updateFilm(this.filmData, newFilmData);
         })
         .catch(() => {
           this._detailsComponent.highlightCommentOnError(id);
@@ -135,7 +152,7 @@ export default class FilmController {
       this._api.addComment(this.filmData, newData)
         .then((taskModel) => {
           this._resetComment();
-          this._onDataChange(this.filmData, taskModel);
+          this._updateFilmInModel(this.filmData, taskModel);
         })
         .catch(() => {
           this._detailsComponent.highlightFormOnError();
