@@ -131,17 +131,20 @@ export default class FilmController {
   }
 
   _updateComments(id, newData) {
-    const comments = this.filmData.comments;
+    const {comments, commentsData} = this.filmData;
+
     if (newData === null) {
       // delete comment
       this._api.deleteComment(id)
         .then(() => {
           const newComments = comments.filter((commentId) => commentId !== id);
+          const newCommentsData = commentsData.filter((comment) => comment.id !== id);
 
           const newFilmData = FilmModel.clone(this.filmData);
           newFilmData.comments = newComments;
+          newFilmData.commentsData = newCommentsData;
 
-          this._updateFilm(this.filmData, newFilmData);
+          this._updateFilmInModel(this.filmData, newFilmData);
         })
         .catch(() => {
           this._detailsComponent.highlightCommentOnError(id);
