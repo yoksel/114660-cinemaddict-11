@@ -59,6 +59,7 @@ export default class Form extends AbstractSmartComponent {
     textareaElement.classList.add(ClassName.REQUIRED);
     textareaElement.focus();
     textareaElement.disabled = false;
+    this._isCommentSending = false;
   }
 
   _recoveryListeners() {
