@@ -94,12 +94,12 @@ export default class Film {
     };
   }
 
-  commentToRaw(commentData) {
+  commentToRaw({author, text: comment, emoji: emotion, date}) {
     return {
-      author: commentData.author,
-      comment: commentData.text,
-      emotion: commentData.emoji,
-      date: commentData.date.toISOString()
+      author,
+      comment,
+      emotion,
+      date: date.toISOString()
     };
   }
 
