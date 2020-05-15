@@ -12,6 +12,7 @@ export default class Form extends AbstractSmartComponent {
     this._commentText = getText() || ``;
     this._emojiControls = new EmojiControls({selectedEmoji: getEmoji()});
     this._pressedButtons = {};
+    this._isCommentSending = false;
     this._submitGeneratedHandler = null;
     this._keyUpHandler = () => {
       this._pressedButtons = {};
@@ -70,6 +71,9 @@ export default class Form extends AbstractSmartComponent {
     const emojiLabelElement = this.getElement().querySelector(`.film-details__add-emoji-label`);
 
     return (event) => {
+      if (this._isCommentSending) {
+        return;
+      }
       if (event.key === `Enter`) {
         this._pressedButtons.enter = true;
       } else if (event.key === `Control` || event.key === `Meta`) {
@@ -108,6 +112,8 @@ export default class Form extends AbstractSmartComponent {
           emoji: this._selectedEmoji,
           date: new Date()
         });
+
+        this._isCommentSending = true;
       }
     };
   }
