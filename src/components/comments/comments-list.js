@@ -30,8 +30,8 @@ export default class CommentsList extends AbstractComponent {
     const deleteClickHandler = this._createDeleteClickHandler(handler);
 
     deleteButtonElements.forEach((item) => {
-      item.addEventListener(`click`, deleteClickHandler);
-      item.addEventListener(`click`, () => {
+      item.addEventListener(`click`, (event) => {
+        deleteClickHandler(event);
         item.disabled = true;
         item.innerHTML = ButtonText.WAITING;
       });
