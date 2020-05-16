@@ -1,4 +1,4 @@
-import Film from './models/film';
+import Film from '../models/film';
 
 const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict`;
 
@@ -15,14 +15,14 @@ export default class API {
     this._authorization = authorization;
   }
 
-  _getCommentsPromise(filmJson) {
+  _getCommentsPromise(movieItem) {
     return new Promise((resolve, reject) => {
-      this._load({url: `comments/${filmJson.id}`})
+      this._load({url: `comments/${movieItem.id}`})
         .then((response) => response.json())
         .then((commentsJson) => {
-          filmJson[`comments_data`] = commentsJson;
+          movieItem[`comments_data`] = commentsJson;
 
-          resolve(filmJson);
+          resolve(movieItem);
         })
         .catch((error) => {
           reject(error);
@@ -33,9 +33,9 @@ export default class API {
   getFilms() {
     return this._load({url: `movies`})
       .then((response) => response.json())
-      .then((filmsJson) => {
-        const commentsPromises = filmsJson.reduce((prev, filmItem) => {
-          const commentPromise = this._getCommentsPromise(filmItem);
+      .then((moviesJson) => {
+        const commentsPromises = moviesJson.reduce((prev, movieItem) => {
+          const commentPromise = this._getCommentsPromise(movieItem);
           prev.push(commentPromise);
           return prev;
         }, []);
@@ -46,8 +46,7 @@ export default class API {
   }
 
   updateFilm(filmId, filmData) {
-    const headers = new Headers();
-    headers.append(`Content-Type`, `application/json`);
+    const headers = new Headers({'Content-Type': `application/json`});
 
     return this._load({
       url: `movies/${filmId}`,
@@ -56,13 +55,12 @@ export default class API {
       body: JSON.stringify(filmData.toRaw()),
     })
       .then((response) => response.json())
-      .then((filmJson) => this._getCommentsPromise(filmJson))
+      .then((movieJson) => this._getCommentsPromise(movieJson))
       .then(Film.parseFilm);
   }
 
   addComment(filmData, commentData) {
-    const headers = new Headers();
-    headers.append(`Content-Type`, `application/json`);
+    const headers = new Headers({'Content-Type': `application/json`});
 
     return this._load({
       url: `comments/${filmData.id}`,
@@ -71,7 +69,7 @@ export default class API {
       body: JSON.stringify(filmData.commentToRaw(commentData)),
     })
       .then((response) => response.json())
-      .then(({movie: filmJson}) => this._getCommentsPromise(filmJson))
+      .then(({movie: movieJson}) => this._getCommentsPromise(movieJson))
       .then(Film.parseFilm);
   }
 
@@ -80,6 +78,18 @@ export default class API {
       url: `comments/${commentId}`,
       method: `DELETE`,
     });
+  }
+
+  sync(films) {
+    const headers = new Headers({'Content-Type': `application/json`});
+
+    return this._load({
+      url: `movies/sync`,
+      method: `POST`,
+      body: JSON.stringify(films),
+      headers
+    })
+      .then((response) => response.json());
   }
 
   _load({url, method = `GET`, body = null, headers = new Headers()}) {

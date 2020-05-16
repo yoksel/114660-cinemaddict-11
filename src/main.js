@@ -13,11 +13,22 @@ import {renderElement} from './helpers';
 
 import {FilterType, SortType, AppState} from './constants';
 
+const STORE_PREFIX = `cinemaddict-localstorage`;
+const STORE_VER = `v1`;
+const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
+const OFFLINE_TEXT = ` [offline]`;
+
 import API from './api';
+import Provider from './api/provider';
+import Store from './api/store';
+import ConnectionObserver from './connection-observer';
 
 const AUTHORIZATION = `Basic ia7sdasda8s7d9a8s9`;
 
 const api = new API(AUTHORIZATION);
+const store = new Store(STORE_NAME, window.localStorage);
+const apiWithProvider = new Provider(api, store);
+const connectionObserver = new ConnectionObserver();
 
 const filmsModel = new FilmsModel();
 
@@ -30,7 +41,7 @@ const filmsTotalElement = document.querySelector(`.footer__statistics`);
 const profileController = new ProfileController(siteHeaderElement, filmsModel, userModel);
 const filterController = new FilterController(siteMainElement, filmsModel);
 const sortController = new SortController(siteMainElement, filmsModel);
-const pageController = new PageController(siteMainElement, filmsModel, api);
+const pageController = new PageController(siteMainElement, filmsModel, apiWithProvider);
 const userStatsContoller = new UserStatsController(siteMainElement, filmsModel, userModel);
 let userStatsIsHidden = true;
 
@@ -68,7 +79,7 @@ filterController.render();
 sortController.render();
 pageController.render({state: AppState.LOADING});
 
-api.getFilms()
+apiWithProvider.getFilms()
   .then((response) => {
     filmsModel.setFilms(response);
 
@@ -93,4 +104,12 @@ api.getFilms()
     console.error(error);
   });
 
+connectionObserver.addOfflineHandler(() => {
+  document.title += OFFLINE_TEXT;
+});
 
+connectionObserver.addOnlineHandler(() => {
+  document.title = document.title.replace(OFFLINE_TEXT, ``);
+
+  apiWithProvider.sync();
+});
