@@ -1,5 +1,6 @@
 import he from 'he';
 import AbstractSmartComponent from '../abstract-smart-component';
+import ConnectionObserver from '../../connection-observer';
 import EmojiControls from './emoji-controls';
 import {createElement, renderElement, shake} from '../../helpers';
 import {ClassName} from '../../constants';
@@ -20,6 +21,13 @@ export default class Form extends AbstractSmartComponent {
 
     this.setTextInputHandler(setText);
     this.setEmojiClickHandler(setEmoji);
+
+    this._disableOnOffline = this._disableOnOffline.bind(this);
+    this._enableOnOnline = this._enableOnOnline.bind(this);
+
+    this._connectionObserver = new ConnectionObserver();
+    this._connectionObserver.addOfflineHandler(this._disableOnOffline);
+    this._connectionObserver.addOnlineHandler(this._enableOnOnline);
   }
 
   setEmojiClickHandler(handler) {
@@ -33,7 +41,7 @@ export default class Form extends AbstractSmartComponent {
   }
 
   setTextInputHandler(handler) {
-    const textareaElement = this.getElement().querySelector(`.film-details__comment-input`);
+    const textareaElement = this._getTextareaElement();
 
     textareaElement.addEventListener(`input`, () => {
       if (!textareaElement.value) {
@@ -53,7 +61,7 @@ export default class Form extends AbstractSmartComponent {
 
   highlightOnError() {
     const formElement = this.getElement();
-    const textareaElement = this.getElement().querySelector(`.film-details__comment-input`);
+    const textareaElement = this._getTextareaElement();
 
     shake(formElement);
     textareaElement.classList.add(ClassName.REQUIRED);
@@ -62,17 +70,44 @@ export default class Form extends AbstractSmartComponent {
     this._isCommentSending = false;
   }
 
+  _disableOnOffline() {
+    const formElement = this.getElement();
+    const textareaElement = this._getTextareaElement();
+
+    formElement.classList.add(ClassName.DISABLED);
+    textareaElement.disabled = true;
+  }
+
+  _enableOnOnline() {
+    const formElement = this.getElement();
+    const textareaElement = this._getTextareaElement();
+
+    formElement.classList.remove(ClassName.DISABLED);
+    textareaElement.disabled = false;
+  }
+
   _recoveryListeners() {
+    this._textareaElement = this.getElement().querySelector(`.film-details__comment-input`);
     this.setTextInputHandler(this._textInputInitialHandler);
     this.setSubmitHandler(this._submitInitialHandler);
   }
 
+  _getTextareaElement() {
+    if (this._textareaElement) {
+      return this._textareaElement;
+    }
+
+    this._textareaElement = this.getElement().querySelector(`.film-details__comment-input`);
+
+    return this._textareaElement;
+  }
+
   _getSubmitHandler(handler) {
-    const textareaElement = this.getElement().querySelector(`.film-details__comment-input`);
+    const textareaElement = this._getTextareaElement();
     const emojiLabelElement = this.getElement().querySelector(`.film-details__add-emoji-label`);
 
     return (event) => {
-      if (this._isCommentSending) {
+      if (this._isCommentSending || !this._connectionObserver.isOnline()) {
         return;
       }
       if (event.key === `Enter`) {

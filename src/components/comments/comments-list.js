@@ -1,5 +1,7 @@
 import AbstractComponent from '../abstract-component';
+import ConnectionObserver from '../../connection-observer';
 import {createElement, renderElement, getRelativeDate, shake} from '../../helpers';
+import {ClassName} from '../../constants';
 
 const ButtonText = {
   DEFAULT: `Delete`,
@@ -11,6 +13,13 @@ export default class CommentsList extends AbstractComponent {
     super();
 
     this._comments = comments;
+
+    this._disableOnOffline = this._disableOnOffline.bind(this);
+    this._enableOnOnline = this._enableOnOnline.bind(this);
+
+    const connectionObserver = new ConnectionObserver();
+    connectionObserver.addOfflineHandler(this._disableOnOffline);
+    connectionObserver.addOnlineHandler(this._enableOnOnline);
   }
 
   _createDeleteClickHandler(handler) {
@@ -25,8 +34,18 @@ export default class CommentsList extends AbstractComponent {
     };
   }
 
+  _getDeleteButtonElements() {
+    if (this._deleteButtonElements) {
+      return this._deleteButtonElements;
+    }
+
+    this._deleteButtonElements = this.getElement().querySelectorAll(`.film-details__comment-delete`);
+
+    return this._deleteButtonElements;
+  }
+
   setDeleteClickHandler(handler) {
-    const deleteButtonElements = this.getElement().querySelectorAll(`.film-details__comment-delete`);
+    const deleteButtonElements = this._getDeleteButtonElements();
     const deleteClickHandler = this._createDeleteClickHandler(handler);
 
     deleteButtonElements.forEach((item) => {
@@ -46,6 +65,22 @@ export default class CommentsList extends AbstractComponent {
 
     deleteButtonElement.innerHTML = ButtonText.DEFAULT;
     deleteButtonElement.disabled = false;
+  }
+
+  _disableOnOffline() {
+    const deleteButtonElements = this._getDeleteButtonElements();
+
+    deleteButtonElements.forEach((item) => {
+      item.classList.add(ClassName.DISABLED);
+    });
+  }
+
+  _enableOnOnline() {
+    const deleteButtonElements = this._getDeleteButtonElements();
+
+    deleteButtonElements.forEach((item) => {
+      item.classList.remove(ClassName.DISABLED);
+    });
   }
 
   _getEmojiMarkup(emoji) {
