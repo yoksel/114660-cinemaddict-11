@@ -14,12 +14,13 @@ export default class CommentsList extends AbstractComponent {
 
     this._comments = comments;
 
+    this._connectionObserver = new ConnectionObserver();
+
     this._disableOnOffline = this._disableOnOffline.bind(this);
     this._enableOnOnline = this._enableOnOnline.bind(this);
 
-    const connectionObserver = new ConnectionObserver();
-    connectionObserver.addOfflineHandler(this._disableOnOffline);
-    connectionObserver.addOnlineHandler(this._enableOnOnline);
+    this._connectionObserver.addOfflineHandler(this._disableOnOffline);
+    this._connectionObserver.addOnlineHandler(this._enableOnOnline);
   }
 
   _createDeleteClickHandler(handler) {
@@ -92,6 +93,8 @@ export default class CommentsList extends AbstractComponent {
   }
 
   _getCommentElement({id, author, text, emoji, date}) {
+    const isOnline = this._connectionObserver.isOnline();
+    const buttonDisabledClass = !isOnline ? ClassName.DISABLED : ``;
 
     const markup = `<li class="film-details__comment" id="${id}">
       <span class="film-details__comment-emoji">
@@ -112,7 +115,11 @@ export default class CommentsList extends AbstractComponent {
             ${getRelativeDate(date)}
           </span>
 
-          <button class="film-details__comment-delete" type="button">${ButtonText.DEFAULT}</button>
+          <button
+            class="
+              film-details__comment-delete
+              ${buttonDisabledClass}"
+            type="button">${ButtonText.DEFAULT}</button>
         </p>
       </div>
     </li>`;

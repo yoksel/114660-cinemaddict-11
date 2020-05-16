@@ -18,6 +18,7 @@ export default class Form extends AbstractSmartComponent {
     this._keyUpHandler = () => {
       this._pressedButtons = {};
     };
+    this._connectionObserver = new ConnectionObserver();
 
     this.setTextInputHandler(setText);
     this.setEmojiClickHandler(setEmoji);
@@ -25,7 +26,6 @@ export default class Form extends AbstractSmartComponent {
     this._disableOnOffline = this._disableOnOffline.bind(this);
     this._enableOnOnline = this._enableOnOnline.bind(this);
 
-    this._connectionObserver = new ConnectionObserver();
     this._connectionObserver.addOfflineHandler(this._disableOnOffline);
     this._connectionObserver.addOnlineHandler(this._enableOnOnline);
   }
@@ -183,8 +183,11 @@ export default class Form extends AbstractSmartComponent {
   }
 
   _getTmpl() {
+    const isOnline = this._connectionObserver.isOnline();
+    const commentWrapperDisabledClass = !isOnline ? ClassName.DISABLED : ``;
+
     return (
-      `<div class="film-details__new-comment">
+      `<div class="film-details__new-comment ${commentWrapperDisabledClass}">
         <div for="add-emoji" class="film-details__add-emoji-label">
           ${this._getEmojiElement()}
         </div>
