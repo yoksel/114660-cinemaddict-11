@@ -101,6 +101,12 @@ html {
   }
 }
 
+.disabled {
+  opacity: .5;
+  filter: saturate(.5);
+  pointer-events: none;
+}
+
 body {
   box-sizing: border-box;
   max-width: 1240px;
