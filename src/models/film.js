@@ -94,8 +94,9 @@ export default class Film {
     };
   }
 
-  commentToRaw({author, text: comment, emoji: emotion, date}) {
+  commentToRaw({id, author, text: comment, emoji: emotion, date}) {
     return {
+      id,
       author,
       comment,
       emotion,
