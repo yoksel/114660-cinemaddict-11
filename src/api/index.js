@@ -12,14 +12,14 @@ export default class API {
     this._endPoint = endPoint;
   }
 
-  _getCommentsPromise(movieItem) {
+  _getCommentsPromise(filmJson) {
     return new Promise((resolve, reject) => {
-      this._load({url: `comments/${movieItem.id}`})
+      this._load({url: `comments/${filmJson.id}`})
         .then((response) => response.json())
         .then((commentsJson) => {
-          movieItem[`comments_data`] = commentsJson;
+          filmJson[`comments_data`] = commentsJson;
 
-          resolve(movieItem);
+          resolve(filmJson);
         })
         .catch((error) => {
           reject(error);
@@ -30,9 +30,9 @@ export default class API {
   getFilms() {
     return this._load({url: `movies`})
       .then((response) => response.json())
-      .then((moviesJson) => {
-        const commentsPromises = moviesJson.reduce((prev, movieItem) => {
-          const commentPromise = this._getCommentsPromise(movieItem);
+      .then((filmsJson) => {
+        const commentsPromises = filmsJson.reduce((prev, filmItem) => {
+          const commentPromise = this._getCommentsPromise(filmItem);
           prev.push(commentPromise);
           return prev;
         }, []);
@@ -51,7 +51,7 @@ export default class API {
       body: JSON.stringify(filmData.toRaw()),
     })
       .then((response) => response.json())
-      .then((movieJson) => this._getCommentsPromise(movieJson));
+      .then((filmJson) => this._getCommentsPromise(filmJson));
   }
 
   addComment(filmData, commentData) {
@@ -64,7 +64,7 @@ export default class API {
       body: JSON.stringify(filmData.commentToRaw(commentData)),
     })
       .then((response) => response.json())
-      .then(({movie: movieJson}) => this._getCommentsPromise(movieJson));
+      .then(({movie: filmJson}) => this._getCommentsPromise(filmJson));
   }
 
   deleteComment(commentId) {
@@ -84,9 +84,9 @@ export default class API {
       headers
     })
       .then((response) => response.json())
-      .then(({updated: moviesJson}) => {
-        const commentsPromises = moviesJson.reduce((prev, movieItem) => {
-          const commentPromise = this._getCommentsPromise(movieItem);
+      .then(({updated: filmsJson}) => {
+        const commentsPromises = filmsJson.reduce((prev, filmItem) => {
+          const commentPromise = this._getCommentsPromise(filmItem);
           prev.push(commentPromise);
           return prev;
         }, []);
