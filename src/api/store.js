@@ -2,7 +2,6 @@ export default class Store {
   constructor(key, storage) {
     this._key = key;
     this._storage = storage;
-    this._items = {};
   }
 
   getItems() {
@@ -35,7 +34,9 @@ export default class Store {
     );
   }
 
-  removeItem(key) {
-    delete this._items[key];
+  getItem(key) {
+    const store = this.getItems();
+
+    return store[key];
   }
 }

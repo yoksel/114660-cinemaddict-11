@@ -24,7 +24,7 @@ export default class Provider {
 
           this._store.setItems(storeItems);
 
-          return films;
+          return FilmModel.parseFilms(films);
         });
     }
 
@@ -39,11 +39,11 @@ export default class Provider {
         .then((newFilm) => {
           this._store.setItem(newFilm.id, newFilm);
 
-          return newFilm;
+          return FilmModel.parseFilm(newFilm);
         });
     }
 
-    const localFilm = FilmModel.clone(Object.assign(filmData, {filmId}));
+    const localFilm = FilmModel.clone(filmData);
 
     this._store.setItem(filmId, localFilm.toRaw());
 
@@ -52,15 +52,29 @@ export default class Provider {
 
   addComment(filmData, commentData) {
     if (isOnline()) {
-      return this._api.addComment(filmData, commentData);
+      return this._api.addComment(filmData, commentData)
+        .then((newFilm) => {
+          this._store.setItem(newFilm.id, newFilm);
+
+          return FilmModel.parseFilm(newFilm);
+        });
     }
 
     return Promise.reject(`Adding comments is not allowed offline`);
   }
 
-  deleteComment(commentId) {
+  deleteComment(filmId, commentId) {
     if (isOnline()) {
-      return this._api.deleteComment(commentId);
+      return this._api.deleteComment(commentId)
+        .then((response) => {
+          const film = this._store.getItem(filmId);
+          film[`comments`] = film.comments.filter((id) => id !== commentId);
+          film[`comments_data`] = film.comments_data.filter((comment) => comment.id !== commentId);
+
+          this._store.setItem(filmId, film);
+
+          return response;
+        });
     }
 
     return Promise.reject(`Deleting comments is not allowed offline`);
@@ -71,8 +85,8 @@ export default class Provider {
       const storeFilms = Object.values(this._store.getItems());
 
       return this._api.sync(storeFilms)
-        .then(({updated}) => {
-          const storeItems = createStoreStructure(updated);
+        .then((films) => {
+          const storeItems = createStoreStructure(films);
 
           this._store.setItems(storeItems);
         });

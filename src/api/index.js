@@ -1,7 +1,3 @@
-import Film from '../models/film';
-
-const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict`;
-
 const checkStatus = (response) => {
   if (response.ok) {
     return response;
@@ -11,8 +7,9 @@ const checkStatus = (response) => {
 };
 
 export default class API {
-  constructor(authorization) {
+  constructor(endPoint, authorization) {
     this._authorization = authorization;
+    this._endPoint = endPoint;
   }
 
   _getCommentsPromise(movieItem) {
@@ -41,8 +38,7 @@ export default class API {
         }, []);
 
         return Promise.all(commentsPromises);
-      })
-      .then(Film.parseFilms);
+      });
   }
 
   updateFilm(filmId, filmData) {
@@ -55,8 +51,7 @@ export default class API {
       body: JSON.stringify(filmData.toRaw()),
     })
       .then((response) => response.json())
-      .then((movieJson) => this._getCommentsPromise(movieJson))
-      .then(Film.parseFilm);
+      .then((movieJson) => this._getCommentsPromise(movieJson));
   }
 
   addComment(filmData, commentData) {
@@ -69,8 +64,7 @@ export default class API {
       body: JSON.stringify(filmData.commentToRaw(commentData)),
     })
       .then((response) => response.json())
-      .then(({movie: movieJson}) => this._getCommentsPromise(movieJson))
-      .then(Film.parseFilm);
+      .then(({movie: movieJson}) => this._getCommentsPromise(movieJson));
   }
 
   deleteComment(commentId) {
@@ -89,13 +83,22 @@ export default class API {
       body: JSON.stringify(films),
       headers
     })
-      .then((response) => response.json());
+      .then((response) => response.json())
+      .then(({updated: moviesJson}) => {
+        const commentsPromises = moviesJson.reduce((prev, movieItem) => {
+          const commentPromise = this._getCommentsPromise(movieItem);
+          prev.push(commentPromise);
+          return prev;
+        }, []);
+
+        return Promise.all(commentsPromises);
+      });
   }
 
   _load({url, method = `GET`, body = null, headers = new Headers()}) {
     headers.append(`Authorization`, this._authorization);
 
-    return fetch(`${END_POINT}/${url}`, {
+    return fetch(`${this._endPoint}/${url}`, {
       method,
       headers,
       body
