@@ -185,6 +185,7 @@ export default class Form extends AbstractSmartComponent {
   _getTmpl() {
     const isOnline = this._connectionObserver.isOnline();
     const commentWrapperDisabledClass = !isOnline ? ClassName.DISABLED : ``;
+    const textareaDisabledAttr = !isOnline ? `disabled` : ``;
 
     return (
       `<div class="film-details__new-comment ${commentWrapperDisabledClass}">
@@ -193,7 +194,12 @@ export default class Form extends AbstractSmartComponent {
         </div>
 
         <label class="film-details__comment-label">
-          <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${this._commentText}</textarea>
+          <textarea
+            class="film-details__comment-input"
+            placeholder="Select reaction below and write comment here"
+            name="comment"
+            ${textareaDisabledAttr}
+          >${this._commentText}</textarea>
         </label>
       </div>`
     );

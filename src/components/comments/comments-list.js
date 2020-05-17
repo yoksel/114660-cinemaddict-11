@@ -16,6 +16,10 @@ export default class CommentsList extends AbstractComponent {
 
     this._connectionObserver = new ConnectionObserver();
 
+    const isOnline = this._connectionObserver.isOnline();
+    this._buttonDisabledClass = !isOnline ? ClassName.DISABLED : ``;
+    this._buttonDisabledAttr = !isOnline ? `disabled` : ``;
+
     this._disableOnOffline = this._disableOnOffline.bind(this);
     this._enableOnOnline = this._enableOnOnline.bind(this);
 
@@ -73,6 +77,7 @@ export default class CommentsList extends AbstractComponent {
 
     deleteButtonElements.forEach((item) => {
       item.classList.add(ClassName.DISABLED);
+      item.disabled = true;
     });
   }
 
@@ -81,6 +86,7 @@ export default class CommentsList extends AbstractComponent {
 
     deleteButtonElements.forEach((item) => {
       item.classList.remove(ClassName.DISABLED);
+      item.disabled = false;
     });
   }
 
@@ -93,9 +99,6 @@ export default class CommentsList extends AbstractComponent {
   }
 
   _getCommentElement({id, author, text, emoji, date}) {
-    const isOnline = this._connectionObserver.isOnline();
-    const buttonDisabledClass = !isOnline ? ClassName.DISABLED : ``;
-
     const markup = `<li class="film-details__comment" id="${id}">
       <span class="film-details__comment-emoji">
         ${this._getEmojiMarkup(emoji)}
@@ -118,7 +121,8 @@ export default class CommentsList extends AbstractComponent {
           <button
             class="
               film-details__comment-delete
-              ${buttonDisabledClass}"
+              ${this._buttonDisabledClass}"
+              ${this._buttonDisabledAttr}
             type="button">${ButtonText.DEFAULT}</button>
         </p>
       </div>
