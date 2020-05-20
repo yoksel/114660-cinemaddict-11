@@ -3,14 +3,13 @@ const CACHE_VER = `v1`;
 const CACHE_NAME = `${CACHE_PREFIX}-${CACHE_VER}`;
 
 const getFilteredKeysPromises = (keys) => {
-  return keys.map(
-      (key) => {
-        if (key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME) {
-          return caches.delete(key);
-        }
+  return keys.map((key) => {
+    if (key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME) {
+      return caches.delete(key);
+    }
 
-        return null;
-      })
+    return null;
+  })
     .filter((key) => key !== null);
 };
 
