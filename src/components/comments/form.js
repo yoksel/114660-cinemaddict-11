@@ -55,7 +55,7 @@ export default class Form extends AbstractSmartComponent {
       handler(this._commentText);
     };
 
-    textareaElement.addEventListener(`blur`, textInputGeneratedHandler);
+    textareaElement.addEventListener(`input`, textInputGeneratedHandler);
     this._textInputInitialHandler = handler;
   }
 
@@ -87,7 +87,6 @@ export default class Form extends AbstractSmartComponent {
   }
 
   _recoveryListeners() {
-    this._textareaElement = this.getElement().querySelector(`.film-details__comment-input`);
     this.setTextInputHandler(this._textInputInitialHandler);
     this.setSubmitHandler(this._submitInitialHandler);
   }
@@ -97,6 +96,7 @@ export default class Form extends AbstractSmartComponent {
       return this._textareaElement;
     }
 
+    // Allow to get textarea element before rendering
     this._textareaElement = this.getElement().querySelector(`.film-details__comment-input`);
 
     return this._textareaElement;
@@ -170,6 +170,9 @@ export default class Form extends AbstractSmartComponent {
   _createElement() {
     const element = createElement(this._getTmpl());
     renderElement(element, this._emojiControls);
+
+    // Update prop on rerender
+    this._textareaElement = element.querySelector(`.film-details__comment-input`);
 
     return element;
   }
