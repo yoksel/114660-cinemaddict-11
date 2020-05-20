@@ -58,33 +58,33 @@ self.addEventListener(`activate`, (event) => {
 self.addEventListener(`fetch`, (event) => {
   const {request} = event;
 
-  event.respondWith(
-      caches.match(request)
-        .then((cacheResponse) => {
-          if (cacheResponse) {
-            return cacheResponse;
-          }
-
-          // If request was not cashed yet,
-          // make fetch & save response to cashe
-          return fetch(request);
-        })
-        .then((response) => {
-          if (!response || !response.ok || response.type !== `basic`) {
-            return response;
-          }
-
-          // Clone response to save working method returning content
-          const clonedResponse = response.clone();
-
-          caches.open(CACHE_NAME)
-            .then((cache) => cache.put(request, clonedResponse));
-
+  const resource = caches.match(request)
+    .then((cacheResponse) => {
+      if (cacheResponse) {
+        return cacheResponse;
+      }
+      // If request was not cashed yet,
+      // make fetch & save response to cache
+      return fetch(request);
+    })
+      .then((response) => {
+        // console.log('response to fetch', response);
+        if (!response || !response.ok || response.type !== `basic`) {
           return response;
-        })
-        .catch((error) => {
-          // eslint-disable-next-line no-console
-          console.error(error);
-        })
-  );
+        }
+
+        // Clone response to save working method returning content
+        const clonedResponse = response.clone();
+
+        caches.open(CACHE_NAME)
+          .then((cache) => cache.put(request, clonedResponse));
+
+        return response;
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.error(error);
+      });
+
+  event.respondWith(resource);
 });
