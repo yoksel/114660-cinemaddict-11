@@ -1,6 +1,7 @@
 export default class Store {
   constructor(key, storage) {
     this._key = key;
+    this._syncKey = `${this._key}-need-sync`;
     this._storage = storage;
   }
 
@@ -38,5 +39,23 @@ export default class Store {
     const store = this.getItems();
 
     return store[key];
+  }
+
+  switchSyncFlagOn() {
+    this._storage.setItem(
+        this._syncKey,
+        JSON.stringify(true)
+    );
+  }
+
+  switchSyncFlagOff() {
+    this._storage.setItem(
+        this._syncKey,
+        JSON.stringify(false)
+    );
+  }
+
+  getSyncFlag() {
+    return JSON.parse(this._storage.getItem(this._syncKey)) || false;
   }
 }

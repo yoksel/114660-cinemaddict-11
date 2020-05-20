@@ -14,7 +14,6 @@ export default class Provider {
   constructor(api, store) {
     this._api = api;
     this._store = store;
-    this._isSyncNeeded = false;
   }
 
   getFilms() {
@@ -47,8 +46,7 @@ export default class Provider {
     const localFilm = FilmModel.clone(filmData);
 
     this._store.setItem(filmId, localFilm.toRaw());
-
-    this._isSyncNeeded = true;
+    this._store.switchSyncFlagOn();
 
     return Promise.resolve(localFilm);
   }
@@ -84,7 +82,7 @@ export default class Provider {
   }
 
   sync() {
-    if (!this._isSyncNeeded) {
+    if (!this._store.getSyncFlag()) {
       return null;
     }
 
@@ -96,7 +94,7 @@ export default class Provider {
           const storeItems = createStoreStructure(films);
 
           this._store.setItems(storeItems);
-          this._isSyncNeeded = false;
+          this._store.switchSyncFlagOff();
         });
     }
 
