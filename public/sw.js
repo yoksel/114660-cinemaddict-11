@@ -1,6 +1,25 @@
 const CACHE_PREFIX = `cinemaddict-cache`;
 const CACHE_VER = `v1`;
 const CACHE_NAME = `${CACHE_PREFIX}-${CACHE_VER}`;
+const RESOURCES_TO_CACHE = [
+  `/`,
+  `/index.html`,
+  `/bundle.js`,
+  `/css/main.css`,
+  `/css/normalize.css`,
+  `/images/background.png`,
+  `/images/bitmap@2x.png`,
+  `/images/emoji/angry.png`,
+  `/images/emoji/puke.png`,
+  `/images/emoji/sleeping.png`,
+  `/images/emoji/smile.png`,
+  `/images/icons/icon-favorite-active.svg`,
+  `/images/icons/icon-favorite.svg`,
+  `/images/icons/icon-watched-active.svg`,
+  `/images/icons/icon-watched.svg`,
+  `/images/icons/icon-watchlist-active.svg`,
+  `/images/icons/icon-watchlist.svg`,
+];
 
 const getFilteredKeysPromises = (keys) => {
   return keys.map((key) => {
@@ -16,26 +35,8 @@ const getFilteredKeysPromises = (keys) => {
 self.addEventListener(`install`, (event) => {
   const openCache = caches.open(CACHE_NAME)
     .then((cache) => {
-      // Add static resources to cache
-      return cache.addAll([
-        `/`,
-        `/index.html`,
-        `/bundle.js`,
-        `/css/main.css`,
-        `/css/normalize.css`,
-        `/images/background.png`,
-        `/images/bitmap@2x.png`,
-        `/images/emoji/angry.png`,
-        `/images/emoji/puke.png`,
-        `/images/emoji/sleeping.png`,
-        `/images/emoji/smile.png`,
-        `/images/icons/icon-favorite-active.svg`,
-        `/images/icons/icon-favorite.svg`,
-        `/images/icons/icon-watched-active.svg`,
-        `/images/icons/icon-watched.svg`,
-        `/images/icons/icon-watchlist-active.svg`,
-        `/images/icons/icon-watchlist.svg`,
-      ]);
+      // Add static _TO_CACHE to cache
+      return cache.addAll(RESOURCES_TO_CACHE);
     });
 
   event.waitUntil(openCache);
