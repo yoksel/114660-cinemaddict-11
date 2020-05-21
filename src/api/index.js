@@ -6,6 +6,8 @@ const checkStatus = (response) => {
   throw new Error(`${response.status}: ${response.statusText}`);
 };
 
+const CONTENT_TYPE_HEADER = {'Content-Type': `application/json`};
+
 export default class API {
   constructor(endPoint, authorization) {
     this._authorization = authorization;
@@ -42,11 +44,9 @@ export default class API {
   }
 
   updateFilm(filmId, filmData) {
-    const headers = new Headers({'Content-Type': `application/json`});
-
     return this._load({
       url: `movies/${filmId}`,
-      headers,
+      headers: new Headers(CONTENT_TYPE_HEADER),
       method: `PUT`,
       body: JSON.stringify(filmData.toRaw()),
     })
@@ -55,11 +55,9 @@ export default class API {
   }
 
   addComment(filmData, commentData) {
-    const headers = new Headers({'Content-Type': `application/json`});
-
     return this._load({
       url: `comments/${filmData.id}`,
-      headers,
+      headers: new Headers(CONTENT_TYPE_HEADER),
       method: `POST`,
       body: JSON.stringify(filmData.commentToRaw(commentData)),
     })
@@ -75,13 +73,11 @@ export default class API {
   }
 
   sync(films) {
-    const headers = new Headers({'Content-Type': `application/json`});
-
     return this._load({
       url: `movies/sync`,
+      headers: new Headers(CONTENT_TYPE_HEADER),
       method: `POST`,
       body: JSON.stringify(films),
-      headers
     })
       .then((response) => response.json())
       .then(({updated: filmsJson}) => {
@@ -96,7 +92,7 @@ export default class API {
   }
 
   _load({url, method = `GET`, body = null, headers = new Headers()}) {
-    headers.append(`Authorization`, this._authorization);
+    headers.set(`Authorization`, this._authorization);
 
     return fetch(`${this._endPoint}/${url}`, {
       method,
