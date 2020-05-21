@@ -36,10 +36,6 @@ self.addEventListener(`install`, (event) => {
         `/images/icons/icon-watchlist-active.svg`,
         `/images/icons/icon-watchlist.svg`,
       ]);
-    })
-    .catch((error) => {
-      // eslint-disable-next-line no-console
-      console.error(error);
     });
 
   event.waitUntil(openCache);
@@ -79,10 +75,6 @@ self.addEventListener(`fetch`, (event) => {
         .then((cache) => cache.put(request, clonedResponse));
 
       return response;
-    })
-    .catch((error) => {
-      // eslint-disable-next-line no-console
-      console.error(error);
     });
 
   event.respondWith(resource);
