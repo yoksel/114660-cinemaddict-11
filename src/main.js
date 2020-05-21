@@ -100,8 +100,7 @@ apiWithProvider.getFilms()
   })
   .catch((error) => {
     pageController.render({state: AppState.EMPTY});
-    // eslint-disable-next-line no-console
-    console.error(error);
+    throw new Error(error);
   });
 
 // Online/offline handlers
