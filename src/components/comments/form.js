@@ -1,5 +1,6 @@
 import he from 'he';
 import AbstractSmartComponent from '../abstract-smart-component';
+import ConnectionObserver from '../../connection-observer';
 import EmojiControls from './emoji-controls';
 import {createElement, renderElement, shake} from '../../helpers';
 import {ClassName} from '../../constants';
@@ -17,9 +18,16 @@ export default class Form extends AbstractSmartComponent {
     this._keyUpHandler = () => {
       this._pressedButtons = {};
     };
+    this._connectionObserver = new ConnectionObserver();
 
     this.setTextInputHandler(setText);
     this.setEmojiClickHandler(setEmoji);
+
+    this._disableOnOffline = this._disableOnOffline.bind(this);
+    this._enableOnOnline = this._enableOnOnline.bind(this);
+
+    this._connectionObserver.addOfflineHandler(this._disableOnOffline);
+    this._connectionObserver.addOnlineHandler(this._enableOnOnline);
   }
 
   setEmojiClickHandler(handler) {
@@ -33,7 +41,7 @@ export default class Form extends AbstractSmartComponent {
   }
 
   setTextInputHandler(handler) {
-    const textareaElement = this.getElement().querySelector(`.film-details__comment-input`);
+    const textareaElement = this._getTextareaElement();
 
     textareaElement.addEventListener(`input`, () => {
       if (!textareaElement.value) {
@@ -47,13 +55,13 @@ export default class Form extends AbstractSmartComponent {
       handler(this._commentText);
     };
 
-    textareaElement.addEventListener(`blur`, textInputGeneratedHandler);
+    textareaElement.addEventListener(`input`, textInputGeneratedHandler);
     this._textInputInitialHandler = handler;
   }
 
   highlightOnError() {
     const formElement = this.getElement();
-    const textareaElement = this.getElement().querySelector(`.film-details__comment-input`);
+    const textareaElement = this._getTextareaElement();
 
     shake(formElement);
     textareaElement.classList.add(ClassName.REQUIRED);
@@ -62,17 +70,44 @@ export default class Form extends AbstractSmartComponent {
     this._isCommentSending = false;
   }
 
+  _disableOnOffline() {
+    const formElement = this.getElement();
+    const textareaElement = this._getTextareaElement();
+
+    formElement.classList.add(ClassName.DISABLED);
+    textareaElement.disabled = true;
+  }
+
+  _enableOnOnline() {
+    const formElement = this.getElement();
+    const textareaElement = this._getTextareaElement();
+
+    formElement.classList.remove(ClassName.DISABLED);
+    textareaElement.disabled = false;
+  }
+
   _recoveryListeners() {
     this.setTextInputHandler(this._textInputInitialHandler);
     this.setSubmitHandler(this._submitInitialHandler);
   }
 
+  _getTextareaElement() {
+    if (this._textareaElement) {
+      return this._textareaElement;
+    }
+
+    // Allow to get textarea element before rendering
+    this._textareaElement = this.getElement().querySelector(`.film-details__comment-input`);
+
+    return this._textareaElement;
+  }
+
   _getSubmitHandler(handler) {
-    const textareaElement = this.getElement().querySelector(`.film-details__comment-input`);
+    const textareaElement = this._getTextareaElement();
     const emojiLabelElement = this.getElement().querySelector(`.film-details__add-emoji-label`);
 
     return (event) => {
-      if (this._isCommentSending) {
+      if (this._isCommentSending || !this._connectionObserver.isOnline()) {
         return;
       }
       if (event.key === `Enter`) {
@@ -136,6 +171,9 @@ export default class Form extends AbstractSmartComponent {
     const element = createElement(this._getTmpl());
     renderElement(element, this._emojiControls);
 
+    // Update prop on rerender
+    this._textareaElement = element.querySelector(`.film-details__comment-input`);
+
     return element;
   }
 
@@ -148,14 +186,23 @@ export default class Form extends AbstractSmartComponent {
   }
 
   _getTmpl() {
+    const isOnline = this._connectionObserver.isOnline();
+    const commentWrapperDisabledClass = !isOnline ? ClassName.DISABLED : ``;
+    const textareaDisabledAttr = !isOnline ? `disabled` : ``;
+
     return (
-      `<div class="film-details__new-comment">
+      `<div class="film-details__new-comment ${commentWrapperDisabledClass}">
         <div for="add-emoji" class="film-details__add-emoji-label">
           ${this._getEmojiElement()}
         </div>
 
         <label class="film-details__comment-label">
-          <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${this._commentText}</textarea>
+          <textarea
+            class="film-details__comment-input"
+            placeholder="Select reaction below and write comment here"
+            name="comment"
+            ${textareaDisabledAttr}
+          >${this._commentText}</textarea>
         </label>
       </div>`
     );

@@ -41,7 +41,7 @@ export default class Film {
     this.commentsData = this._convertComments(filmData.comments_data);
   }
 
-  _convertComments(comments) {
+  _convertComments(comments = []) {
     if (comments.length === 0) {
       return [];
     }
@@ -90,17 +90,22 @@ export default class Film {
         'favorite': this.isFavorite
       },
       'comments': this.comments,
-      'comments_data': this.commentsData
+      'comments_data': this._commentsToRaw(this.commentsData)
     };
   }
 
-  commentToRaw({author, text: comment, emoji: emotion, date}) {
+  commentToRaw({id, author, text: comment, emoji: emotion, date}) {
     return {
+      id,
       author,
       comment,
       emotion,
       date: date.toISOString()
     };
+  }
+
+  _commentsToRaw(comments) {
+    return comments.map(this.commentToRaw);
   }
 
   static parseFilm(filmData) {

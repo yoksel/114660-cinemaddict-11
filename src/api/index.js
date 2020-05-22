@@ -1,7 +1,3 @@
-import Film from './models/film';
-
-const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict`;
-
 const checkStatus = (response) => {
   if (response.ok) {
     return response;
@@ -10,9 +6,12 @@ const checkStatus = (response) => {
   throw new Error(`${response.status}: ${response.statusText}`);
 };
 
+const CONTENT_TYPE_HEADER = {'Content-Type': `application/json`};
+
 export default class API {
-  constructor(authorization) {
+  constructor(endPoint, authorization) {
     this._authorization = authorization;
+    this._endPoint = endPoint;
   }
 
   _getCommentsPromise(filmJson) {
@@ -41,38 +40,29 @@ export default class API {
         }, []);
 
         return Promise.all(commentsPromises);
-      })
-      .then(Film.parseFilms);
+      });
   }
 
   updateFilm(filmId, filmData) {
-    const headers = new Headers();
-    headers.append(`Content-Type`, `application/json`);
-
     return this._load({
       url: `movies/${filmId}`,
-      headers,
+      headers: new Headers(CONTENT_TYPE_HEADER),
       method: `PUT`,
       body: JSON.stringify(filmData.toRaw()),
     })
       .then((response) => response.json())
-      .then((filmJson) => this._getCommentsPromise(filmJson))
-      .then(Film.parseFilm);
+      .then((filmJson) => this._getCommentsPromise(filmJson));
   }
 
   addComment(filmData, commentData) {
-    const headers = new Headers();
-    headers.append(`Content-Type`, `application/json`);
-
     return this._load({
       url: `comments/${filmData.id}`,
-      headers,
+      headers: new Headers(CONTENT_TYPE_HEADER),
       method: `POST`,
       body: JSON.stringify(filmData.commentToRaw(commentData)),
     })
       .then((response) => response.json())
-      .then(({movie: filmJson}) => this._getCommentsPromise(filmJson))
-      .then(Film.parseFilm);
+      .then(({movie: filmJson}) => this._getCommentsPromise(filmJson));
   }
 
   deleteComment(commentId) {
@@ -82,10 +72,29 @@ export default class API {
     });
   }
 
-  _load({url, method = `GET`, body = null, headers = new Headers()}) {
-    headers.append(`Authorization`, this._authorization);
+  sync(films) {
+    return this._load({
+      url: `movies/sync`,
+      headers: new Headers(CONTENT_TYPE_HEADER),
+      method: `POST`,
+      body: JSON.stringify(films),
+    })
+      .then((response) => response.json())
+      .then(({updated: filmsJson}) => {
+        const commentsPromises = filmsJson.reduce((prev, filmItem) => {
+          const commentPromise = this._getCommentsPromise(filmItem);
+          prev.push(commentPromise);
+          return prev;
+        }, []);
 
-    return fetch(`${END_POINT}/${url}`, {
+        return Promise.all(commentsPromises);
+      });
+  }
+
+  _load({url, method = `GET`, body = null, headers = new Headers()}) {
+    headers.set(`Authorization`, this._authorization);
+
+    return fetch(`${this._endPoint}/${url}`, {
       method,
       headers,
       body

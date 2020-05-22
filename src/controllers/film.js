@@ -130,7 +130,7 @@ export default class FilmController {
 
     if (newCommentData === null) {
       // delete comment
-      this._api.deleteComment(id)
+      this._api.deleteComment(this.filmData.id, id)
         .then(() => {
           const newComments = comments.filter((commentId) => commentId !== id);
           const newCommentsData = commentsData.filter((comment) => comment.id !== id);

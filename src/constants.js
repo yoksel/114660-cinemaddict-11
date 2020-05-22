@@ -67,7 +67,8 @@ const AppState = {
 
 const ClassName = {
   REQUIRED: `required`,
-  SHAKE: `shake`
+  SHAKE: `shake`,
+  DISABLED: `disabled`,
 };
 
 const MAX_CARDS_TOP = 2;

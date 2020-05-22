@@ -1,5 +1,7 @@
 import AbstractComponent from '../abstract-component';
+import ConnectionObserver from '../../connection-observer';
 import {createElement, renderElement, getRelativeDate, shake} from '../../helpers';
+import {ClassName} from '../../constants';
 
 const ButtonText = {
   DEFAULT: `Delete`,
@@ -11,6 +13,18 @@ export default class CommentsList extends AbstractComponent {
     super();
 
     this._comments = comments;
+
+    this._connectionObserver = new ConnectionObserver();
+
+    const isOnline = this._connectionObserver.isOnline();
+    this._buttonDisabledClass = !isOnline ? ClassName.DISABLED : ``;
+    this._buttonDisabledAttr = !isOnline ? `disabled` : ``;
+
+    this._disableOnOffline = this._disableOnOffline.bind(this);
+    this._enableOnOnline = this._enableOnOnline.bind(this);
+
+    this._connectionObserver.addOfflineHandler(this._disableOnOffline);
+    this._connectionObserver.addOnlineHandler(this._enableOnOnline);
   }
 
   _createDeleteClickHandler(handler) {
@@ -25,8 +39,18 @@ export default class CommentsList extends AbstractComponent {
     };
   }
 
+  _getDeleteButtonElements() {
+    if (this._deleteButtonElements) {
+      return this._deleteButtonElements;
+    }
+
+    this._deleteButtonElements = this.getElement().querySelectorAll(`.film-details__comment-delete`);
+
+    return this._deleteButtonElements;
+  }
+
   setDeleteClickHandler(handler) {
-    const deleteButtonElements = this.getElement().querySelectorAll(`.film-details__comment-delete`);
+    const deleteButtonElements = this._getDeleteButtonElements();
     const deleteClickHandler = this._createDeleteClickHandler(handler);
 
     deleteButtonElements.forEach((item) => {
@@ -48,6 +72,24 @@ export default class CommentsList extends AbstractComponent {
     deleteButtonElement.disabled = false;
   }
 
+  _disableOnOffline() {
+    const deleteButtonElements = this._getDeleteButtonElements();
+
+    deleteButtonElements.forEach((item) => {
+      item.classList.add(ClassName.DISABLED);
+      item.disabled = true;
+    });
+  }
+
+  _enableOnOnline() {
+    const deleteButtonElements = this._getDeleteButtonElements();
+
+    deleteButtonElements.forEach((item) => {
+      item.classList.remove(ClassName.DISABLED);
+      item.disabled = false;
+    });
+  }
+
   _getEmojiMarkup(emoji) {
     if (!emoji) {
       return ``;
@@ -57,7 +99,6 @@ export default class CommentsList extends AbstractComponent {
   }
 
   _getCommentElement({id, author, text, emoji, date}) {
-
     const markup = `<li class="film-details__comment" id="${id}">
       <span class="film-details__comment-emoji">
         ${this._getEmojiMarkup(emoji)}
@@ -77,7 +118,12 @@ export default class CommentsList extends AbstractComponent {
             ${getRelativeDate(date)}
           </span>
 
-          <button class="film-details__comment-delete" type="button">${ButtonText.DEFAULT}</button>
+          <button
+            class="
+              film-details__comment-delete
+              ${this._buttonDisabledClass}"
+              ${this._buttonDisabledAttr}
+            type="button">${ButtonText.DEFAULT}</button>
         </p>
       </div>
     </li>`;
