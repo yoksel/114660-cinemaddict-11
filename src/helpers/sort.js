@@ -1,5 +1,13 @@
 import {SortType} from '../constants';
 
+export const sortNumbersByAsc = (a, b) => {
+  return Number(a) - Number(b);
+};
+
+export const shuffle = () => {
+  return Math.random() - 0.5;
+};
+
 export const sortByRating = (a, b) => {
   return b.rating - a.rating;
 };
