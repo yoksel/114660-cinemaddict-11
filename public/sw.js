@@ -35,8 +35,11 @@ const getFilteredKeysPromises = (keys) => {
 self.addEventListener(`install`, (event) => {
   const openCache = caches.open(CACHE_NAME)
     .then((cache) => {
-      // Add static _TO_CACHE to cache
+      // Add static resources to cache
       return cache.addAll(RESOURCES_TO_CACHE);
+    })
+    .catch((error) => {
+      throw new Error(error);
     });
 
   event.waitUntil(openCache);
@@ -47,6 +50,9 @@ self.addEventListener(`activate`, (event) => {
     .then((keys) => {
       // Delete caches of older versions
       return Promise.all(getFilteredKeysPromises(keys));
+    })
+    .catch((error) => {
+      throw new Error(error);
     });
 
   event.waitUntil(cashedKeys);
@@ -76,6 +82,9 @@ self.addEventListener(`fetch`, (event) => {
         .then((cache) => cache.put(request, clonedResponse));
 
       return response;
+    })
+    .catch((error) => {
+      throw new Error(error);
     });
 
   event.respondWith(resource);
