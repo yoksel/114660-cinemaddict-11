@@ -50,6 +50,6 @@ export const getRandomItemsFromTop = (films, propName, quantity = MAX_CARDS_TOP)
     return topFilms.slice(0, quantity);
   }
 
-  topFilms.sort(shuffle);
-  return topFilms.slice(0, quantity);
+  const topFilmsShuffled = shuffle(topFilms);
+  return topFilmsShuffled.slice(0, quantity);
 };
