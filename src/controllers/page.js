@@ -1,7 +1,7 @@
 import FilmsListController from './films-list';
 import PageComponent from '../components/page';
 import {renderElement, replaceElement, getRandomItemsFromTop} from '../helpers';
-import {MAX_CARDS_TOP, MAX_CARDS_SHOW, MAX_CARDS_LOAD, SortType, FilterType, FILTERS, AppState} from '../constants';
+import {MAX_CARDS_SHOW, MAX_CARDS_LOAD, SortType, FilterType, FILTERS, AppState} from '../constants';
 
 export default class PageController {
   constructor(container, filmsModel, api) {
@@ -45,8 +45,7 @@ export default class PageController {
   _getTopRated() {
     return getRandomItemsFromTop(
         this._filmsModel.getFilmsAll(),
-        SortType.RATING,
-        MAX_CARDS_TOP
+        SortType.RATING
     );
   }
 
@@ -61,8 +60,7 @@ export default class PageController {
 
     return getRandomItemsFromTop(
         filmsWithComments,
-        SortType.COMMENTS,
-        MAX_CARDS_TOP
+        SortType.COMMENTS
     );
   }
 
