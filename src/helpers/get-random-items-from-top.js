@@ -1,11 +1,20 @@
 import {sortNumbersByAsc, shuffle} from '.';
 import {MAX_CARDS_TOP} from '../constants';
 
+const getValueGetter = (propName) => {
+  switch (propName) {
+    case `comments`:
+      return (value) => value.length;
+    default:
+      return (value) => value;
+  }
+};
+
 const getGroupsByProp = (items, propName) => {
+  const getValue = getValueGetter(propName);
+
   return items.reduce((prev, item) => {
-    const propValue = Array.isArray(item[propName])
-      ? item[propName].length
-      : item[propName];
+    const propValue = getValue(item[propName]);
 
     if (!prev[propValue]) {
       prev[propValue] = [];
@@ -37,7 +46,6 @@ const getKeysSortedByAsc = (keys) => {
 
 export const getRandomItemsFromTop = (films, propName, quantity = MAX_CARDS_TOP) => {
   const groupsByProp = getGroupsByProp(films, propName);
-
   const sortedKeys = getKeysSortedByAsc(Object.keys(groupsByProp));
 
   let topFilms = groupsByProp[sortedKeys.pop()];
