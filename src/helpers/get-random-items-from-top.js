@@ -5,8 +5,10 @@ const getValueGetter = (propName) => {
   switch (propName) {
     case SortType.COMMENTS:
       return (value) => value.length;
-    default:
+    case SortType.RATING:
       return (value) => value;
+    default:
+      throw new Error(`Unknown prop in getValueGetter()`);
   }
 };
 
