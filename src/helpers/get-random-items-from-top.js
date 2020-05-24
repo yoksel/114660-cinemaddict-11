@@ -1,9 +1,9 @@
 import {sortNumbersByAsc, shuffle} from '.';
-import {MAX_CARDS_TOP} from '../constants';
+import {MAX_CARDS_TOP, SortType} from '../constants';
 
 const getValueGetter = (propName) => {
   switch (propName) {
-    case `comments`:
+    case SortType.COMMENTS:
       return (value) => value.length;
     default:
       return (value) => value;
