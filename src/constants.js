@@ -48,7 +48,7 @@ const FILTERS = {
 const SortType = {
   DEFAULT: `default`,
   DATE: `date`,
-  RATING: `raiting`,
+  RATING: `rating`,
   COMMENTS: `comments`
 };
 

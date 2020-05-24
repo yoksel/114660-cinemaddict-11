@@ -1,7 +1,7 @@
 import FilmsListController from './films-list';
 import PageComponent from '../components/page';
-import {renderElement, replaceElement, getFilmsSortedByProp} from '../helpers';
-import {MAX_CARDS_TOP, MAX_CARDS_SHOW, MAX_CARDS_LOAD, SortType, FilterType, FILTERS, AppState} from '../constants';
+import {renderElement, replaceElement, getRandomItemsFromTop} from '../helpers';
+import {MAX_CARDS_SHOW, MAX_CARDS_LOAD, SortType, FilterType, FILTERS, AppState} from '../constants';
 
 export default class PageController {
   constructor(container, filmsModel, api) {
@@ -43,10 +43,10 @@ export default class PageController {
   }
 
   _getTopRated() {
-    let films = getFilmsSortedByProp(this._filmsModel.getFilmsAll(), SortType.RATING);
-    films = films.slice(0, MAX_CARDS_TOP);
-
-    return films;
+    return getRandomItemsFromTop(
+        this._filmsModel.getFilmsAll(),
+        SortType.RATING
+    );
   }
 
   _getTopCommented() {
@@ -58,10 +58,10 @@ export default class PageController {
       return [];
     }
 
-    let films = getFilmsSortedByProp(filmsWithComments, SortType.COMMENTS);
-    films = films.slice(0, MAX_CARDS_TOP);
-
-    return films;
+    return getRandomItemsFromTop(
+        filmsWithComments,
+        SortType.COMMENTS
+    );
   }
 
   _onUpcomingDetailsClose() {
