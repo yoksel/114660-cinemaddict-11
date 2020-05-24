@@ -90,7 +90,7 @@ export default class PageController {
   }
 
   _getTopCommented() {
-    let filmsWithComments = this._filmsModel
+    const filmsWithComments = this._filmsModel
       .getFilmsAll()
       .filter((item) => item.comments.length > 0);
 

@@ -5,7 +5,7 @@ import {BAR_HEIGHT, CHART_OPTIONS} from "./constants";
 
 export const renderChart = (container, watchedByGenre) => {
   if (Object.values(watchedByGenre).length === 0) {
-    return;
+    return null;
   }
 
   const wrapperElement = createElement(`<div class="statistic__chart-wrap">
@@ -19,8 +19,7 @@ export const renderChart = (container, watchedByGenre) => {
 
   renderElement(container, wrapperElement);
 
-  // eslint-disable-next-line no-new
-  new Chart(canvasElement, {
+  return new Chart(canvasElement, {
     plugins: [ChartDataLabels],
     type: `horizontalBar`,
     data: {
