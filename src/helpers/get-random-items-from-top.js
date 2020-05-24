@@ -38,10 +38,10 @@ const keysToNumbers = (keys) => {
 };
 
 const getKeysSortedByAsc = (keys) => {
-  keys = keysToNumbers(keys);
-  keys.sort(sortNumbersByAsc);
+  const keysNums = keysToNumbers(keys);
+  keysNums.sort(sortNumbersByAsc);
 
-  return keys;
+  return keysNums;
 };
 
 export const getRandomItemsFromTop = (films, propName, quantity = MAX_CARDS_TOP) => {
