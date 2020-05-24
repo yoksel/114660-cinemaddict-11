@@ -49,6 +49,36 @@ export default class FilmController {
     document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 
+  render(filmData) {
+    this.filmData = filmData;
+    const oldCardComponent = this._cardComponent;
+    const oldDetailsComponent = this._detailsComponent;
+    if (this._detailsComponent) {
+      this._detailsComponent.removeEvents();
+    }
+    this._cardComponent = new CardComponent(this.filmData);
+    this._detailsComponent = new DetailsComponent({
+      filmData: this.filmData,
+      setEmoji: this._setEmoji,
+      getEmoji: this._getEmoji,
+      setText: this._setText,
+      getText: this._getText
+    });
+
+    this._setCardHandlers();
+
+    if (oldCardComponent) {
+      replaceElement(oldCardComponent, this._cardComponent);
+
+      if (this.detailsIsOpened) {
+        this._setDetailsHandlers();
+        replaceElement(oldDetailsComponent, this._detailsComponent);
+      }
+    } else {
+      renderElement(this._container, this._cardComponent);
+    }
+  }
+
   _showDetails() {
     this._onViewChange();
     renderElement(document.body, this._detailsComponent);
@@ -158,14 +188,6 @@ export default class FilmController {
     }
   }
 
-  _onEscKeyDown(event) {
-    const isEscKey = event.key === `Escape` || event.key === `Esc`;
-
-    if (isEscKey) {
-      this._hideDetails();
-    }
-  }
-
   _setCardHandlers() {
     this._cardComponent.setCardClickHandler(this._showDetails);
     this._cardComponent.setControlsClickHandler(this._toggleProp);
@@ -177,33 +199,11 @@ export default class FilmController {
     this._detailsComponent.setCommentsActionsHandler(this._updateComments);
   }
 
-  render(filmData) {
-    this.filmData = filmData;
-    const oldCardComponent = this._cardComponent;
-    const oldDetailsComponent = this._detailsComponent;
-    if (this._detailsComponent) {
-      this._detailsComponent.removeEvents();
-    }
-    this._cardComponent = new CardComponent(this.filmData);
-    this._detailsComponent = new DetailsComponent({
-      filmData: this.filmData,
-      setEmoji: this._setEmoji,
-      getEmoji: this._getEmoji,
-      setText: this._setText,
-      getText: this._getText
-    });
+  _onEscKeyDown(event) {
+    const isEscKey = event.key === `Escape` || event.key === `Esc`;
 
-    this._setCardHandlers();
-
-    if (oldCardComponent) {
-      replaceElement(oldCardComponent, this._cardComponent);
-
-      if (this.detailsIsOpened) {
-        this._setDetailsHandlers();
-        replaceElement(oldDetailsComponent, this._detailsComponent);
-      }
-    } else {
-      renderElement(this._container, this._cardComponent);
+    if (isEscKey) {
+      this._hideDetails();
     }
   }
 }

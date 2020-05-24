@@ -22,6 +22,19 @@ export default class SortController {
     this._sortComponent.show();
   }
 
+  render() {
+    const oldSortComponent = this._sortComponent;
+    this._sortComponent = new Sort(this._currentSort);
+
+    this._sortComponent.setClickHandler(this._setSortType);
+
+    if (oldSortComponent) {
+      replaceElement(oldSortComponent, this._sortComponent);
+    } else {
+      renderElement(this._container, this._sortComponent);
+    }
+  }
+
   _setSortType(sortType) {
     if (this._currentSort === sortType) {
       return;
@@ -40,18 +53,5 @@ export default class SortController {
 
     this._currentSort = newSort;
     this.render();
-  }
-
-  render() {
-    const oldSortComponent = this._sortComponent;
-    this._sortComponent = new Sort(this._currentSort);
-
-    this._sortComponent.setClickHandler(this._setSortType);
-
-    if (oldSortComponent) {
-      replaceElement(oldSortComponent, this._sortComponent);
-    } else {
-      renderElement(this._container, this._sortComponent);
-    }
   }
 }

@@ -14,7 +14,6 @@ export default class User {
 
     this._filmsModel.addDataChangeHandler(this._onDataChange);
     this._filmsModel.addDataAddHandler(this._onDataChange);
-
   }
 
   getUser() {

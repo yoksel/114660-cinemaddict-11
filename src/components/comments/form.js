@@ -59,6 +59,14 @@ export default class Form extends AbstractSmartComponent {
     this._textInputInitialHandler = handler;
   }
 
+  setSubmitHandler(handler) {
+    this._submitGeneratedHandler = this._getSubmitHandler(handler);
+    this._submitInitialHandler = handler;
+
+    document.addEventListener(`keydown`, this._submitGeneratedHandler);
+    document.addEventListener(`keyup`, this._keyUpHandler);
+  }
+
   highlightOnError() {
     const formElement = this.getElement();
     const textareaElement = this._getTextareaElement();
@@ -68,6 +76,11 @@ export default class Form extends AbstractSmartComponent {
     textareaElement.focus();
     textareaElement.disabled = false;
     this._isCommentSending = false;
+  }
+
+  removeEvents() {
+    document.removeEventListener(`keydown`, this._submitGeneratedHandler);
+    document.removeEventListener(`keyup`, this._keyUpHandler);
   }
 
   _disableOnOffline() {
@@ -152,19 +165,6 @@ export default class Form extends AbstractSmartComponent {
         this._isCommentSending = true;
       }
     };
-  }
-
-  removeEvents() {
-    document.removeEventListener(`keydown`, this._submitGeneratedHandler);
-    document.removeEventListener(`keyup`, this._keyUpHandler);
-  }
-
-  setSubmitHandler(handler) {
-    this._submitGeneratedHandler = this._getSubmitHandler(handler);
-    this._submitInitialHandler = handler;
-
-    document.addEventListener(`keydown`, this._submitGeneratedHandler);
-    document.addEventListener(`keyup`, this._keyUpHandler);
   }
 
   _createElement() {

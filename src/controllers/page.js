@@ -27,6 +27,46 @@ export default class PageController {
     this._filmsModel.addSortChangeHandler(this._onSortChange);
   }
 
+  hide() {
+    this._pageComponent.hide();
+  }
+
+  show() {
+    this._pageComponent.show();
+  }
+
+  render(params = {}) {
+    const {state} = params;
+    const oldPageComponent = this._pageComponent;
+    this._pageComponent = new PageComponent();
+    this._initFilmsControllers(this._pageComponent.getElement());
+    const filmsQuantity = this._filmsModel.getFilmsQuantity();
+
+    if (state === AppState.LOADING) {
+      this._upcomingListController.showNoFilmsMessage(`Loading...`);
+    } else if (state === AppState.EMPTY || filmsQuantity === 0) {
+      this._upcomingListController.showNoFilmsMessage(`There are no movies in our database`);
+    } else {
+
+      this._upcomingFilmsControllers = this._upcomingListController.render(this._getUpcoming(MAX_CARDS_SHOW));
+
+      if (filmsQuantity > MAX_CARDS_SHOW) {
+        this._upcomingListController.showMoreButton();
+      }
+
+      this._topRatedFilmsControllers = this._topRatedListController.render(this._getTopRated());
+      this._topCommentedFilmsControllers = this._topCommentedListController.render(this._getTopCommented());
+
+      this._allFilmsControllers = this._collectAllFilmsControllers();
+    }
+
+    if (oldPageComponent) {
+      replaceElement(oldPageComponent, this._pageComponent);
+    } else {
+      renderElement(this._container, this._pageComponent);
+    }
+  }
+
   _getUpcoming(quantity = MAX_CARDS_LOAD) {
     const films = this._filmsModel.getFilms();
     const nextQuantity = this._shownQuantity + quantity;
@@ -62,20 +102,6 @@ export default class PageController {
         filmsWithComments,
         SortType.COMMENTS
     );
-  }
-
-  _onUpcomingDetailsClose() {
-    if (this._isNeedToUpdateFiltered) {
-      this._updateUpcoming(this._shownQuantity);
-      this._isNeedToUpdateFiltered = false;
-    }
-  }
-
-  _onTopCommentedDetailsClose() {
-    if (this._isNeedToUpdateTopCommented) {
-      this._updateTopCommented();
-      this._isNeedToUpdateTopCommented = false;
-    }
   }
 
   _initFilmsControllers(element) {
@@ -159,14 +185,6 @@ export default class PageController {
     this._allFilmsControllers = this._collectAllFilmsControllers();
   }
 
-  _onSortChange() {
-    this._updateUpcoming();
-  }
-
-  _onFilterChange() {
-    this._updateUpcoming();
-  }
-
   _loadMoreUpcoming() {
     const newCards = this._getUpcoming();
     const newControllers = this._upcomingListController.renderCards(newCards);
@@ -237,43 +255,25 @@ export default class PageController {
     this._allFilmsControllers.forEach((item) => item.setDefaultView());
   }
 
-  hide() {
-    this._pageComponent.hide();
+  _onSortChange() {
+    this._updateUpcoming();
   }
 
-  show() {
-    this._pageComponent.show();
+  _onFilterChange() {
+    this._updateUpcoming();
   }
 
-  render(params = {}) {
-    const {state} = params;
-    const oldPageComponent = this._pageComponent;
-    this._pageComponent = new PageComponent();
-    this._initFilmsControllers(this._pageComponent.getElement());
-    const filmsQuantity = this._filmsModel.getFilmsQuantity();
-
-    if (state === AppState.LOADING) {
-      this._upcomingListController.showNoFilmsMessage(`Loading...`);
-    } else if (state === AppState.EMPTY || filmsQuantity === 0) {
-      this._upcomingListController.showNoFilmsMessage(`There are no movies in our database`);
-    } else {
-
-      this._upcomingFilmsControllers = this._upcomingListController.render(this._getUpcoming(MAX_CARDS_SHOW));
-
-      if (filmsQuantity > MAX_CARDS_SHOW) {
-        this._upcomingListController.showMoreButton();
-      }
-
-      this._topRatedFilmsControllers = this._topRatedListController.render(this._getTopRated());
-      this._topCommentedFilmsControllers = this._topCommentedListController.render(this._getTopCommented());
-
-      this._allFilmsControllers = this._collectAllFilmsControllers();
+  _onUpcomingDetailsClose() {
+    if (this._isNeedToUpdateFiltered) {
+      this._updateUpcoming(this._shownQuantity);
+      this._isNeedToUpdateFiltered = false;
     }
+  }
 
-    if (oldPageComponent) {
-      replaceElement(oldPageComponent, this._pageComponent);
-    } else {
-      renderElement(this._container, this._pageComponent);
+  _onTopCommentedDetailsClose() {
+    if (this._isNeedToUpdateTopCommented) {
+      this._updateTopCommented();
+      this._isNeedToUpdateTopCommented = false;
     }
   }
 }

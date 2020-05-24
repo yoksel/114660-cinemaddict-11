@@ -14,8 +14,11 @@ export default class FilmsList extends AbstractSmartComponent {
     this.rerender();
   }
 
-  _recoveryListeners() {
+  getFilmsContainerElement() {
+    return this.getElement().querySelector(`.films-list__container`);
+  }
 
+  _recoveryListeners() {
   }
 
   _getClassName() {
@@ -49,9 +52,5 @@ export default class FilmsList extends AbstractSmartComponent {
         <div class="films-list__container"></div>
       </section>`
     );
-  }
-
-  getFilmsContainerElement() {
-    return this.getElement().querySelector(`.films-list__container`);
   }
 }

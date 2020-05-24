@@ -41,28 +41,6 @@ export default class Film {
     this.commentsData = this._convertComments(filmData.comments_data);
   }
 
-  _convertComments(comments = []) {
-    if (comments.length === 0) {
-      return [];
-    }
-
-    return comments.map(({
-      id,
-      author,
-      comment: text,
-      emotion: emoji,
-      date
-    }) => {
-      return {
-        id,
-        author,
-        text,
-        emoji,
-        date: new Date(date)
-      };
-    });
-  }
-
   toRaw() {
     return {
       'id': this.id,
@@ -106,6 +84,28 @@ export default class Film {
 
   _commentsToRaw(comments) {
     return comments.map(this.commentToRaw);
+  }
+
+  _convertComments(comments = []) {
+    if (comments.length === 0) {
+      return [];
+    }
+
+    return comments.map(({
+      id,
+      author,
+      comment: text,
+      emotion: emoji,
+      date
+    }) => {
+      return {
+        id,
+        author,
+        text,
+        emoji,
+        date: new Date(date)
+      };
+    });
   }
 
   static parseFilm(filmData) {

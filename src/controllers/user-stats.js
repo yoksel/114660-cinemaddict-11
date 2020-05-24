@@ -23,9 +23,23 @@ export default class UserStatsController {
     this._userStatsComponent.show();
   }
 
-  _onDataChange() {
-    this.render();
-    this.hide();
+  render() {
+    const oldUserStatsComponent = this._userStatsComponent;
+    this._userStatsComponent = new UserStats({
+      userData: this._getUserData(),
+      currentFilter: this._currentFilter
+    });
+    this._userStatsComponent.setFilterClickHandler(this._setPeriod);
+
+    if (oldUserStatsComponent) {
+      replaceElement(oldUserStatsComponent, this._userStatsComponent);
+    } else {
+      renderElement(this._container, this._userStatsComponent);
+    }
+
+    // Chart must be rendered after UserStats component
+    // will be rendered to page otherwise it crashes app in FF
+    this._userStatsComponent.renderChart();
   }
 
   _setPeriod(periodName) {
@@ -52,22 +66,8 @@ export default class UserStatsController {
     };
   }
 
-  render() {
-    const oldUserStatsComponent = this._userStatsComponent;
-    this._userStatsComponent = new UserStats({
-      userData: this._getUserData(),
-      currentFilter: this._currentFilter
-    });
-    this._userStatsComponent.setFilterClickHandler(this._setPeriod);
-
-    if (oldUserStatsComponent) {
-      replaceElement(oldUserStatsComponent, this._userStatsComponent);
-    } else {
-      renderElement(this._container, this._userStatsComponent);
-    }
-
-    // Chart must be rendered after UserStats component
-    // will be rendered to page otherwise it crashes app in FF
-    this._userStatsComponent.renderChart();
+  _onDataChange() {
+    this.render();
+    this.hide();
   }
 }

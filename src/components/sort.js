@@ -2,9 +2,9 @@ import AbstractSmartComponent from './abstract-smart-component';
 import {getHandlerWithProp} from '../helpers';
 import {SortType} from '../constants';
 
-const classes = {
-  default: `sort__button`,
-  active: `sort__button--active`
+const ClassName = {
+  DEFAULT: `sort__button`,
+  ACTIVE: `sort__button--active`
 };
 
 export default class Sort extends AbstractSmartComponent {
@@ -22,18 +22,18 @@ export default class Sort extends AbstractSmartComponent {
   }
 
   setClickHandler(handler) {
-    this._clickHandler = getHandlerWithProp(`.${classes.default}`, handler);
+    this._clickHandler = getHandlerWithProp(`.${ClassName.DEFAULT}`, handler);
 
     this.getElement().addEventListener(`click`, this._clickHandler);
   }
 
   _getItems() {
     return this._sections.reduce((prev, item) => {
-      let className = classes.default;
-      className += ` ${classes.default}--${item}`;
+      let className = ClassName.DEFAULT;
+      className += ` ${ClassName.DEFAULT}--${item}`;
 
       if (item === this._currentSort) {
-        className += ` ${classes.active}`;
+        className += ` ${ClassName.ACTIVE}`;
       }
 
       return (

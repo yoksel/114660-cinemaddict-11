@@ -18,6 +18,14 @@ export default class UserStats extends AbstractSmartComponent {
     this._statsPeriodsNav = new StatsPeriodsNav(this._currentFilter);
   }
 
+  setFilterClickHandler(handler) {
+    this._statsPeriodsNav.setClickHandler(handler);
+  }
+
+  renderChart() {
+    renderChart(this.getElement(), this._watchedByGenre);
+  }
+
   _getRank() {
     return (
       `<p class="statistic__rank">
@@ -31,14 +39,6 @@ export default class UserStats extends AbstractSmartComponent {
         <span class="statistic__rank-label">${this._status}</span>
       </p>`
     );
-  }
-
-  setFilterClickHandler(handler) {
-    this._statsPeriodsNav.setClickHandler(handler);
-  }
-
-  renderChart() {
-    renderChart(this.getElement(), this._watchedByGenre);
   }
 
   _createElement() {

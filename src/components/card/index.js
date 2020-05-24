@@ -47,6 +47,13 @@ export default class Card extends AbstractComponent {
     this._controls.setClickHandler(handler);
   }
 
+  _createElement() {
+    const element = createElement(this._getTmpl());
+    renderElement(element, this._controls);
+
+    return element;
+  }
+
   _getTmpl() {
     const commentsText = getPlurals(this._commentsCount, [`comment`, `comments`]);
     const commentsLinkMarkup = `<a class="film-card__comments">${this._commentsCount} ${commentsText}</a>`;
@@ -71,12 +78,5 @@ export default class Card extends AbstractComponent {
         ${commentsLinkMarkup}
       </article>`
     );
-  }
-
-  _createElement() {
-    const element = createElement(this._getTmpl());
-    renderElement(element, this._controls);
-
-    return element;
   }
 }

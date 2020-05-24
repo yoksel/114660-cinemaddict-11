@@ -30,6 +30,19 @@ export default class FilterController {
     this._filterComponent.setActiveHighlight(section);
   }
 
+  render() {
+    const oldFilterComponent = this._filterComponent;
+    this._filterComponent = new Filter(this._filmsModel.getFilmsAll(), this._currentFilter);
+
+    this._filterComponent.setFilterSwitchHandler(this._setFilterType);
+
+    if (oldFilterComponent) {
+      replaceElement(oldFilterComponent, this._filterComponent);
+    } else {
+      renderElement(this._container, this._filterComponent);
+    }
+  }
+
   _setFilterType(filterType) {
     if (this._currentFilter === filterType) {
       return;
@@ -59,18 +72,5 @@ export default class FilterController {
     this._currentFilter = newFilter;
     this.render();
     this._recoveryListeners();
-  }
-
-  render() {
-    const oldFilterComponent = this._filterComponent;
-    this._filterComponent = new Filter(this._filmsModel.getFilmsAll(), this._currentFilter);
-
-    this._filterComponent.setFilterSwitchHandler(this._setFilterType);
-
-    if (oldFilterComponent) {
-      replaceElement(oldFilterComponent, this._filterComponent);
-    } else {
-      renderElement(this._container, this._filterComponent);
-    }
   }
 }

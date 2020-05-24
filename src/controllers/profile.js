@@ -12,10 +12,6 @@ export default class Profile {
     this._filmsModel.addDataChangeHandler(this._onDataChange);
   }
 
-  _onDataChange() {
-    this.render();
-  }
-
   render() {
     const oldProfileComponent = this._profileComponent;
     this._profileComponent = new ProfileComponent(this._userModel.getUser());
@@ -25,5 +21,9 @@ export default class Profile {
     } else {
       renderElement(this._container, this._profileComponent);
     }
+  }
+
+  _onDataChange() {
+    this.render();
   }
 }

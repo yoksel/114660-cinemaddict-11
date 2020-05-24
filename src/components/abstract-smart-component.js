@@ -1,10 +1,6 @@
 import AbstractComponent from './abstract-component';
 
 export default class AbstractSmartComponent extends AbstractComponent {
-  _recoveryListeners() {
-    throw new Error(`Override _recoveryListeners() method in your component`);
-  }
-
   hide() {
     this.getElement().hidden = true;
   }
@@ -21,5 +17,9 @@ export default class AbstractSmartComponent extends AbstractComponent {
     oldElement.replaceWith(newElement);
 
     this._recoveryListeners();
+  }
+
+  _recoveryListeners() {
+    throw new Error(`Override _recoveryListeners() method in your component`);
   }
 }

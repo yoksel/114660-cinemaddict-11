@@ -27,28 +27,6 @@ export default class CommentsList extends AbstractComponent {
     this._connectionObserver.addOnlineHandler(this._enableOnOnline);
   }
 
-  _createDeleteClickHandler(handler) {
-    return (event) => {
-      const comment = event.target.closest(`.film-details__comment`);
-
-      if (!comment || !comment.id) {
-        return;
-      }
-
-      handler(comment.id, null);
-    };
-  }
-
-  _getDeleteButtonElements() {
-    if (this._deleteButtonElements) {
-      return this._deleteButtonElements;
-    }
-
-    this._deleteButtonElements = this.getElement().querySelectorAll(`.film-details__comment-delete`);
-
-    return this._deleteButtonElements;
-  }
-
   setDeleteClickHandler(handler) {
     const deleteButtonElements = this._getDeleteButtonElements();
     const deleteClickHandler = this._createDeleteClickHandler(handler);
@@ -70,6 +48,28 @@ export default class CommentsList extends AbstractComponent {
 
     deleteButtonElement.innerHTML = ButtonText.DEFAULT;
     deleteButtonElement.disabled = false;
+  }
+
+  _createDeleteClickHandler(handler) {
+    return (event) => {
+      const comment = event.target.closest(`.film-details__comment`);
+
+      if (!comment || !comment.id) {
+        return;
+      }
+
+      handler(comment.id, null);
+    };
+  }
+
+  _getDeleteButtonElements() {
+    if (this._deleteButtonElements) {
+      return this._deleteButtonElements;
+    }
+
+    this._deleteButtonElements = this.getElement().querySelectorAll(`.film-details__comment-delete`);
+
+    return this._deleteButtonElements;
   }
 
   _disableOnOffline() {
