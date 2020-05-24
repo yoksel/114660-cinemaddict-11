@@ -2,7 +2,7 @@ import AbstractComponent from '../abstract-component';
 import {getFilmControlsData} from './get-film-controls-data';
 import {getHandlerWithProp, getHandlerToggleClass, createElement} from '../../helpers';
 
-export default class Controls extends AbstractComponent {
+export default class FilmControls extends AbstractComponent {
   constructor({isInWatchList, isWatched, isFavorite}) {
     super();
 
@@ -12,8 +12,8 @@ export default class Controls extends AbstractComponent {
       isFavorite,
     });
 
-    if (new.target === Controls) {
-      throw new Error(`Controls is not allowed as a constructor`);
+    if (new.target === FilmControls) {
+      throw new Error(`FilmControls is not allowed as a constructor`);
     }
   }
 
