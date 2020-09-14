@@ -102,7 +102,9 @@ html {
 }
 
 .disabled {
-  opacity: .75;
+  opacity: .5;
+  filter: saturate(.5);
+  pointer-events: none;
 }
 
 body {
