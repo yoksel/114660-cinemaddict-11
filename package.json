@@ -8,13 +8,15 @@
     "eslint": "eslint src",
     "eslint:fix": "eslint src public/sw.js --fix",
     "start": "webpack-dev-server --open",
-    "test": "npm run eslint"
+    "test": "npm run eslint",
+    "deploy": "npm run build && gh-pages -d public"
   },
   "devDependencies": {
     "chart.js": "2.9.3",
     "chartjs-plugin-datalabels": "0.7.0",
     "eslint": "6.1.0",
     "eslint-config-htmlacademy": "0.5.2",
+    "gh-pages": "^3.1.0",
     "he": "1.2.0",
     "moment": "2.24.0",
     "moment-locales-webpack-plugin": "1.2.0",
